@@ -1,0 +1,120 @@
+<template>
+    <div class="header">
+      <div class="logo">
+        <a href="javascript:;" v-on:click="goIndex"> &nbsp;&nbsp;<img src="../images/logo.jpg" alt=""></a>
+      </div>
+      <div class="nav">
+        <span>本站导航<i class="icon"></i></span>
+        <ul tab>
+          <li class="tab-item"><router-link to="/news"><a href="javascript:;">新闻中心</a></router-link></li>
+          <li class="tab-item"><router-link to="/"><a href="javascript:;">项目活动</a></router-link></li>
+          <li class="tab-item"><router-link to="/services"><a href="javascript:;">创业服务</a></router-link></li>
+          <li class="tab-item"><router-link to="/project"><a href="javascript:;">项目对接</a></router-link></li>
+          <li class="tab-item"><router-link to="/videos"><a href="javascript:;">慕课(MOOC)</a></router-link></li>
+          <li class="tab-item"><router-link to="/services"><a href="javascript:;">合作与联系</a></router-link></li>
+          <li class="tab-item"><router-link to="/download"><a href="javascript:;">资料下载</a></router-link></li>
+          <li class="tab-item"><router-link to="/personal"><a href="javascript:;">个人页面</a></router-link></li>
+        </ul>
+      </div>
+    </div>
+</template>
+
+<script>
+import global from '../global/global'
+export default {
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js App'
+    }
+  },
+  methods: {
+    goIndex: function () {
+      global.goPath(this, 'index')
+    }
+  }
+}
+</script>
+
+<style media="screen">
+.icon{
+  display: inline-block;
+  background: url('../images/icon.png') no-repeat;
+  width: 30px;
+  height: 22px;
+}
+.header{
+  width: 1200px;
+  margin: 0 auto;
+  /*overflow: hidden;*/
+  margin-top: 20px;
+  height: 100px;
+  position: relative;
+}
+.header .logo{
+  position: absolute;
+  left:35px;
+  top: 10px;
+}
+.header .logo a img{
+  height: 80px;
+  width: 60px;
+}
+.header .nav{
+  position: absolute;
+  right: 20px;
+  top:40px;
+  width: 150px;
+}
+.header .nav ul{
+  padding-top: 40px;
+  background-color: #fff;
+  opacity: 0;
+  display: none;
+  border-radius: 10px;
+  width: 200px;
+  position: absolute;
+  right: 0;
+  z-index: 99;
+}
+.header .nav ul li{
+  margin: 4px 0;
+}
+.header .nav:hover{
+  cursor: pointer;
+}
+.header .nav:hover ul{
+  display: block;
+  opacity: .7;
+  transition: opacity .5s;
+}
+.header .nav ul li{
+  padding: 3px 0;
+  text-align: center;
+}
+.nav span{
+  font-size: 13.75px;
+  font-family: "Microsoft YaHei";
+  color: rgb( 254, 108, 0 );
+  text-transform: uppercase;
+  line-height: 0.909;
+  text-align: center;
+}
+.nav i{
+  position: absolute;
+  left:65px;
+}
+.nav ul li a{
+  font-size: 12.5px;
+  font-family: "Microsoft YaHei";
+  color: #000;
+  font-weight:500;
+  text-align: center;
+  width: 100%;
+  display: inline-block;
+  padding: 5px 0;
+}
+.nav ul li a:hover{
+  color: #ff9b3c
+}
+
+</style>
