@@ -9,11 +9,11 @@
         <ul>
           <li v-for="n in 16">
           <!-- <li v-for="n in 16" v-on:click="getActiveDetial(active.id)"> -->
-            <div class="activePage" :class="{isactive: true}">
+            <div class="activePage" :class="{isactive: isExist(startDate+(n-1)*86400000)}">
               <span class="lt">&lt;</span>
               <span>{{startDate+(n-1)*86400000 | week}}<p>{{startDate+(n-1)*86400000 | time}}</p></span>
               <span class="gt">&gt;</span>
-              <p class="activeIntr">暂无活动安排</p>
+              <p class="activeIntr">{{state[1]}}</p>
             </div>
           </li>
         </ul>
@@ -86,6 +86,7 @@ export default {
       activeAlert: false,
       currentPage: 1,
       actives: '',
+      state: ['暂无活动安排', '此处有活动请戳~'],
       gridData: [{
         date: '2016-05-02',
         name: '王小虎',
@@ -109,15 +110,18 @@ export default {
   },
   created () {
     var self = this
-    var start = Date.parse(new Date())
+    // var start = Date.parse(new Date())
+    var start = Date.parse(new Date('2017-03-16'))
     this.startDate = start
-    axios.get(global.baseUrl + 'event/getEventList?startDate=' + this.format(start) + '&endDate=' + this.format(new Date(start).setDate(new Date(start).getDate() + 17)))
+    // axios.get(global.baseUrl + 'event/getEventList?startDate=' + this.format(start) + '&endDate=' + this.format(new Date(start).setDate(new Date(start).getDate() + 17)))
+    // .then((res) => {
+    //   console.log(res)
+    //   self.actives = res.data.data
+    // })
+    axios.get(global.baseUrl + 'event/getEventList?startDate=2017-03-16&endDate=2017-03-31')
     .then((res) => {
       console.log(res)
       self.actives = res.data.data
-      for (let i in self.actives) {
-        console.log(self.actives[i].useDate.indexOf('2016-03-28'))
-      }
     })
   },
   methods: {
@@ -125,7 +129,26 @@ export default {
       console.log(val)
     },
     format (val) {
-      return new Date(val).getFullYear() + '-' + (new Date(val).getMonth() + 1) + '-' + new Date(val).getDate()
+      var month = new Date(val).getMonth() + 1
+      var date = new Date(val).getDate()
+      if (month < 10) {
+        month = '0' + month
+      }
+      if (date < 10) {
+        date = '0' + date
+      }
+      return new Date(val).getFullYear() + '-' + month + '-' + date
+    },
+    isExist (val) {
+      val = this.format(val)
+      for (let i in this.actives) {
+        console.log(this.actives[i].useDate.match(val))
+        if (this.actives[i].useDate.match(val)) {
+          return true
+        } else {
+          return false
+        }
+      }
     }
   },
   components: {

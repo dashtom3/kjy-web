@@ -13,7 +13,7 @@
           <li class="tab-item"><router-link to="/videos"><a href="javascript:;">慕课(MOOC)</a></router-link></li>
           <li class="tab-item"><router-link to="/services"><a href="javascript:;">合作与联系</a></router-link></li>
           <li class="tab-item"><router-link to="/download"><a href="javascript:;">资料下载</a></router-link></li>
-          <li class="tab-item"><router-link to="/personal"><a href="javascript:;">个人页面</a></router-link></li>
+          <li class="tab-item"><router-link :to=isLogin><a href="javascript:;">个人页面</a></router-link></li>
         </ul>
       </div>
     </div>
@@ -24,12 +24,22 @@ import global from '../global/global'
 export default {
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      isLogin: '/login'
     }
   },
   methods: {
     goIndex: function () {
       global.goPath(this, 'index')
+    }
+  },
+  mounted () {
+    var data = Date.parse(new Date()) / 1000
+    if (data > localStorage.time) {
+      localStorage.token
+    }
+    if (localStorage.token) {
+      this.isLogin = '/personal'
     }
   }
 }

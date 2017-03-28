@@ -15,13 +15,13 @@
             <button type="button" name="button" v-for="(loginKind, index) in selectLogin" :class="{'active':loginKind.active,'unactive':!loginKind.active}" v-on:click="selectKind(loginKind, index)">{{loginKind.data}}</button>
           </div>
           <div class="xn" v-show="xn">
-            <form method="post" action="http://tjis.tongji.edu.cn:58080/amserver/UI/Login?goto=http://123.56.220.72:8080/cyg/api/user/login&gotoOnFail=http://www.baidu.com">
+            <form method="post" action="http://tjis.tongji.edu.cn:58080/amserver/UI/Login?goto=http://www.baidu.com"&gotoOnFail=http://www.baidu.com">
               <div class="loginInput">
-                <input type="text" v-model="loginName" placeholder="账号" name="Login.Token1"><br>
-                <input type="password" name="Login.Token2" placeholder="密码">
+                <input type="text" v-model="xnMessages.loginName" placeholder="账号" name="Login.Token1"><br>
+                <input type="password" v-model="xnMessages.password" name="Login.Token2" placeholder="密码">
               </div>
               <div class="sub">
-                <a href="javascript:;"><input type="submit" value="登录"></a>
+                <a href="javascript:;" v-on:click="xnLogin"><input type="submit" value="登录"></a>
               </div>
             </form>
           </div>
@@ -60,6 +60,10 @@ export default {
       xw: false,
       active: false,
       loginName: '',
+      xnMessages: {
+        loginName: '',
+        password: ''
+      },
       xwname: '',
       xwpassword: ''
     }
@@ -84,13 +88,28 @@ export default {
         Vue.set(item, 'active', true)
       })
     },
+    // 校内登录
+    xnLogin () {
+      var self = this
+      var xnMsg = new FormData()
+      xnMsg.append('loginName', this.xnMessages.loginName)
+      xnMsg.append('password', this.xnMessages.password)
+      axios.post(global.baseUrl + 'user/login?type=1', xnMsg)
+      .then((res) => {
+        if (res.data.callStatus === 'SUCCEED') {
+          global.success(self, '登陆成功', '/index')
+          localStorage.token = res.data.token
+          localStorage.time = Date.parse(new Date()) / 1000 + 1800
+        }
+      })
+    },
     // 校外登陆
     xwLogin () {
       var xwMsg = new FormData()
       xwMsg.append('loginName', this.xwname)
       xwMsg.append('password', this.xwpassword)
       xwMsg.append('type', '2')
-      axios.post(global.baseUrl + 'user/login', xwMsg)
+      axios.post(global.baseUrl + 'user/login?type=2', xwMsg)
       .then(function (res) {
         console.log(res)
       })

@@ -199,7 +199,7 @@ export default {
         }
       }
       for (let i in items) {
-        items[i].pic = 'http://chuangyegu.tongji.edu.cn/' + items[i].pic
+        items[i].pic = 'http://123.56.220.72:8080/cyg/' + items[i].pic
         items[i].date = items[i].date * 1000
         items[i].content = items[i].content.replace(/<[^>]+>/g, '')
         items[i].content = items[i].content.replace(/&nbsp;/g, '')
