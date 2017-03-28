@@ -7,132 +7,13 @@
       </div>
       <div class="activeDate">
         <ul>
-          <li>
+          <li v-for="n in 16">
+          <!-- <li v-for="n in 16" v-on:click="getActiveDetial(active.id)"> -->
             <div class="activePage">
               <span class="lt">&lt;</span>
-              <span>周一<p>2016-12-12</p></span>
+              <span>星期一<p>{{startDate}}</p></span>
               <span class="gt">&gt;</span>
               <p class="activeIntr">暂无活动安排</p>
-            </div>
-          </li>
-          <li>
-            <div class="activePage">
-              <span class="lt">&lt;</span>
-              <span>周一<p>2016-12-12</p></span>
-              <span class="gt">&gt;</span>
-              <p class="activeIntr">暂无活动安排</p>
-            </div>
-          </li>
-          <li>
-            <div class="activePage">
-              <span class="lt">&lt;</span>
-              <span>周一<p>2016-12-12</p></span>
-              <span class="gt">&gt;</span>
-              <p class="activeIntr">暂无活动安排</p>
-            </div>
-          </li>
-          <li>
-            <div class="activePage">
-              <span class="lt">&lt;</span>
-              <span>周一<p>2016-12-12</p></span>
-              <span class="gt">&gt;</span>
-              <p class="activeIntr">暂无活动安排</p>
-            </div>
-          </li>
-          <li>
-            <div class="activePage">
-              <span class="lt">&lt;</span>
-              <span>周一<p>2016-12-12</p></span>
-              <span class="gt">&gt;</span>
-              <p class="activeIntr">暂无活动安排</p>
-            </div>
-          </li>
-          <li>
-            <div class="activePage">
-              <span class="lt">&lt;</span>
-              <span>周一<p>2016-12-12</p></span>
-              <span class="gt">&gt;</span>
-              <p class="activeIntr">暂无活动安排</p>
-            </div>
-          </li>
-          <li>
-            <div class="activePage isactive">
-              <span class="lt">&lt;</span>
-              <span>周一<p>2016-12-12</p></span>
-              <span class="gt">&gt;</span>
-              <p class="activeIntr">此处有活动，请戳~</p>
-            </div>
-          </li>
-          <li>
-            <div class="activePage isactive">
-              <span class="lt">&lt;</span>
-              <span>周一<p>2016-12-12</p></span>
-              <span class="gt">&gt;</span>
-              <p class="activeIntr">此处有活动，请戳~</p>
-            </div>
-          </li>
-          <li>
-            <div class="activePage">
-              <span class="lt">&lt;</span>
-              <span>周一<p>2016-12-12</p></span>
-              <span class="gt">&gt;</span>
-              <p class="activeIntr">暂无活动安排</p>
-            </div>
-          </li>
-          <li>
-            <div class="activePage">
-              <span class="lt">&lt;</span>
-              <span>周一<p>2016-12-12</p></span>
-              <span class="gt">&gt;</span>
-              <p class="activeIntr">暂无活动安排</p>
-            </div>
-          </li>
-          <li>
-            <div class="activePage">
-              <span class="lt">&lt;</span>
-              <span>周一<p>2016-12-12</p></span>
-              <span class="gt">&gt;</span>
-              <p class="activeIntr">暂无活动安排</p>
-            </div>
-          </li>
-          <li>
-            <div class="activePage">
-              <span class="lt">&lt;</span>
-              <span>周一<p>2016-12-12</p></span>
-              <span class="gt">&gt;</span>
-              <p class="activeIntr">暂无活动安排</p>
-            </div>
-          </li>
-          <li>
-            <div class="activePage">
-              <span class="lt">&lt;</span>
-              <span>周一<p>2016-12-12</p></span>
-              <span class="gt">&gt;</span>
-              <p class="activeIntr">暂无活动安排</p>
-            </div>
-          </li>
-          <li>
-            <div class="activePage">
-              <span class="lt">&lt;</span>
-              <span>周一<p>2016-12-12</p></span>
-              <span class="gt">&gt;</span>
-              <p class="activeIntr">暂无活动安排</p>
-            </div>
-          </li>
-          <li @click="dialogTableVisible = true">
-            <div class="activePage isactive">
-              <span class="lt">&lt;</span>
-              <span>周一<p>2016-12-12</p></span>
-              <span class="gt">&gt;</span>
-              <p class="activeIntr">此处有活动，请戳~</p>
-            </div>
-          </li>
-          <li>
-            <div class="activePage isactive">
-              <span class="lt">&lt;</span>
-              <span>周一<p>2016-12-12</p></span>
-              <span class="gt">&gt;</span>
-              <p class="activeIntr">此处有活动，请戳~</p>
             </div>
           </li>
         </ul>
@@ -146,7 +27,7 @@
           </el-pagination>
         </div>
       </div>
-      <el-dialog title="活动详情" v-model="dialogTableVisible">
+      <el-dialog title="活动详情" v-model="activeAlert">
         <div class="activePage alertDiv">
           <span class="lt">&lt;</span>
           <span>周一<p>2016-12-12</p></span>
@@ -159,17 +40,6 @@
           <el-table-column property="address" label="地址"></el-table-column>
         </el-table>
       </el-dialog>
-      <!-- <div class="alertActiveDetial activePage">
-        <div class="activePage">
-          <span class="lt">&lt;</span>
-          <span>周一<p>2016-12-12</p></span>
-          <span class="gt">&gt;</span>
-          <a href="javascript:;" class="qx">×</a>
-        </div>
-        <ul>
-          <li><a href="javascript:;">安排一</a></li>
-        </ul>
-      </div> -->
     </div>
     <v-footer></v-footer>
   </div>
@@ -178,13 +48,16 @@
 <script>
 import header from './header'
 import footer from './footer'
+import global from '../global/global'
+import axios from 'axios'
 export default {
   name: 'active',
   data () {
     return {
-      dialogTableVisible: false,
+      activeAlert: false,
       currentPage: 1,
-      msg: 'Welcome to Your Vue.js App',
+      actives: '',
+      weeks: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
       gridData: [{
         date: '2016-05-02',
         name: '王小虎',
@@ -201,8 +74,24 @@ export default {
         date: '2016-05-03',
         name: '王小虎',
         address: '上海市普陀区金沙江路 1518 弄'
-      }]
+      }],
+      startDate: ''
     }
+  },
+  created () {
+    var self = this
+    var start = new Date()
+    this.startDate = start.getFullYear() + '-' + (start.getMonth() + 1) + '-' + start.getDate()
+    // var end = new Date(start.setDate(start.getDate() + 17))
+    // var endDate = end.getFullYear() + '-' + (end.getMonth() + 1) + '-' + end.getDate()
+    axios.get(global.baseUrl + 'event/getEventList?startDate=2016-03-12&endDate=2016-03-28')
+    .then((res) => {
+      console.log(res)
+      self.actives = res.data.data
+      // for (let i in self.actives) {
+      //
+      // }
+    })
   },
   methods: {
     handleCurrentChange: function (val) {

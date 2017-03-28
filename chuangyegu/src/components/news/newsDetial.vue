@@ -4,13 +4,14 @@
     <div class="newsDetialCon">
       <div class="newsDetialConLeft">
         <div class="newsheader">
-          <p class="newstitle">同济大学党委副书记徐建平一行指导大连同创谷考察大连高新区</p>
-          <p class="newsauto"><span class="newsdata">2016-12-12  12:45</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>编辑:李彤</span></p>
+          <p class="newstitle">{{newsDetialContent.title}}</p>
+          <p class="newsauto"><span class="newsdata">{{newsDetialContent.date*1000 | time}}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
         </div>
         <div class="newsintr">
-          <p>1月19日，同济大学党委副书记徐建平一行6人来到大连，指导大连同创谷（筹）建设 工作，考察大连高新区创新创业、产业发展和政策环</p>
+          <p v-html="newsDetialContent.content"></p>
         </div>
       </div>
+
       <div class="newsDetialConRight">
         <h2>精粹要闻</h2>
         <ul>
@@ -57,11 +58,24 @@
 <script>
 import header from '../header'
 import footer from '../footer'
+import axios from 'axios'
+import global from '../../global/global'
 export default {
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      newsid: this.$route.params.id,
+      newsDetialContent: ''
     }
+  },
+  created () {
+    var self = this
+    axios.get(global.baseUrl + 'news/getById?newsId=' + this.newsid)
+    .then((res) => {
+      console.log(res)
+      self.newsDetialContent = res.data.data
+      self.newsDetialContent.content = self.newsDetialContent.content.replace(/src="/gi, 'src="http://chuangyegu.tongji.edu.cn/')
+    })
   },
   components: {
     'v-header': header,

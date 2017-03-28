@@ -18,6 +18,16 @@
     </el-menu>
 </div>
 </template>
+<script type="text/javascript">
+export default {
+  mounted () {
+    var date = Date.parse(new Date()) / 1000
+    if (!localStorage.token || date > localStorage.time) {
+      this.$router.push('/admin')
+    }
+  }
+}
+</script>
 
 <style media="screen">
 .header-wraper li {

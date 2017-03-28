@@ -8,24 +8,26 @@
       <div class="reserveCont">
         <div class="card">
           <h2>身份信息</h2>
-          <input type="text" name="" placeholder="申请单位"> <input type="text" name="" placeholder="联系人">
-          <input type="text" name="" placeholder="联系电话" class="w265"> <input type="text" name="" placeholder="手机" class="w265"><br>
+          <input type="text" v-model="areaMsg.applyUnit" required placeholder="申请单位"> <input type="text" v-model="areaMsg.contactName" required placeholder="联系人">
+          <input type="text" v-model="areaMsg.contactPhone" required placeholder="联系电话" class="w265"> <input type="text" v-model="areaMsg.mobilePhone" placeholder="手机" class="w265"><br>
           <span>校区</span>
-          <el-select v-model="campu" placeholder="请选择" @change="selectCampus(select)">
+          <el-select v-model="areaMsg.campus" placeholder="请选择" @change="selectCampus">
             <el-option
+              :key="campu"
               v-for="(campu, index) in campus"
-              :label=campu
-              :value=index>
+              :label=campu.data
+              :value=campu>
             </el-option>
           </el-select>
         </div>
         <div class="eventDetial">
           <h2>活动信息</h2>
           <div class="place">
-            <input type="text" name="" placeholder="活动名称"><br><br>
+            <input type="text" v-model="areaMsg.eventName" required placeholder="活动名称"><br><br>
             <span>租借场地类型</span>
             <el-select v-model="place" placeholder="请选择">
               <el-option
+                :key="place"
                 v-for="(place, index) in places"
                 :label=place
                 :value=index>
@@ -45,7 +47,7 @@
             <span class="date">活动日期</span>
             <!-- <input type="text" name="" value="" placeholder="例如：2016-12-12"> -->
             <el-date-picker
-              v-model="value1"
+              v-model="areaMsg.useDateStr"
               type="date"
               placeholder="选择日期"
               >
@@ -97,14 +99,14 @@
               </div>
             </div>
             <div class="a-upload">
-              <a href="javascript:;"><input type="file" value="上传文件"><span>上传</span><br><span>活动海报</span></a>
+              <a href="javascript:;"><input type="file" value="上传文件" required><span>上传</span><br><span>活动海报</span></a>
             </div>
           </div>
           <div class="">
             <h5>①请提前3日预约14日内的场地 ②必须上传活动海报后才能审核通过</h5>
           </div>
           <div class="tj">
-            <a href="javascript:;">提交</a>
+            <a href="javascript:;" v-on:click="subArea">提交</a>
           </div>
         </div>
       </div>
@@ -121,14 +123,32 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      campus: ['四平校区', '嘉定校区'],
+      campus: [
+        { data: '四平校区', val: 1 },
+        { data: '嘉定校区', val: 2 }
+      ],
       places: '',
       place: '',
       value: '',
       campu: '',
       value1: '',
       places1: ['活动大厅', '会议室1', '会议室2', '会议室3', '会议室4', '移动木制舞台'],
-      places2: ['暴风影音会议室', '乐视TV会议室(可与暴风影音会议室合借)', '秋千会议区', '沙发会议区', '大师椅会议区', '户外舞台']
+      places2: ['暴风影音会议室', '乐视TV会议室(可与暴风影音会议室合借)', '秋千会议区', '沙发会议区', '大师椅会议区', '户外舞台'],
+      areaMsg: {
+        applyUnit: null,
+        contactName: null,
+        contactPhone: null,
+        mobilePhone: null,
+        useDateStr: null,
+        useTimeId: null,
+        eventName: null,
+        eventContent: null,
+        campus: null,
+        rentalPlace: null,
+        eventEquipment: null,
+        otherEquipment: null,
+        file: null
+      }
     }
   },
   methods: {
@@ -142,6 +162,9 @@ export default {
     },
     selectPlace: function (value) {
       console.log(value)
+    },
+    subArea () {
+      console.log(this.areaMsg)
     }
   },
   created () {

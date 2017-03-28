@@ -6,16 +6,10 @@
     </div>
     <div class="downloads">
       <ul>
-        <li>
-          <a download>
-            <span class="downloadLeft">创业谷2017春季学期报名表创业谷2017春季学期报名表创业谷2017春季学期报名表创业谷2017春季学期报名表</span>
-            <span class="downloadright">2017-11-11</span>
-          </a>
-        </li>
-        <li>
-          <a download>
-            <span class="downloadLeft">创业谷2017春季学期报名表</span>
-            <span class="downloadright">2017-11-11</span>
+        <li v-for="datalist in datalists.data">
+          <a :href="'http://chuangyegu.tongji.edu.cn/'+datalist.url" :download=datalist.name>
+            <span class="downloadLeft">{{datalist.name}}</span>
+            <span class="downloadright">{{datalist.createTime*1000 | time}}</span>
           </a>
         </li>
       </ul>
@@ -23,9 +17,9 @@
         <!-- <span class="demonstration">页数较少时的效果</span> -->
         <el-pagination
           @current-change="handleCurrentChange"
-          :current-page="currentPage"
+          :current-page="datalists.currentPage"
           layout="prev, pager, next"
-          :total="1000">
+          :total="datalists.totalNumber">
         </el-pagination>
       </div>
     </div>
@@ -36,17 +30,35 @@
 <script>
 import header from './header'
 import footer from './footer'
+import axios from 'axios'
+import global from '../global/global'
 export default {
   name: 'contact',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      currentPage: 1
+      datalists: '',
+      changePage: function (val) {
+        var self = this
+        axios.get(global.baseUrl + 'file/material/getMaterialList?pageNum=' + val)
+        .then((res) => {
+          console.log(res)
+          self.datalists = res.data
+        })
+      }
     }
+  },
+  created () {
+    var self = this
+    axios.get(global.baseUrl + 'file/material/getMaterialList')
+    .then((res) => {
+      console.log(res)
+      self.datalists = res.data
+    })
   },
   methods: {
     handleCurrentChange: function (val) {
-      console.log(val)
+      this.changePage(val)
     }
   },
   components: {

@@ -4,7 +4,9 @@
     <div class="newsPoster">
       <div class="poster">
         <el-carousel trigger="click" height="369px">
-          <el-carousel-item v-for="imgSrc in srcs">
+          <el-carousel-item
+          :key="imgSrc"
+          v-for="imgSrc in srcs">
             <img :src=imgSrc alt="">
           </el-carousel-item>
         </el-carousel>
@@ -14,34 +16,20 @@
       <div class="newsleft">
         <h2>新闻</h2>
         <ul>
-          <li><a href="javascript:;" v-on:click="goNewsDetial">
-            <p class="newstitle">新闻标题</p>
-            <p class="newsintr">我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍</p>
-            <p class="newstime">2017-12-12</p>
-          </a></li>
-          <li><a href="javascript:;" v-on:click="goNewsDetial">
-            <p class="newstitle">新闻标题</p>
-            <p class="newsintr">我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍</p>
-            <p class="newstime">2017-12-12</p>
-          </a></li>
-          <li><a href="javascript:;" v-on:click="goNewsDetial">
-            <p class="newstitle">新闻标题</p>
-            <p class="newsintr">我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍</p>
-            <p class="newstime">2017-12-12</p>
-          </a></li>
-          <li><a href="javascript:;" v-on:click="goNewsDetial">
-            <p class="newstitle">新闻标题</p>
-            <p class="newsintr">我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍</p>
-            <p class="newstime">2017-12-12</p>
+          <li v-for="newslist in newslists"><a href="javascript:;" v-on:click="goNewsDetial(newslist.id)">
+            <p class="newstitle">{{newslist.title}}</p>
+            <p class="newsintr">{{newslist.content}}</p>
+            <p class="newstime">{{newslist.date*1000 | time}}</p>
           </a></li>
         </ul>
         <div class="block">
           <!-- <span class="demonstration">页数较少时的效果</span> -->
           <el-pagination
             @current-change="handleCurrentChange"
-            :current-page="currentPage"
+            :current-page="aboutPages.currentPage"
             layout="prev, pager, next"
-            :total="1000">
+            :page-size="4"
+            :total="aboutPages.totalNumber">
           </el-pagination>
         </div>
       </div>
@@ -83,14 +71,6 @@
           </li>
         </ul>
       </div>
-
-      <!-- <div class="newspages">
-        <ul>
-          <li><a href="javascript:;">上一页</a></li>
-          <li><a href="javascript:;">当前</a></li>
-          <li><a href="javascript:;">下一页</a></li>
-        </ul>
-      </div> -->
     </div>
     <v-footer></v-footer>
   </div>
@@ -100,7 +80,8 @@
 import header from '../header'
 import footer from '../footer'
 import img1 from '../../images/poster.png'
-// import global from '../../global/global'
+import axios from 'axios'
+import global from '../../global/global'
 export default {
   name: 'news',
   data () {
@@ -108,15 +89,48 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       srcs: [img1, img1],
       currentPage: 1,
+      aboutPages: '',
       pages: function (val) {
-        console.log(val)
-      }
+        var self = this
+        axios.get(global.baseUrl + 'news/getNewsList?numPerPage=4&pageNum=' + val)
+        .then((res) => {
+          console.log(res)
+          self.aboutPages = res.data
+          if (res.data.data.length >= 4) {
+            self.newslists = res.data.data.slice(0, 4)
+          } else {
+            self.newslists = res.data.data
+          }
+          for (let i in self.newslists) {
+            self.newslists[i].content = self.newslists[i].content.replace(/<[^>]+>/g, '')
+            self.newslists[i].content = self.newslists[i].content.replace(/&nbsp;/g, '')
+          }
+        })
+      },
+      newslists: ''
     }
   },
+  created () {
+    var self = this
+    axios.get(global.baseUrl + 'news/getNewsList?numPerPage=4')
+    .then((res) => {
+      console.log(res)
+      self.aboutPages = res.data
+      if (res.data.data.length >= 4) {
+        self.newslists = res.data.data.slice(0, 4)
+      } else {
+        self.newslists = res.data.data
+      }
+      for (let i in self.newslists) {
+        self.newslists[i].content = self.newslists[i].content.replace(/<[^>]+>/g, '')
+        self.newslists[i].content = self.newslists[i].content.replace(/&nbsp;/g, '')
+      }
+    })
+  },
   methods: {
-    goNewsDetial: function () {
-      console.log(123)
-      // global.goPath(this, 'newsDetial')
+    goNewsDetial: function (newsid) {
+      document.body.scrollTop = 0 + 'px'
+      this.$router.push({ name: 'newsDetial', params: {id: newsid} })
     },
     handleCurrentChange: function (val) {
       this.currentPage = val

@@ -9,13 +9,15 @@
         <input type="password" name="" v-model="adminPassword" value="" placeholder="密码">
       </div>
       <div class="login">
-        <a href="javascript:;">登录</a>
+        <a href="javascript:;" v-on:click="adminLogin">登录</a>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import global from '../../global/global'
 export default {
   name: 'admin',
   data () {
@@ -23,6 +25,27 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       adminName: '',
       adminPassword: ''
+    }
+  },
+  methods: {
+    adminLogin () {
+      if (this.adminName === 'cygadmin' && this.adminPassword === '2920256') {
+        var adminMsg = new FormData()
+        adminMsg.append('loginName', this.adminName)
+        adminMsg.append('password', this.adminPassword)
+        axios.post(global.baseUrl + 'user/login?type=0', adminMsg)
+        .then((res) => {
+          if (res.data.callStatus === 'SUCCEED') {
+            localStorage.token = res.data.token
+            localStorage.time = ((Date.parse(new Date())) / 1000) + 1800
+            // localStorage.username = res.data.data.username
+            global.userMsg = res.data.data
+            global.success(this, '登录成功', '/admUser')
+          }
+        })
+      } else {
+        global.error(this, '账户或密码不正确', '/admin')
+      }
     }
   }
 }

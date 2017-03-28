@@ -29,19 +29,19 @@
         stripe
         style="width: 100%" v-show="company">
         <el-table-column
-          prop="id"
+          prop="companyName"
           label="企业名称">
         </el-table-column>
         <el-table-column
-          prop="testName"
+          prop="loginName"
           label="登录名">
         </el-table-column>
         <el-table-column
-          prop="types"
+          prop="contactName"
           label="联系人姓名">
         </el-table-column>
         <el-table-column
-          prop="testUser"
+          prop="registTime"
           label="注册时间">
         </el-table-column>
         <el-table-column
@@ -49,34 +49,35 @@
           inline-template
           label="操作">
           <span>
-            <el-button @click="handleClick" type="text" size="small">查看</el-button>
+            <el-button @click="handleClick(id)" type="text" size="small">查看</el-button>
             <el-button type="text" size="small">编辑</el-button>
           </span>
         </el-table-column>
       </el-table>
+
       <!-- 个人 -->
       <el-table
         :data="tableData"
         stripe
         style="width: 100%" v-show="personal">
         <el-table-column
-          prop="id"
+          prop="name"
           label="姓名">
         </el-table-column>
         <el-table-column
-          prop="testName"
+          prop="loginName"
           label="登录名">
         </el-table-column>
         <el-table-column
-          prop="types"
+          prop="phone"
           label="联系电话">
         </el-table-column>
         <el-table-column
-          prop="testUser"
+          prop="email"
           label="电子邮箱">
         </el-table-column>
         <el-table-column
-          prop="projectID"
+          prop="registTime"
           label="注册时间">
         </el-table-column>
         <el-table-column
@@ -84,11 +85,12 @@
           inline-template
           label="操作">
           <span>
-            <el-button @click="handleClick" type="text" size="small">查看</el-button>
+            <el-button @click="handleClick(id)" type="text" size="small">查看</el-button>
             <el-button type="text" size="small">编辑</el-button>
           </span>
         </el-table-column>
       </el-table>
+
       <!-- 老师 -->
       <el-table
         :data="tableData"
@@ -99,15 +101,15 @@
           label="工号">
         </el-table-column>
         <el-table-column
-          prop="testName"
+          prop="phone"
           label="联系电话">
         </el-table-column>
         <el-table-column
-          prop="types"
+          prop="email"
           label="电子邮箱">
         </el-table-column>
         <el-table-column
-          prop="testUser"
+          prop="registTime"
           label="注册时间">
         </el-table-column>
         <el-table-column
@@ -115,11 +117,12 @@
           inline-template
           label="操作">
           <span>
-            <el-button @click="handleClick" type="text" size="small">查看</el-button>
+            <el-button @click="handleClick(id)" type="text" size="small">查看</el-button>
             <el-button type="text" size="small">编辑</el-button>
           </span>
         </el-table-column>
       </el-table>
+
       <!-- 学生 -->
       <el-table
         :data="tableData"
@@ -130,33 +133,46 @@
           label="学号">
         </el-table-column>
         <el-table-column
-          prop="testName"
+          prop="phone"
           label="联系电话">
         </el-table-column>
         <el-table-column
-          prop="types"
+          prop="email"
           label="电子邮箱">
         </el-table-column>
         <el-table-column
-          prop="testUser"
+          prop="registTime"
           label="注册时间">
         </el-table-column>
-        <el-table-column
-          :context="_self"
-          inline-template
-          label="操作">
-          <span>
-            <el-button @click="handleClick" type="text" size="small">查看</el-button>
-            <el-button type="text" size="small">编辑</el-button>
-          </span>
+        <el-table-column label="操作">
+          <template scope="scope">
+            <el-button
+              size="small"
+              type="text"
+              @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button
+              size="small"
+              type="text"
+              @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          </template>
         </el-table-column>
       </el-table>
+      <div class="admimBlock">
+        <el-pagination
+          @current-change="handleCurrentChange"
+          :current-page="pages.currentPage"
+          layout="prev, pager, next"
+          :total="pages.totalNumber">
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import tableData from './testProject.js'
+import axios from 'axios'
+import global from '../../global/global'
 export default {
   data () {
     return {
@@ -166,15 +182,51 @@ export default {
       personal: false,
       teacher: false,
       student: false,
-      tableData
+      tableData,
+      pages: '',
+      changePage: function (val) {
+        var self = this
+        axios.get(global.baseUrl + 'user/getUserList?token=' + localStorage.token + '&identity=' + this.radio2 + '&pageNum=' + val)
+        .then((res) => {
+          console.log(res)
+          for (let i in res.data.data) {
+            res.data.data[i].registTime = self.timeFilter(res.data.data[i].registTime)
+          }
+          self.tableData = res.data.data
+          self.pages = res.data
+        })
+      }
     }
   },
+  created () {
+    var self = this
+    axios.get(global.baseUrl + 'user/getUserList?token=' + localStorage.token + '&identity=' + this.radio2)
+    .then((res) => {
+      console.log(res)
+      for (let i in res.data.data) {
+        res.data.data[i].registTime = self.timeFilter(res.data.data[i].registTime)
+      }
+      self.tableData = res.data.data
+      self.pages = res.data
+    })
+  },
   methods: {
-    handleClick: function () {
-      alert('click')
+    handleCurrentChange (val) {
+      this.changePage(val)
+    },
+    handleEdit (index, row) {
+      console.log(index, row)
+    },
+    handleDelete (index, row) {
+      console.log(index, row)
+    },
+    timeFilter: function (value) {
+      return new Date(parseInt(value)).getFullYear() + '-' + (new Date(parseInt(value)).getMonth() + 1) + '-' + new Date(parseInt(value)).getDay()
     },
     radioKind: function (index) {
       console.log(index)
+      this.radio2 = index
+      this.changePage(1)
       if (index === 1) {
         this.company = true
         this.personal = false
@@ -202,5 +254,8 @@ export default {
 </script>
 
 <style media="screen">
-
+.admimBlock{
+  float: right;
+  margin-top: 20px;
+}
 </style>

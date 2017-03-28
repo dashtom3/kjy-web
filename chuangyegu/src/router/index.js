@@ -35,8 +35,14 @@ Vue.use(Router)
 Vue.use(ElementUI)
 Vue.use(VueQuillEditor)
 Vue.filter('time', function (value) {
-  return new Date(parseInt(value)).getFullYear() + '-' + (new Date(parseInt(value)).getMonth() + 1) + '-' + new Date(parseInt(value)).getDay()
+  return new Date(parseInt(value)).getFullYear() + '-' + (new Date(parseInt(value)).getMonth() + 1) + '-' + new Date(parseInt(value)).getDate()
 })
+Vue.filter('week', function (value) {
+  return new Date(parseInt(value)).getDay()
+})
+// Vue.filter('list', function (value) {
+//   return
+// })
 
 export default new Router({
   routes: [{

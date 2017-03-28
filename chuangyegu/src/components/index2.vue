@@ -28,7 +28,7 @@
         <ul>
           <li v-for="newslist in newslists">
             <ol>
-              <li>
+              <li v-on:click="goNewsDetial(newslist[0].id)">
                 <div class="newint" style="margin-right:50px;">
                   <span>{{newslist[0].date | time}}</span><br>
                   <span v-html="newslist[0].content"></span>
@@ -40,7 +40,7 @@
                   <img :src=newslist[0].pic alt="">
                 </div>
               </li>
-              <li>
+              <li v-on:click="goNewsDetial(newslist[1].id)">
                 <div class="gonews">
                   <a href="javascript:;" style="position:relative"><img src="../images/Layer-12.png" alt="" style="position:relative;" class="r80"></a>
                 </div>
@@ -54,62 +54,6 @@
               </li>
             </ol>
           </li>
-          <!-- <li>
-            <ol>
-              <li>
-                <div class="newint" style="margin-right:50px;">
-                  <span>2017-12-12</span><br>
-                  <span>这是新闻介绍这是新闻介绍这是新闻介绍这是新闻介绍</span>
-                </div>
-                <div class="gonews">
-                  <a href="javascript:;"><img src="../images/Layer-13.png" alt=""></a>
-                </div>
-                <div class="img">
-                  <img src="../images/projectbg.png" alt="">
-                </div>
-              </li>
-              <li>
-                <div class="gonews">
-                  <a href="javascript:;" style="position:relative"><img src="../images/Layer-12.png" alt="" style="position:relative;" class="r80"></a>
-                </div>
-                <div class="img">
-                  <img src="http://139.224.59.3:88/static/img/i2.9c87cab.jpg" alt="">
-                </div>
-                <div class="newint" style="margin-left:50px;">
-                  <span>2017-12-12</span><br>
-                  <span>这是新闻介绍这是新闻介绍这是新闻介绍这是新闻介绍</span>
-                </div>
-              </li>
-            </ol>
-          </li>
-          <li>
-            <ol>
-              <li>
-                <div class="newint" style="margin-right:50px;">
-                  <span>2017-12-12</span><br>
-                  <span>这是新闻介绍这是新闻介绍这是新闻介绍这是新闻介绍</span>
-                </div>
-                <div class="gonews">
-                  <a href="javascript:;"><img src="../images/Layer-13.png" alt=""></a>
-                </div>
-                <div class="img">
-                  <img src="http://www.51zhcs.com/static/seller/images/city-bg.png" alt="">
-                </div>
-              </li>
-              <li>
-                <div class="gonews">
-                  <a href="javascript:;" style="position:relative"><img src="../images/Layer-12.png" alt="" style="position:relative;" class="r80"></a>
-                </div>
-                <div class="img">
-                  <img src="../images/news.png" alt="">
-                </div>
-                <div class="newint" style="margin-left:50px;">
-                  <span>2017-12-12</span><br>
-                  <span>这是新闻介绍这是新闻介绍这是新闻介绍这是新闻介绍</span>
-                </div>
-              </li>
-            </ol>
-          </li> -->
         </ul>
       </div>
     </div>
@@ -252,10 +196,14 @@ export default {
       for (let i in items) {
         if (items[i].pic === '') {
           items.splice(i, 1)
-        } else {
-          items[i].pic = 'http://chuangyegu.tongji.edu.cn/' + items[i].pic
-          items[i].date = items[i].date * 1000
         }
+      }
+      for (let i in items) {
+        items[i].pic = 'http://chuangyegu.tongji.edu.cn/' + items[i].pic
+        items[i].date = items[i].date * 1000
+        items[i].content = items[i].content.replace(/<[^>]+>/g, '')
+        items[i].content = items[i].content.replace(/&nbsp;/g, '')
+        items[i].content = items[i].content.substr(0, 49)
       }
       var item1 = items.slice(0, 2)
       var item2 = items.slice(2, 4)
@@ -263,7 +211,6 @@ export default {
       self.newslists.push(item1)
       self.newslists.push(item2)
       self.newslists.push(item3)
-      // console.log(self.newslists)
     })
   },
   methods: {
@@ -305,6 +252,11 @@ export default {
     },
     goVideos: function () {
       global.goPath(this, 'videos')
+    },
+    // 新闻详情
+    goNewsDetial (newsid) {
+      document.body.scrollTop = 0 + 'px'
+      this.$router.push({ name: 'newsDetial', params: {id: newsid} })
     }
   },
   components: {
@@ -525,9 +477,13 @@ export default {
   right: 0;
   top: 40%;
 }
+.newsContents ul li .img{
+  height: 125px;
+  overflow: hidden;
+}
 .newsContents ul li .img img{
   width: 280px;
-  height: 125px;
+  /*height: 125px;*/
 }
 .projectContents div a span{
   position: absolute;
