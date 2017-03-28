@@ -256,7 +256,7 @@ export default {
     // 新闻详情
     goNewsDetial (newsid) {
       document.body.scrollTop = 0 + 'px'
-      this.$router.push({ name: 'newsDetial', params: {id: newsid} })
+      this.$router.push({ name: 'newsDetail', params: {id: newsid} })
     }
   },
   components: {

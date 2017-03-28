@@ -9,9 +9,9 @@
         <ul>
           <li v-for="n in 16">
           <!-- <li v-for="n in 16" v-on:click="getActiveDetial(active.id)"> -->
-            <div class="activePage">
+            <div class="activePage" :class="{isactive: true}">
               <span class="lt">&lt;</span>
-              <span>星期一<p>{{startDate}}</p></span>
+              <span>{{startDate+(n-1)*86400000 | week}}<p>{{startDate+(n-1)*86400000 | time}}</p></span>
               <span class="gt">&gt;</span>
               <p class="activeIntr">暂无活动安排</p>
             </div>
@@ -50,6 +50,35 @@ import header from './header'
 import footer from './footer'
 import global from '../global/global'
 import axios from 'axios'
+import Vue from 'vue'
+Vue.filter('week', function (value) {
+  var num = new Date(parseInt(value)).getDay()
+  var date
+  switch (num) {
+    case 0:
+      date = '星期日'
+      break
+    case 1:
+      date = '星期一'
+      break
+    case 2:
+      date = '星期二'
+      break
+    case 3:
+      date = '星期三'
+      break
+    case 4:
+      date = '星期四'
+      break
+    case 5:
+      date = '星期五'
+      break
+    case 6:
+      date = '星期六'
+      break
+  }
+  return date
+})
 export default {
   name: 'active',
   data () {
@@ -57,7 +86,6 @@ export default {
       activeAlert: false,
       currentPage: 1,
       actives: '',
-      weeks: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
       gridData: [{
         date: '2016-05-02',
         name: '王小虎',
@@ -75,27 +103,29 @@ export default {
         name: '王小虎',
         address: '上海市普陀区金沙江路 1518 弄'
       }],
-      startDate: ''
+      startDate: '',
+      xingqi: ''
     }
   },
   created () {
     var self = this
-    var start = new Date()
-    this.startDate = start.getFullYear() + '-' + (start.getMonth() + 1) + '-' + start.getDate()
-    // var end = new Date(start.setDate(start.getDate() + 17))
-    // var endDate = end.getFullYear() + '-' + (end.getMonth() + 1) + '-' + end.getDate()
-    axios.get(global.baseUrl + 'event/getEventList?startDate=2016-03-12&endDate=2016-03-28')
+    var start = Date.parse(new Date())
+    this.startDate = start
+    axios.get(global.baseUrl + 'event/getEventList?startDate=' + this.format(start) + '&endDate=' + this.format(new Date(start).setDate(new Date(start).getDate() + 17)))
     .then((res) => {
       console.log(res)
       self.actives = res.data.data
-      // for (let i in self.actives) {
-      //
-      // }
+      for (let i in self.actives) {
+        console.log(self.actives[i].useDate.indexOf('2016-03-28'))
+      }
     })
   },
   methods: {
     handleCurrentChange: function (val) {
       console.log(val)
+    },
+    format (val) {
+      return new Date(val).getFullYear() + '-' + (new Date(val).getMonth() + 1) + '-' + new Date(val).getDate()
     }
   },
   components: {

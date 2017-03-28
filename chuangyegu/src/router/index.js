@@ -6,7 +6,7 @@ import VueQuillEditor from 'vue-quill-editor'
 import Router from 'vue-router'
 import index from '@/components/index2'
 import news from '@/components/news/news'
-import newsDetial from '@/components/news/newsDetial'
+import newsDetail from '@/components/news/newsDetail'
 import photoWall from '@/components/photoWall'
 import area from '@/components/area'
 import services from '@/components/services'
@@ -15,10 +15,10 @@ import contact from '@/components/contact'
 import company from '@/components/company'
 import about from '@/components/about'
 import project from '@/components/project/project'
-import projectDetial from '@/components/project/projectDetial'
+import projectDetail from '@/components/project/projectDetail'
 import applyProject from '@/components/project/applyProject'
 import notices from '@/components/notices/notices'
-import noticesDetial from '@/components/notices/noticesDetial'
+import noticesDetail from '@/components/notices/noticesDetail'
 import active from '@/components/active'
 import login from '@/components/login'
 import download from '@/components/download'
@@ -35,14 +35,19 @@ Vue.use(Router)
 Vue.use(ElementUI)
 Vue.use(VueQuillEditor)
 Vue.filter('time', function (value) {
-  return new Date(parseInt(value)).getFullYear() + '-' + (new Date(parseInt(value)).getMonth() + 1) + '-' + new Date(parseInt(value)).getDate()
+  var month = new Date(parseInt(value)).getMonth() + 1
+  var date = new Date(parseInt(value)).getDate()
+  if (month < 10) {
+    month = '0' + month
+  }
+  if (date < 10) {
+    date = '0' + date
+  }
+  return new Date(parseInt(value)).getFullYear() + '-' + month + '-' + date
 })
-Vue.filter('week', function (value) {
-  return new Date(parseInt(value)).getDay()
+Vue.filter('date', function (value) {
+  return value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate()
 })
-// Vue.filter('list', function (value) {
-//   return
-// })
 
 export default new Router({
   routes: [{
@@ -54,9 +59,9 @@ export default new Router({
     name: 'news',
     component: news
   }, {
-    path: '/newsDetial/:id',
-    name: 'newsDetial',
-    component: newsDetial
+    path: '/newsDetail/:id',
+    name: 'newsDetail',
+    component: newsDetail
   }, {
     path: '/photoWall',
     name: 'photoWall',
@@ -90,9 +95,9 @@ export default new Router({
     name: 'project',
     component: project
   }, {
-    path: '/projectDetial',
-    name: 'projectDetial',
-    component: projectDetial
+    path: '/projectDetail',
+    name: 'projectDetail',
+    component: projectDetail
   }, {
     path: '/applyProject',
     name: 'applyProject',
@@ -102,9 +107,9 @@ export default new Router({
     name: 'notices',
     component: notices
   }, {
-    path: '/noticesDetial/:id',
-    name: 'noticesDetial',
-    component: noticesDetial
+    path: '/noticesDetail/:id',
+    name: 'noticesDetail',
+    component: noticesDetail
   }, {
     path: '/active',
     name: 'active',

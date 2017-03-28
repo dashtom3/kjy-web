@@ -16,7 +16,7 @@
       <div class="newsleft">
         <h2>新闻</h2>
         <ul>
-          <li v-for="newslist in newslists"><a href="javascript:;" v-on:click="goNewsDetial(newslist.id)">
+          <li v-for="newslist in newslists"><a href="javascript:;" v-on:click="goNewsDetail(newslist.id)">
             <p class="newstitle">{{newslist.title}}</p>
             <p class="newsintr">{{newslist.content}}</p>
             <p class="newstime">{{newslist.date*1000 | time}}</p>
@@ -36,7 +36,7 @@
       <div class="newsright">
         <h2>精粹要闻</h2>
         <ul>
-          <li><a href="javascript:;" v-on:click="goNewsDetial">
+          <li><a href="javascript:;" v-on:click="goNewsDetail">
             <div style="display:inline-block">
               <img src="../../images/Layer-12.png" alt="" class="goyw">
               <img src="../../images/news.png" alt="" class=ywbg><br>
@@ -47,7 +47,7 @@
             </div>
             </a>
           </li>
-          <li><a href="javascript:;" v-on:click="goNewsDetial">
+          <li><a href="javascript:;" v-on:click="goNewsDetail">
             <div style="display:inline-block">
               <img src="../../images/Layer-12.png" alt="" class="goyw">
               <img src="../../images/news.png" alt="" class=ywbg><br>
@@ -58,7 +58,7 @@
             </div>
             </a>
           </li>
-          <li><a href="javascript:;" v-on:click="goNewsDetial">
+          <li><a href="javascript:;" v-on:click="goNewsDetail">
             <div style="display:inline-block">
               <img src="../../images/Layer-12.png" alt="" class="goyw">
               <img src="../../images/news.png" alt="" class=ywbg><br>
@@ -128,9 +128,9 @@ export default {
     })
   },
   methods: {
-    goNewsDetial: function (newsid) {
+    goNewsDetail: function (newsid) {
       document.body.scrollTop = 0 + 'px'
-      this.$router.push({ name: 'newsDetial', params: {id: newsid} })
+      this.$router.push({ name: 'newsDetail', params: {id: newsid} })
     },
     handleCurrentChange: function (val) {
       this.currentPage = val
