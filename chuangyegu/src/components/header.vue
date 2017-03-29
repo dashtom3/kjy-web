@@ -24,7 +24,7 @@ import global from '../global/global'
 export default {
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
+      data: [['/index', '首页'], ['/news', '项目活动'], ['/services', '创业服务'], ['/services', '创业服务'], ['/index', '慕课(MOOC)'], ['/index', '合作与联系'], ['/index', '资料下载']],
       isLogin: '/login'
     }
   },

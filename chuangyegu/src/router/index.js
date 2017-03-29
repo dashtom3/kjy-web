@@ -50,6 +50,8 @@ Vue.filter('date', function (value) {
 })
 
 export default new Router({
+  mode: 'history',
+  hashbang: true,
   routes: [{
     path: '/index',
     name: 'index',

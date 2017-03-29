@@ -76,7 +76,7 @@ export default {
 .footer{
   width: 1000px;
   margin: 0 auto;
-  overflow: hidden;
+  /*overflow: hidden;*/
   border-top: 2px solid #eaeaea;
   padding-top: 50px;
 }

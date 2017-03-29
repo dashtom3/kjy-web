@@ -9,11 +9,19 @@ import router from './router'
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
+// new Vue({
+//   el: '#app',
+//   router,
+//   template: '<App/>',
+//   components: { App }
+// }).$mount('')
+//
+// router.push({ path: '/index' })
+
 new Vue({
   el: '#app',
+  render: h => h(App),
   router,
   template: '<App/>',
   components: { App }
-}).$mount('')
-
-router.push({ path: '/index' })
+})

@@ -14,27 +14,22 @@
     </div>
     <div class="newscon">
       <div class="newsleft">
-        <h2>新闻</h2>
+        <h3>新闻</h3>
         <ul>
-          <li v-for="newslist in newslists"><a href="javascript:;" v-on:click="goNewsDetail(newslist.id)">
+          <li v-for="newslist in newslists">
+            <a href="javascript:;" v-bind:href="'/newsDetail/' + newslist.id" target=_blank>
             <p class="newstitle">{{newslist.title}}</p>
             <p class="newsintr">{{newslist.content}}</p>
             <p class="newstime">{{newslist.date*1000 | time}}</p>
-          </a></li>
+            </a>
+          </li>
         </ul>
         <div class="block">
-          <!-- <span class="demonstration">页数较少时的效果</span> -->
-          <el-pagination
-            @current-change="handleCurrentChange"
-            :current-page="aboutPages.currentPage"
-            layout="prev, pager, next"
-            :page-size="4"
-            :total="aboutPages.totalNumber">
-          </el-pagination>
+            <page v-on:page="changePage" v-bind:args="newsArgs"></page>
         </div>
       </div>
       <div class="newsright">
-        <h2>精粹要闻</h2>
+        <h3>精粹要闻</h3>
         <ul>
           <li><a href="javascript:;" v-on:click="goNewsDetail">
             <div style="display:inline-block">
@@ -82,65 +77,53 @@ import footer from '../footer'
 import img1 from '../../images/poster.png'
 import axios from 'axios'
 import global from '../../global/global'
+import page from '../page'
 export default {
   name: 'news',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
       srcs: [img1, img1],
-      currentPage: 1,
-      aboutPages: '',
-      pages: function (val) {
-        var self = this
-        axios.get(global.baseUrl + 'news/getNewsList?numPerPage=4&pageNum=' + val)
-        .then((res) => {
-          console.log(res)
-          self.aboutPages = res.data
-          if (res.data.data.length >= 4) {
-            self.newslists = res.data.data.slice(0, 4)
-          } else {
-            self.newslists = res.data.data
-          }
-          for (let i in self.newslists) {
-            self.newslists[i].content = self.newslists[i].content.replace(/<[^>]+>/g, '')
-            self.newslists[i].content = self.newslists[i].content.replace(/&nbsp;/g, '')
-          }
-        })
+      newsArgs: {
+        ifImage: null,
+        numPerPage: 6,
+        pageNum: 1,
+        totalPage: -1
       },
-      newslists: ''
+      newslists: []
     }
   },
   created () {
-    var self = this
-    axios.get(global.baseUrl + 'news/getNewsList?numPerPage=4')
-    .then((res) => {
-      console.log(res)
-      self.aboutPages = res.data
-      if (res.data.data.length >= 4) {
-        self.newslists = res.data.data.slice(0, 4)
-      } else {
-        self.newslists = res.data.data
-      }
-      for (let i in self.newslists) {
-        self.newslists[i].content = self.newslists[i].content.replace(/<[^>]+>/g, '')
-        self.newslists[i].content = self.newslists[i].content.replace(/&nbsp;/g, '')
-      }
-    })
+    this.getNewsList(this.newsArgs)
   },
   methods: {
     goNewsDetail: function (newsid) {
       document.body.scrollTop = 0 + 'px'
       this.$router.push({ name: 'newsDetail', params: {id: newsid} })
     },
-    handleCurrentChange: function (val) {
-      this.currentPage = val
-      this.pages(val)
-      // console.log(val)
+    changePage: function (value) {
+      this.newsArgs.pageNum = value
+      this.getNewsList(this.newsArgs)
+    },
+    getNewsList: function (args) {
+      var self = this
+      axios.get(global.baseUrl + 'news/getNewsList?' + global.getHttpData(args))
+      .then((res) => {
+        console.log(res)
+        self.newslists = res.data.data
+        self.newsArgs.pageNum = res.data.currentPage
+        self.newsArgs.totalPage = res.data.totalPage
+        for (let i in self.newslists) {
+          self.newslists[i].content = self.newslists[i].content.replace(/<[^>]+>/g, '')
+          self.newslists[i].content = self.newslists[i].content.replace(/&nbsp;/g, '')
+        }
+      })
     }
   },
   components: {
     'v-header': header,
-    'v-footer': footer
+    'v-footer': footer,
+    page
   }
 }
 </script>
@@ -162,16 +145,20 @@ export default {
   width: 1000px;
   margin: 0 auto;
 }
-h2{
-  font-family: "Adobe Heiti Std";
+h3{
   color: rgb( 254, 108, 0 );
-  font-size: 22.49px;
+  font-size: 18px;
+  font-weight: normal;
 }
 .newsleft{
   width: 600px;
-  float: left;
+  display: inline-block;
   list-style: disc!important;
 }
+.newsleft h3 {
+  padding: 10px 0px 10px 0px;
+}
+
 .newsleft ul{
   border-top:2px solid rgb( 254, 108, 0 )
 }
@@ -186,9 +173,10 @@ h2{
 }
 .newsright{
   width: 300px;
-  float: right;
-  position: relative;
-  top: 100px;
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 50px;
+  margin-top: 100px;
 }
 .newspages{
   clear: both;
@@ -200,24 +188,20 @@ h2{
   float: left;
 }
 .newstitle{
-  font-size: 19.99px;
+  font-size: 16px;
   color: #000;
   font-weight: bold;
-  font-family: "Adobe Heiti Std";
   color: rgba( 0, 0, 0, 0.8 );
 }
 .newsintr{
   text-overflow:ellipsis;
   white-space:nowrap;
   overflow:hidden;
-  font-size: 12.5px;
-  font-family: "FZLTXHK";
-  font-weight: bold;
+  font-size: 14px;
   color: rgba( 0, 0, 0, 0.651 );
 }
 .newstime{
-  font-size: 15px;
-  font-family: "HelveticaNeue";
+  font-size: 12px;
   color: rgb( 254, 108, 0 );
 }
 .ywbg{

@@ -109,23 +109,19 @@ export default {
   margin-bottom: 50px;
 }
 .newsheader .newstitle{
-  font-size: 20px;
-  font-family: "Adobe Heiti Std";
+  font-size: 18px;
   color: rgb( 0, 0, 0 );
 }
 .newsauto span{
   font-size: 12.5px;
-  font-family: "FZLTXHK";
   color: rgb( 254, 108, 0 );
 }
 .newsintr p{
-  font-size: 15.01px;
-  font-family: "Adobe Heiti Std";
+  font-size: 14px;
   color: rgb( 0, 0, 0 );
   line-height: 30px;
 }
 h2{
-  font-family: "Adobe 黑体 Std";
   color: rgb( 254, 108, 0 );
   font-size: 15px;
 }
@@ -164,7 +160,6 @@ h2{
   height: 85px;
   overflow: hidden;
   font-size: 9.73px;
-  font-family: '[FZLTXHK]';
 }
 .newsDetialConRight ul li:hover .ywtime{
   display: inline-block;

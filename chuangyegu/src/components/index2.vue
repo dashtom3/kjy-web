@@ -19,7 +19,7 @@
         <img src="../images/newscenter.png" alt="">
       </div>
       <div class="goAll">
-          <a href="javascript:;" v-on:click="goNews">
+          <a v-bind:href="'/news'" target=_blank>
             <span>ALL</span>
             <img src="../images/gonews.png" alt="">
           </a>
@@ -28,21 +28,21 @@
         <ul>
           <li v-for="newslist in newslists">
             <ol>
-              <li v-on:click="goNewsDetial(newslist[0].id)">
+              <li>
                 <div class="newint" style="margin-right:50px;">
                   <span>{{newslist[0].date | time}}</span><br>
                   <span v-html="newslist[0].content"></span>
                 </div>
                 <div class="gonews">
-                  <a href="javascript:;"><img src="../images/Layer-13.png" alt=""></a>
+                  <a v-bind:href="'/newsDetail/' + newslist[0].id" target=_blank><img src="../images/Layer-13.png" alt=""></a>
                 </div>
                 <div class="img">
                   <img :src=newslist[0].pic alt="">
                 </div>
               </li>
-              <li v-on:click="goNewsDetial(newslist[1].id)">
+              <li>
                 <div class="gonews">
-                  <a href="javascript:;" style="position:relative"><img src="../images/Layer-12.png" alt="" style="position:relative;" class="r80"></a>
+                  <a v-bind:href="'/newsDetail/' + newslist[0].id" target=_blank style="position:relative"><img src="../images/Layer-12.png" alt="" style="position:relative;" class="r80"></a>
                 </div>
                 <div class="img">
                   <img :src=newslist[1].pic alt="">
@@ -117,7 +117,7 @@
         <img src="../images/mooc.png" alt="">
       </div>
       <div class="goAll">
-          <a href="javascript:;" v-on:click="goVideos">
+          <a v-bind:href="'/newsDetail'" target=_blank>
             <span>MORE</span>
             <img src="../images/gonews.png" alt="">
           </a>
