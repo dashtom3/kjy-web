@@ -99,7 +99,11 @@
               </div>
             </div>
             <div class="a-upload">
-              <a href="javascript:;"><input type="file" value="上传文件" required><span>上传</span><br><span>活动海报</span></a>
+              <a href="javascript:;"><input type="file" value="上传文件" required>
+                <span>上传</span>
+                <br>
+                <span>活动海报</span>
+              </a>
             </div>
           </div>
           <div class="">
@@ -191,37 +195,21 @@ export default {
 }
 .reserveHeader{
   font-size: 18px;
-  font-family: "Adobe Heiti Std";
   color: rgb( 254, 108, 0 );
   border-bottom: 2px solid;
   margin-bottom: 20px;
 }
-.reserveHeader h2{
-  font-size: 22.5px;
-}
-.card h2{
-  font-size: 22.5px;
-  font-family: "Adobe Heiti Std";
-  color: rgb( 0, 0, 0 );
-}
+
 input,select{
   height: 30px;
   padding-left: 10px;
   outline: none;
   height: 42px;
-  background: #2d2d2d;
-  background: rgba(45,45,45,.15);
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
+  background: #eeedef;
   border-radius: 6px;
   border: 1px solid #3d3d3d;
   border: 1px solid rgba(255,255,255,.15);
-  -moz-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1) inset;
-  -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1) inset;
-  box-shadow: 0 1px 1px 0 rgba(0,0,0,.1) inset;
-  font-family: 'PT Sans', Helvetica, Arial, sans-serif;
   font-size: 14px;
-  text-shadow: 0 1px 2px rgba(0,0,0,.1)
 }
 select{
   position: relative;
@@ -248,7 +236,7 @@ input:-ms-input-placeholder{
   background-color: rgb( 238, 238, 238 );
   outline: none;
   /*margin-right: 30px;*/
-  margin: 10px 30px 10px 0;
+  margin: 0px 30px 20px 0;
 }
 .yulan{
   margin: 50px 0;
@@ -266,19 +254,19 @@ input:-ms-input-placeholder{
 }
 .card span{
   font-size: 15px;
-  font-family: "Adobe Heiti Std";
   color: rgb( 83, 83, 83 );
   display: inline-block;
   margin-right: 50px;
 }
-.eventDetial h2{
+h2{
   margin: 30px 0;
-  font-size: 22.5px;
+  font-size: 18px;
+  font-weight: normal;
+  letter-spacing:2px;
 }
 .place{
   position: relative;
   font-size: 15px;
-  font-family: "Adobe Heiti Std";
   color: rgb( 83, 83, 83 );
   display: block;
 }
@@ -301,27 +289,16 @@ input:-ms-input-placeholder{
   top: 0;
   resize: none;
   border-radius: 6px;
-  background-color: rgb( 238, 238, 238 );
   width: 395px;
   height: 105px;
   outline: none;
-  background: #2d2d2d;
-  background: rgba(45,45,45,.15);
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  border-radius: 6px;
+  background: #eeedef;
   border: 1px solid #3d3d3d;
   border: 1px solid rgba(255,255,255,.15);
-  -moz-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1) inset;
-  -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1) inset;
-  box-shadow: 0 1px 1px 0 rgba(0,0,0,.1) inset;
-  font-family: 'PT Sans', Helvetica, Arial, sans-serif;
   font-size: 14px;
-  text-shadow: 0 1px 2px rgba(0,0,0,.1)
 }
 .date{
   font-size: 15px;
-  font-family: "Adobe Heiti Std";
   color: rgb( 83, 83, 83 );
   line-height: 0.001;
   margin-right: 50px;
@@ -337,7 +314,6 @@ input:-ms-input-placeholder{
 }
 .time label{
   font-size: 14px;
-  font-family: "Adobe Heiti Std";
   color: rgb( 83, 83, 83 );
   line-height: 0.001;
   margin-right: 70px;
@@ -345,7 +321,7 @@ input:-ms-input-placeholder{
 .upload{
   width: 300px;
   overflow: hidden;
-  background-color: #e2e2e2;
+  background-color: #eeedef;
 }
 .uploadleft{
   border-radius: 6px;
@@ -370,19 +346,21 @@ input:-ms-input-placeholder{
     position: relative;
     cursor: pointer;
     color: #888;
-    border: 1px solid #ddd;
-    border-radius: 4px;
     overflow: hidden;
     display: inline-block;
     *display: inline;
     *zoom: 1;
 }
 .a-upload a{
-  color:#ff9b3c!important;
+  /*color:#ff9b3c!important;*/
   position: relative;
   top: 30px;
 }
-
+.a-upload span {
+  color:#ff9b3c;
+  font-size: 14px;
+  letter-spacing:3px;
+}
 .a-upload  input {
     position: absolute;
     font-size: 100px;
@@ -401,18 +379,19 @@ input:-ms-input-placeholder{
     text-decoration: none
 }*/
 h5{
-  font-size: 13.75px;
-  font-family: "Adobe Heiti Std";
+  font-size: 13px;
   color: rgb( 254, 108, 0 );
   border-bottom: 1px solid;
+  padding-bottom: 10px;
   margin:20px auto;
+  font-weight: normal;
+  letter-spacing:1px;
   /*line-height: 0.001;*/
 }
 .tj{
   text-align: right;
 }
 .tj a{
-  font-family: "Adobe Heiti Std";
   color: #fff;
   text-align: center;
   border-radius: 20px;
