@@ -74,7 +74,7 @@
           label="申请人姓名">
         </el-table-column>
         <el-table-column
-          prop=""
+          prop="applyCount"
           label="报名人数">
         </el-table-column>
         <el-table-column
@@ -114,7 +114,7 @@ export default {
       demand: 0,
       kinds: 0,
       sources: 0,
-      tableData: '',
+      tableData: null,
       pages: '',
       changePage: function (val) {
         var self = this
@@ -149,6 +149,7 @@ export default {
     handleClick: function () {
       alert('click')
     },
+    // 筛选
     select: function () {
       var url = 'token=' + localStorage.token
       if (this.verify !== 0) {

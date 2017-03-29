@@ -183,6 +183,7 @@
       },
       onEditorChange ({ editor, html, text }) {
         // console.log('editor change!', editor, html, text)
+        console.log(editor, html, text)
         this.addNewsMsg.content = html
       },
       handleCurrentChange: function (val) {

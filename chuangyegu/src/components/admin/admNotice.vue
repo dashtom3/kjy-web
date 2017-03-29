@@ -26,19 +26,19 @@
           label="ID">
         </el-table-column>
         <el-table-column
-          prop="testName"
+          prop="title"
           label="标题">
         </el-table-column>
         <el-table-column
-          prop="types"
+          prop="readPoint"
           label="阅读">
         </el-table-column>
         <el-table-column
-          prop="testUser"
+          prop="userName"
           label="管理者">
         </el-table-column>
         <el-table-column
-          prop="projectID"
+          prop="date"
           label="更新时间">
         </el-table-column>
         <el-table-column
@@ -51,22 +51,64 @@
           </span>
         </el-table-column>
       </el-table>
+      <div class="admimBlock">
+        <el-pagination
+          @current-change="handleCurrentChange"
+          :current-page="pages.currentPage"
+          layout="prev, pager, next"
+          :total="pages.totalNumber">
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import tableData from './testProject.js'
+import axios from 'axios'
+import global from '../../global/global'
 export default {
   data () {
     return {
       input: '',
-      tableData
+      tableData: null,
+      pages: '',
+      changePage: function (val) {
+        var self = this
+        axios.get(global.baseUrl + 'notice/getNoticeList?pageNum=' + val)
+        .then((res) => {
+          console.log(res)
+          for (let i in res.data.data) {
+            res.data.data[i].date = self.timeFilter(res.data.data[i].date * 1000)
+            res.data.data[i].updateDate = self.timeFilter(res.data.data[i].updateDate * 1000)
+          }
+          self.tableData = res.data.data
+          self.pages = res.data
+        })
+      }
     }
+  },
+  created () {
+    var self = this
+    axios.get(global.baseUrl + 'notice/getNoticeList')
+    .then((res) => {
+      console.log(res)
+      for (let i in res.data.data) {
+        res.data.data[i].date = self.timeFilter(res.data.data[i].date * 1000)
+        res.data.data[i].updateDate = self.timeFilter(res.data.data[i].updateDate * 1000)
+      }
+      self.tableData = res.data.data
+      self.pages = res.data
+    })
   },
   methods: {
     handleClick: function () {
       alert('click')
+    },
+    timeFilter: function (value) {
+      return new Date(parseInt(value)).getFullYear() + '-' + (new Date(parseInt(value)).getMonth() + 1) + '-' + new Date(parseInt(value)).getDate()
+    },
+    handleCurrentChange (val) {
+      this.changePage(val)
     }
   }
 }

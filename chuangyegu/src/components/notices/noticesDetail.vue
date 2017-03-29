@@ -4,11 +4,11 @@
     <div class="newsDetialCon">
       <div class="newsDetialConLeft">
         <div class="newsheader">
-          <p class="newstitle">同济大学党委副书记徐建平一行指导大连同创谷考察大连高新区</p>
-          <p class="newsauto"><span class="newsdata">2016-12-12  12:45</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>编辑:李彤</span></p>
+          <p class="newstitle">{{noticeContent.title}}</p>
+          <p class="newsauto"><span class="newsdata">{{noticeContent.date}}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
         </div>
         <div class="newsintr">
-          <p>1月19日，同济大学党委副书记徐建平一行6人来到大连，指导大连同创谷（筹）建设 工作，考察大连高新区创新创业、产业发展和政策环</p>
+          <p v-html="noticeContent.content"></p>
         </div>
       </div>
       <div class="newsDetialConRight">
@@ -57,10 +57,29 @@
 <script>
 import header from '../header'
 import footer from '../footer'
+import axios from 'axios'
+import global from '../../global/global'
 export default {
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      noticeid: this.$route.params.id,
+      noticeContent: ''
+    }
+  },
+  created () {
+    var self = this
+    axios.get(global.baseUrl + 'notice/getById?noticeId=' + this.noticeid)
+    .then((res) => {
+      console.log(res)
+      res.data.data.date = self.timeFilter(res.data.data.date * 1000)
+      res.data.data.content = res.data.data.content.replace(/src="/gi, 'src="http://123.56.220.72:8080/cyg/')
+      self.noticeContent = res.data.data
+    })
+  },
+  methods: {
+    timeFilter: function (value) {
+      return new Date(parseInt(value)).getFullYear() + '-' + (new Date(parseInt(value)).getMonth() + 1) + '-' + new Date(parseInt(value)).getDate()
     }
   },
   components: {

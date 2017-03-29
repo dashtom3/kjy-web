@@ -74,7 +74,7 @@ export default {
     .then((res) => {
       console.log(res)
       self.newsDetialContent = res.data.data
-      self.newsDetialContent.content = self.newsDetialContent.content.replace(/src="/gi, 'src="http://chuangyegu.tongji.edu.cn/')
+      self.newsDetialContent.content = self.newsDetialContent.content.replace(/src="/gi, 'src="http://123.56.220.72:8080/cyg/')
     })
   },
   components: {

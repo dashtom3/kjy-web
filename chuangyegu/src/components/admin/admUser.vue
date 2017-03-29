@@ -221,7 +221,7 @@ export default {
       console.log(index, row)
     },
     timeFilter: function (value) {
-      return new Date(parseInt(value)).getFullYear() + '-' + (new Date(parseInt(value)).getMonth() + 1) + '-' + new Date(parseInt(value)).getDay()
+      return new Date(parseInt(value)).getFullYear() + '-' + (new Date(parseInt(value)).getMonth() + 1) + '-' + new Date(parseInt(value)).getDate()
     },
     radioKind: function (index) {
       console.log(index)

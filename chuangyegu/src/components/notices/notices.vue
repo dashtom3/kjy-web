@@ -5,34 +5,19 @@
       <div class="newsleft">
         <h2>通知公告</h2>
         <ul>
-          <li><a href="javascript:;">
-            <p class="newstitle">新闻标题</p>
-            <p class="newsintr">我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍</p>
-            <p class="newstime">2017-12-12</p>
-          </a></li>
-          <li><a href="javascript:;">
-            <p class="newstitle">新闻标题</p>
-            <p class="newsintr">我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍</p>
-            <p class="newstime">2017-12-12</p>
-          </a></li>
-          <li><a href="javascript:;">
-            <p class="newstitle">新闻标题</p>
-            <p class="newsintr">我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍</p>
-            <p class="newstime">2017-12-12</p>
-          </a></li>
-          <li><a href="javascript:;">
-            <p class="newstitle">新闻标题</p>
-            <p class="newsintr">我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍我是新闻的介绍</p>
-            <p class="newstime">2017-12-12</p>
+          <li v-for="notice in noticeslists.data" v-on:click="goNoticeDetail(notice.id)"><a href="javascript:;">
+            <p class="newstitle">{{notice.title}}</p>
+            <p class="newsintr">{{notice.content}}</p>
+            <p class="newstime">{{notice.date}}</p>
           </a></li>
         </ul>
         <div class="block" style="margin:30px 0;">
           <!-- <span class="demonstration">页数较少时的效果</span> -->
           <el-pagination
             @current-change="handleCurrentChange"
-            :current-page="currentPage"
+            :current-page="noticeslists.currentPage"
             layout="prev, pager, next"
-            :total="1000">
+            :total="noticeslists.totalNumber">
           </el-pagination>
         </div>
       </div>
@@ -82,17 +67,50 @@
 <script>
 import header from '../header'
 import footer from '../footer'
+import axios from 'axios'
+import global from '../../global/global'
 export default {
   name: 'news',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      currentPage: 1
+      noticeslists: '',
+      changePage: function (val) {
+        var self = this
+        axios.get(global.baseUrl + 'notice/getNoticeList?numPerPage=4&pageNum=' + val)
+        .then((res) => {
+          for (let i in res.data.data) {
+            res.data.data[i].content = res.data.data[i].content.replace(/<[^>]+>/g, '')
+            res.data.data[i].content = res.data.data[i].content.replace(/&nbsp;/g, '')
+            res.data.data[i].date = self.timeFilter(res.data.data[i].date * 1000)
+          }
+          self.noticeslists = res.data
+        })
+      }
     }
+  },
+  created () {
+    var self = this
+    axios.get(global.baseUrl + 'notice/getNoticeList?numPerPage=4')
+    .then((res) => {
+      // console.log(res)
+      for (let i in res.data.data) {
+        res.data.data[i].content = res.data.data[i].content.replace(/<[^>]+>/g, '')
+        res.data.data[i].content = res.data.data[i].content.replace(/&nbsp;/g, '')
+        res.data.data[i].date = self.timeFilter(res.data.data[i].date * 1000)
+      }
+      self.noticeslists = res.data
+    })
   },
   methods: {
     handleCurrentChange: function (val) {
-      console.log(val)
+      this.changePage(val)
+    },
+    timeFilter: function (value) {
+      return new Date(parseInt(value)).getFullYear() + '-' + (new Date(parseInt(value)).getMonth() + 1) + '-' + new Date(parseInt(value)).getDate()
+    },
+    goNoticeDetail (id) {
+      this.$router.push({ name: 'noticesDetail', params: {id: id} })
     }
   },
   components: {

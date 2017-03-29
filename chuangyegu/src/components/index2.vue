@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="index">
     <v-header></v-header>
     <div class="posterCon">
@@ -203,7 +203,7 @@ export default {
         items[i].date = items[i].date * 1000
         items[i].content = items[i].content.replace(/<[^>]+>/g, '')
         items[i].content = items[i].content.replace(/&nbsp;/g, '')
-        items[i].content = items[i].content.substr(0, 49)
+        // items[i].content = items[i].content.substr(0, 49)
       }
       var item1 = items.slice(0, 2)
       var item2 = items.slice(2, 4)
@@ -285,6 +285,9 @@ export default {
 .projectContents{
   background: url('../images/projectbg.png') no-repeat;
   height: 580px;
+}
+.newsDetialConLeft .newsintr img{
+  max-width: 600px;
 }
 .vImg{
   position:absolute;
@@ -383,7 +386,7 @@ export default {
   height: 530px;
 }
 .s1{
-  background: url('../images/newactive_02.png') no-repeat;
+  background: url('../images/newactive_02.jpg');
 }
 .s3{
   background: url('../images/active_03.png') no-repeat;
@@ -395,7 +398,7 @@ export default {
   background: url('../images/active_04.png') no-repeat;
 }
 .s4:hover{
-  background: url('../images/hover_03_06.png') no-repeat;
+  background: url('../images/hover_03_06.jpg') no-repeat;
 }
 .s5{
   background: url('../images/active_09.png') no-repeat;
@@ -410,7 +413,7 @@ export default {
   background: url('../images/hover_03.png') no-repeat;
 }
 .s7{
-  background: url('../images/newactive_05.png') no-repeat;
+  background: url('../images/newactive_05.png');
 }
 .s19{
   background: url('../images/active_19.png') no-repeat;
@@ -422,7 +425,7 @@ export default {
   background: url('../images/active_20.png') no-repeat;
 }
 .s20:hover{
-  background: url('../images/hover_03_11.png') no-repeat;
+  background: url('../images/hover_03_11.jpg') no-repeat;
 }
 .s14{
   background: url('../images/active_14.png') no-repeat;
@@ -453,6 +456,10 @@ export default {
   position: absolute;
   top: 35px;
   right: 30px;
+}
+.goAll:hover a span{
+  color: #ff9b3c;
+  transition: color .5s;
 }
 .goAll a span{
   position: absolute;
@@ -507,7 +514,7 @@ export default {
 }
 .friends div a span{
   display: inline-block;
-  width: 125px;
+  width: 130px;
   margin-bottom: 45px;
   height: 125px;
 }
