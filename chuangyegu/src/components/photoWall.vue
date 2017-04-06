@@ -2,92 +2,44 @@
   <div class="photoWall">
     <v-header></v-header>
     <div class="photos">
-      <div class="photoyear" v-for="photoInfo in photoList">
+      <div class="photoyear">
         <h2>2016</h2>
         <ul>
-          <li>
-            <a href="javascript:;"><img src="../images/active_02.png" alt=""></a>
+          <li v-for="photoInfo in lastYearPhotoList" v-on:click="showImgAlert(photoInfo.src)">
+            <a href="javascript:;"><img :src="'http://123.56.220.72:8080/cyg/'+photoInfo.src" alt=""></a>
             <a href="javascript:;" class="big">
-              <p class="photoDate">2015-06-12</p>
-              <p class="photoIntr">图片内容简介巴拉巴 拉了巴拉巴拉来吧来 吧</p>
+              <p class="photoDate">{{photoInfo.date}}</p>
+              <p class="photoIntr">{{photoInfo.content}}</p>
             </a>
           </li>
-          
         </ul>
         <div class="block" style="margin:30px 0;">
-          <!-- <span class="demonstration">页数较少时的效果</span> -->
-          <!-- <el-pagination
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            layout="prev, pager, next"
-            :total="1000">
-          </el-pagination> -->
+          <page v-on:page="lastyearChangePage" v-bind:args="lastYearPhotoArgs" v-if="lastYearPhotoArgs.totalPage === 1"></page>
         </div>
       </div>
       <div class="photoyear">
         <h2>2017</h2>
         <ul>
-          <li>
-            <a href="javascript:;"><img src="../images/active_02.png" alt=""></a>
+          <li v-for="photoInfo in thisYearPhotoList" v-on:click="showImgAlert(photoInfo.src)">
+            <a href="javascript:;"><img :src="'http://123.56.220.72:8080/cyg/'+photoInfo.src" alt=""></a>
             <a href="javascript:;" class="big">
-              <p class="photoDate">2015-06-12</p>
-              <p class="photoIntr">图片内容简介巴拉巴 拉了巴拉巴拉来吧来 吧</p>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:;"><img src="../images/active_02.png" alt=""></a>
-            <a href="javascript:;" class="big">
-              <p class="photoDate">2015-06-12</p>
-              <p class="photoIntr">图片内容简介巴拉巴 拉了巴拉巴拉来吧来 吧</p>
-            </a>
-          </li>
-          <li  @click="dialogVisible = true">
-            <a href="javascript:;"><img src="../images/active_02.png" alt=""></a>
-            <a href="javascript:;" class="big">
-              <p class="photoDate">2015-06-12</p>
-              <p class="photoIntr">图片内容简介巴拉巴 拉了巴拉巴拉来吧来 吧</p>
-            </a>
-          </li>
-          <li  @click="dialogVisible = true">
-            <a href="javascript:;"><img src="../images/active_02.png" alt=""></a>
-            <a href="javascript:;" class="big">
-              <p class="photoDate">2015-06-12</p>
-              <p class="photoIntr">图片内容简介巴拉巴 拉了巴拉巴拉来吧来 吧</p>
-            </a>
-          </li>
-          <li  @click="dialogVisible = true">
-            <a href="javascript:;"><img src="../images/active_02.png" alt=""></a>
-            <a href="javascript:;" class="big">
-              <p class="photoDate">2015-06-12</p>
-              <p class="photoIntr">图片内容简介巴拉巴 拉了巴拉巴拉来吧来 吧</p>
+              <p class="photoDate">{{photoInfo.date}}</p>
+              <p class="photoIntr">{{photoInfo.content}}</p>
             </a>
           </li>
         </ul>
         <div class="block" style="margin:30px 0;">
-          <!-- <span class="demonstration">页数较少时的效果</span> -->
-          <!-- <el-pagination
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            layout="prev, pager, next"
-            :total="1000">
-          </el-pagination> -->
+          <page v-on:page="thisyearChangePage" v-bind:args="thisYearPhotoArgs" v-if="thisYearPhotoArgs.totalPage === 1"></page>
         </div>
       </div>
     </div>
     <v-footer></v-footer>
-    <el-dialog title="提示" v-model="dialogVisible" size="tiny">
-      <span>这是一即将显示的大图片</span>
-      <!-- <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span> -->
+    <el-dialog title="" v-model="imgAlert" style="text-align:center;">
+      <img :src="'http://123.56.220.72:8080/cyg/'+alertImgSrc" alt="" class="alertImg">
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="imgAlert = false">关 闭</el-button>
+      </span>
     </el-dialog>
-    <!-- <div class="showclick">
-      <div class="clickimg">
-        <img src="../images/active_02.png" alt="">&nbsp;&nbsp;&nbsp;&nbsp;
-        <span class="iconexit">×</span>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -96,15 +48,25 @@ import header from './header'
 import footer from './footer'
 import axios from 'axios'
 import global from '../global/global'
+import page from './page'
 export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      dialogVisible: false,
+      imgAlert: false,
+      alertImgSrc: null,
       currentPage: 1,
-      photoList: [],
-      photoArgs: {
-        year: null,
+      lastYearPhotoList: [],
+      thisYearPhotoList: [],
+      // photoList: [],
+      lastYearPhotoArgs: {
+        year: 2016,
+        numPerPage: 20,
+        pageNum: 1,
+        totalPage: -1
+      },
+      thisYearPhotoArgs: {
+        year: 2017,
         numPerPage: 20,
         pageNum: 1,
         totalPage: -1
@@ -112,22 +74,42 @@ export default {
     }
   },
   created: function () {
-    this.getPhotoList(this.photoArgs)
+    this.getPhotoList(this.lastYearPhotoArgs)
+    this.getPhotoList(this.thisYearPhotoArgs)
   },
   methods: {
     getPhotoList: function (args) {
       var self = this
       axios.get(global.baseUrl + 'photoWall/getPhotoList?' + global.getHttpData(args))
       .then((res) => {
-        self.photoList = res.data.data
-        self.photoArgs.pageNum = res.data.currentPage
-        self.photoArgs.totalPage = res.data.totalPage
+        if (args.year === 2016) {
+          self.lastYearPhotoList = res.data.data
+          self.lastYearPhotoList.pageNum = res.data.currentPage
+          self.lastYearPhotoList.totalPage = res.data.totalPage
+        } else {
+          self.thisYearPhotoList = res.data.data
+          self.thisYearPhotoList.pageNum = res.data.currentPage
+          self.thisYearPhotoList.totalPage = res.data.totalPage
+        }
       })
+    },
+    showImgAlert (src) {
+      this.imgAlert = true
+      this.alertImgSrc = src
+    },
+    lastyearChangePage (value) {
+      this.lastYearPhotoArgs.pageNum = value
+      this.getPhotoList(this.lastYearPhotoArgs)
+    },
+    thisyearChangePage (value) {
+      this.thisYearPhotoArgs.pageNum = value
+      this.getPhotoList(this.thisYearPhotoArgs)
     }
   },
   components: {
     'v-header': header,
-    'v-footer': footer
+    'v-footer': footer,
+    page
   }
 }
 </script>
@@ -143,6 +125,10 @@ export default {
 .photos{
   width: 1000px;
   margin: 0 auto;
+}
+.alertImg{
+  max-width: 400px;
+  max-height: 400px;
 }
 h2{
   color: rgb( 254, 108, 0 );
@@ -160,6 +146,8 @@ h2{
   float: left;
   overflow: hidden;
   position: relative;
+  width: 250px;
+  height: 170px;
 }
 .photoyear ul li a img{
   width: 250px;

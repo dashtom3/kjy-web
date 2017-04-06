@@ -223,6 +223,14 @@
     },
     components: {
       quillEditor
+    },
+    mounted () {
+      const self = this
+      const editer = self.$refs.myTextEditor
+      console.log(editer)
+      editer.$on('onImageUpload', function (files) {
+        console.log(files[0])
+      })
     }
   }
 </script>

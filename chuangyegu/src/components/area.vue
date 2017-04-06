@@ -52,11 +52,9 @@
               placeholder="选择日期"
               >
             </el-date-picker>
-            <!-- <input type="text" @click="showCalendar" v-model="value" placeholder="请输入日期">
-            <calendar :show.sync="show" :value.sync="value" :x="x" :y="y" :begin="begin" :end="end" :range="range"></calendar> -->
           </div>
           <div class="time">
-            <div class="" style="width:200px;">
+            <div class="" style="width:200px;vertical-align:top;">
               <span class="date">活动时间段</span>
             </div>
             <div>
@@ -75,7 +73,7 @@
             </div>
           </div>
           <div class="equipment time">
-            <div class="" style="width:200px;">
+            <div class="" style="width:200px;vertical-align:top;">
               <span class="date">活动所需器材</span>
             </div>
             <div class="">
@@ -98,8 +96,8 @@
                 <img src="" alt="">
               </div>
             </div>
-            <div class="a-upload">
-              <a href="javascript:;"><input type="file" value="上传文件" required>
+            <div class="a-upload" v-on:change="uploadPoster">
+              <a href="javascript:;"><input type="file" value="上传文件" id="file" required>
                 <span>上传</span>
                 <br>
                 <span>活动海报</span>
@@ -157,8 +155,7 @@ export default {
   },
   methods: {
     selectCampus: function (value) {
-      console.log(value)
-      if (value === 0) {
+      if (value.val === 1) {
         this.places = this.places1
       } else {
         this.places = this.places2
@@ -166,6 +163,10 @@ export default {
     },
     selectPlace: function (value) {
       console.log(value)
+    },
+    // 上传海报
+    uploadPoster () {
+      this.areaMsg.file = document.getElementById('file').files[0]
     },
     subArea () {
       console.log(this.areaMsg)

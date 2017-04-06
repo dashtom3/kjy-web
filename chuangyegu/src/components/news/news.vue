@@ -31,7 +31,7 @@
       <div class="newsright">
         <h3>精粹要闻</h3>
         <ul>
-          <li><a href="javascript:;" v-on:click="goNewsDetail">
+          <li><a href="javascript:;">
             <div style="display:inline-block">
               <img src="../../images/Layer-12.png" alt="" class="goyw">
               <img src="../../images/news.png" alt="" class=ywbg><br>
@@ -42,7 +42,7 @@
             </div>
             </a>
           </li>
-          <li><a href="javascript:;" v-on:click="goNewsDetail">
+          <li><a href="javascript:;">
             <div style="display:inline-block">
               <img src="../../images/Layer-12.png" alt="" class="goyw">
               <img src="../../images/news.png" alt="" class=ywbg><br>
@@ -53,7 +53,7 @@
             </div>
             </a>
           </li>
-          <li><a href="javascript:;" v-on:click="goNewsDetail">
+          <li><a href="javascript:;">
             <div style="display:inline-block">
               <img src="../../images/Layer-12.png" alt="" class="goyw">
               <img src="../../images/news.png" alt="" class=ywbg><br>
@@ -97,10 +97,6 @@ export default {
     this.getNewsList(this.newsArgs)
   },
   methods: {
-    goNewsDetail: function (newsid) {
-      document.body.scrollTop = 0 + 'px'
-      this.$router.push({ name: 'newsDetail', params: {id: newsid} })
-    },
     changePage: function (value) {
       this.newsArgs.pageNum = value
       this.getNewsList(this.newsArgs)

@@ -44,7 +44,7 @@
               </li>
               <li>
                 <div class="gonews">
-                  <a v-bind:href="'/newsDetail/' + newslist[0].id" target=_blank style="position:relative"><img src="../images/Layer-12.png" alt="" style="position:relative;" class="r80"></a>
+                  <a v-bind:href="'/newsDetail/' + newslist[1].id" target=_blank style="position:relative"><img src="../images/Layer-12.png" alt="" style="position:relative;" class="r80"></a>
                 </div>
                 <div class="img">
                   <img :src=newslist[1].pic alt="">
@@ -119,7 +119,7 @@
         <img src="../images/mooc.png" alt="">
       </div>
       <div class="goAll">
-          <a v-bind:href="'/newsDetail'" target=_blank>
+          <a v-bind:href="'/videos'" target=_blank>
             <span>MORE</span>
             <img src="../images/gonews.png" alt="">
           </a>
