@@ -53,6 +53,9 @@ export default new Router({
   mode: 'history',
   hashbang: true,
   routes: [{
+    path: '/',
+    component: index
+  }, {
     path: '/index',
     name: 'index',
     component: index

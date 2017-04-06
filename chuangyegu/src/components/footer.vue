@@ -77,7 +77,7 @@ export default {
   width: 1000px;
   margin: 0 auto;
   /*overflow: hidden;*/
-  border-top: 2px solid #eaeaea;
+  border-top: 1px solid #eaeaea;
   padding-top: 50px;
 }
 .footer div.footerone dl{

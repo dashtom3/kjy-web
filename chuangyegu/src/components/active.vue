@@ -105,28 +105,29 @@ export default {
         address: '上海市普陀区金沙江路 1518 弄'
       }],
       startDate: '',
-      xingqi: ''
+      xingqi: '',
+      args: {
+        startDate: null,
+        endDate: null
+      }
     }
   },
   created () {
-    var self = this
+    // var self = this
     // var start = Date.parse(new Date())
     var start = Date.parse(new Date('2017-03-16'))
     this.startDate = start
-    // axios.get(global.baseUrl + 'event/getEventList?startDate=' + this.format(start) + '&endDate=' + this.format(new Date(start).setDate(new Date(start).getDate() + 17)))
-    // .then((res) => {
-    //   console.log(res)
-    //   self.actives = res.data.data
-    // })
-    axios.get(global.baseUrl + 'event/getEventList?startDate=2017-03-16&endDate=2017-03-31')
-    .then((res) => {
-      console.log(res)
-      self.actives = res.data.data
-    })
   },
   methods: {
     handleCurrentChange: function (val) {
       console.log(val)
+    },
+    getEventList: function (data) {
+      axios.get(global.baseUrl + 'event/getEventList?' + global.getHttpData(data))
+      .then((res) => {
+        console.log(res)
+        self.actives = res.data.data
+      })
     },
     format (val) {
       var month = new Date(val).getMonth() + 1
@@ -168,10 +169,12 @@ export default {
   color: rgb(254,108,0)!important;
 }
 .activeTitle h2{
-  font-size: 22.5px;
-  font-family: "Adobe Heiti Std";
+  font-size: 18px;
   color: rgb( 254, 108, 0 );
-  border-bottom: 2px solid;
+  padding: 10px 0px 10px 0px;
+  letter-spacing: 3px;
+  font-weight: normal;
+  border-bottom: 1px solid;
 }
 .activePage{
   text-align: center;
@@ -213,15 +216,13 @@ export default {
 }
 .activePage span,.activePage p{
   font-size: 12.5px;
-  font-family: "Adobe Heiti Std";
-  color: rgb( 255, 255, 255 );
+  color: #999999;
 }
 .activePage span.lt,.activePage span.gt{
   font-size: 22.5px;
 }
 .activePage p.activeIntr{
   font-size: 17.5px;
-  font-family: "Adobe Heiti Std";
   color: rgb( 191, 191, 191 );
 }
 .isactive{

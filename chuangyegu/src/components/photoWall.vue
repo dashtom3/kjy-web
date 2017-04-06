@@ -2,7 +2,7 @@
   <div class="photoWall">
     <v-header></v-header>
     <div class="photos">
-      <div class="y2016">
+      <div class="photoyear" v-for="photoInfo in photoList">
         <h2>2016</h2>
         <ul>
           <li>
@@ -12,46 +12,19 @@
               <p class="photoIntr">图片内容简介巴拉巴 拉了巴拉巴拉来吧来 吧</p>
             </a>
           </li>
-          <li>
-            <a href="javascript:;"><img src="../images/active_02.png" alt=""></a>
-            <a href="javascript:;" class="big">
-              <p class="photoDate">2015-06-12</p>
-              <p class="photoIntr">图片内容简介巴拉巴 拉了巴拉巴拉来吧来 吧</p>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:;"><img src="../images/active_02.png" alt=""></a>
-            <a href="javascript:;" class="big">
-              <p class="photoDate">2015-06-12</p>
-              <p class="photoIntr">图片内容简介巴拉巴 拉了巴拉巴拉来吧来 吧</p>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:;"><img src="../images/active_02.png" alt=""></a>
-            <a href="javascript:;" class="big">
-              <p class="photoDate">2015-06-12</p>
-              <p class="photoIntr">图片内容简介巴拉巴 拉了巴拉巴拉来吧来 吧</p>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:;"><img src="../images/active_02.png" alt=""></a>
-            <a href="javascript:;" class="big">
-              <p class="photoDate">2015-06-12</p>
-              <p class="photoIntr">图片内容简介巴拉巴 拉了巴拉巴拉来吧来 吧</p>
-            </a>
-          </li>
+          
         </ul>
         <div class="block" style="margin:30px 0;">
           <!-- <span class="demonstration">页数较少时的效果</span> -->
-          <el-pagination
+          <!-- <el-pagination
             @current-change="handleCurrentChange"
             :current-page="currentPage"
             layout="prev, pager, next"
             :total="1000">
-          </el-pagination>
+          </el-pagination> -->
         </div>
       </div>
-      <div class="y2017">
+      <div class="photoyear">
         <h2>2017</h2>
         <ul>
           <li>
@@ -92,12 +65,12 @@
         </ul>
         <div class="block" style="margin:30px 0;">
           <!-- <span class="demonstration">页数较少时的效果</span> -->
-          <el-pagination
+          <!-- <el-pagination
             @current-change="handleCurrentChange"
             :current-page="currentPage"
             layout="prev, pager, next"
             :total="1000">
-          </el-pagination>
+          </el-pagination> -->
         </div>
       </div>
     </div>
@@ -121,17 +94,35 @@
 <script>
 import header from './header'
 import footer from './footer'
+import axios from 'axios'
+import global from '../global/global'
 export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
       dialogVisible: false,
-      currentPage: 1
+      currentPage: 1,
+      photoList: [],
+      photoArgs: {
+        year: null,
+        numPerPage: 20,
+        pageNum: 1,
+        totalPage: -1
+      }
     }
   },
+  created: function () {
+    this.getPhotoList(this.photoArgs)
+  },
   methods: {
-    handleCurrentChange: function (val) {
-      console.log(val)
+    getPhotoList: function (args) {
+      var self = this
+      axios.get(global.baseUrl + 'photoWall/getPhotoList?' + global.getHttpData(args))
+      .then((res) => {
+        self.photoList = res.data.data
+        self.photoArgs.pageNum = res.data.currentPage
+        self.photoArgs.totalPage = res.data.totalPage
+      })
     }
   },
   components: {
@@ -154,28 +145,24 @@ export default {
   margin: 0 auto;
 }
 h2{
-  font-family: "Adobe Heiti Std";
   color: rgb( 254, 108, 0 );
-  font-size: 30px;
+  font-size: 18px;
+  padding: 10px 0px 10px 0px;
+  letter-spacing: 2px;
+  font-weight: normal;
 }
-.y2016>ul,.y2017>ul{
-  border-top:2px solid rgb( 254, 108, 0 );
-  padding-top: 50px;
+.photoyear>ul{
+  border-top:1px solid rgb( 254, 108, 0 );
+  padding-top: 20px;
   overflow: hidden;
 }
-.y2016>ul li,.y2017>ul li{
+.photoyear>ul li{
   float: left;
   overflow: hidden;
   position: relative;
 }
-.y2016 ul li a img,.y2017 ul li a img{
+.photoyear ul li a img{
   width: 250px;
-}
-.y2017{
-  clear: both;
-  overflow: hidden;
-  position: relative;
-  margin-top: 50px;
 }
 .big{
   position: absolute;
@@ -190,7 +177,7 @@ h2{
   color: #ffffff;
   padding: 10px 10px 0 20px;
 }
-.y2016 ul li:hover a.big,.y2017 ul li:hover a.big{
+.photoyear ul li:hover a.big{
   display: block;
 }
 .pages{

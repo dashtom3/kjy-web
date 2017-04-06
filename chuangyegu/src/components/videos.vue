@@ -6,25 +6,18 @@
     </div>
     <div class="downloads">
       <ul>
-        <li>
+        <li v-for="videoInfo in videoList">
           <a download>
-            <span class="downloadLeft">创业谷2017春季学期报名表创业谷2017春季学期报名表创业谷2017春季学期报名表创业谷2017春季学期报名表</span>
-            <span class="downloadright">2017-11-11</span>
+            <span class="downloadLeft">{{videoInfo.title}}</span>
+            <span class="downloadright">{{videoInfo.date}}</span>
           </a>
-          <video src="https://misc.rrcimg.com/pc/two_anniversary.mp4" controls>
-          </video>
-        </li>
-        <li>
-          <a download>
-            <span class="downloadLeft">创业谷2017春季学期报名表</span>
-            <span class="downloadright">2017-11-11</span>
-          </a>
-          <video src="https://misc.rrcimg.com/pc/two_anniversary.mp4" controls>
+          <video v-bind:src="videoInfo.src" controls>
           </video>
         </li>
       </ul>
       <div class="moreVideos">
-        <a href="javascript:;"></a>
+        <button v-on:click="loadMoreVideos" v-if="args.pageNum != args.totalPage">加载更多</button>
+        <label v-if="args.pageNum == args.totalPage">没有更多内容了</label>
       </div>
     </div>
     <v-footer></v-footer>
@@ -34,16 +27,41 @@
 <script>
 import header from './header'
 import footer from './footer'
+import axios from 'axios'
+import global from '../global/global'
 export default {
   name: 'contact',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      videoList: [],
+      args: {
+        numPerPage: 10,
+        pageNum: 1,
+        totalPage: -1
+      }
     }
   },
   components: {
     'v-header': header,
     'v-footer': footer
+  },
+  created: function () {
+    this.getVideoList(this.args)
+  },
+  methods: {
+    getVideoList: function (args) {
+      var self = this
+      axios.get(global.baseUrl + 'mooc/getMoocList?' + global.getHttpData(args))
+      .then((res) => {
+        self.videoList = self.videoList.concat(res.data.data)
+        self.args.pageNum = res.data.currentPage
+        self.args.totalPage = res.data.totalPage
+      })
+    },
+    loadMoreVideos: function () {
+      this.args.pageNum++
+      this.getVideoList(this.args)
+    }
   }
 }
 </script>
@@ -61,24 +79,24 @@ export default {
   margin: 0 auto;
 }
 .contactTitle h2{
-  font-size: 22.5px;
-  font-family: "Adobe Heiti Std";
+  font-size: 18px;
   color: rgb( 254, 108, 0 );
-  border-bottom: 2px solid;
+  border-bottom: 1px solid;
+  font-weight: normal;
+  padding: 10px 0px 10px 0px;
+  letter-spacing: 3px;
 }
 .downloads ul{
   width: 720px;
   margin: 50px auto;
 }
 .downloads ul li a span{
-  font-size: 19.99px;
-  font-family: "Adobe Heiti Std";
+  font-size: 18px;
   color: rgba( 0, 0, 0, 0.8 );
 }
 .downloads ul li a span.downloadright{
   float: right;
   font-size: 15px;
-  font-family: "HelveticaNeue";
   color: rgb( 254, 108, 0 );
 }
 .downloads ul li a{
@@ -106,19 +124,22 @@ export default {
 }
 video{
   width: 100%;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 .moreVideos{
   text-align: center;
   margin-bottom: 50px;
 }
-.moreVideos a{
-  text-align: center;
-  color: #fff;
-  display: block;
+.moreVideos button {
   width: 155px;
-  height: 43px;
-  margin: 0 auto;
-  background: url('../images/more.png');
+  color: white;
+  font-size: 13px;
+  border-radius: 20px;
+  font-weight: normal;
+  height: 40px;
+  background-color: rgb(254, 108, 0 );
+  border: none;
+  outline: 0px;
+  cursor: pointer;
 }
 </style>

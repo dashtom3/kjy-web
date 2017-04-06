@@ -31,10 +31,12 @@
               <li>
                 <div class="newint" style="margin-right:50px;">
                   <span>{{newslist[0].date | time}}</span><br>
-                  <span v-html="newslist[0].content"></span>
+                  <span v-html="newslist[0].content.slice(0,100)"></span>
                 </div>
                 <div class="gonews">
-                  <a v-bind:href="'/newsDetail/' + newslist[0].id" target=_blank><img src="../images/Layer-13.png" alt=""></a>
+                  <a v-bind:href="'/newsDetail/' + newslist[0].id" target=_blank>
+                    <img src="../images/Layer-13.png" alt="">
+                  </a>
                 </div>
                 <div class="img">
                   <img :src=newslist[0].pic alt="">
@@ -49,7 +51,7 @@
                 </div>
                 <div class="newint" style="margin-left:50px;">
                   <span>{{newslist[1].date | time}}</span><br>
-                  <span v-html="newslist[1].content"></span>
+                  <span v-html="newslist[1].content.slice(0,100)"></span>
                 </div>
               </li>
             </ol>
@@ -134,14 +136,14 @@
       </div>
       <div class="friends">
         <div class="company">
-            <a href="javascript:;" v-on:click="goCompany">
+            <a v-bind:href="'/company'" target=_blank>
               <span></span>
               <p>COMPANY</p>
               <p>企业合作</p>
             </a>
         </div>
         <div class="about">
-            <a href="javascript:;" v-on:click="goAbout">
+            <a v-bind:href="'/about'" target=_blank>
               <span></span>
               <p>ABOUTS US</p>
               <p>关于我们</p>
@@ -467,7 +469,6 @@ export default {
   left:25px;
   color: #fff;
   font-size: 15px;
-  font-family: "HiraginoSansGB";
 }
 .newsContents ul li{
   float: left;
@@ -521,14 +522,23 @@ export default {
 .company span{
   background: url("../images/contant_03.png") no-repeat;
 }
+.company a {
+  outline: 0;
+}
 .company:hover span{
   background: url('../images/friendHover_03.png') no-repeat;
 }
 .about span{
   background: url("../images/contant_05.png") no-repeat;
 }
+.about a {
+  outline: 0;
+}
 .about:hover span{
   background: url('../images/friendHover_05.png') no-repeat;
+}
+.phone a {
+  outline: 0;
 }
 .phone span{
   background: url("../images/contant_07.png") no-repeat;

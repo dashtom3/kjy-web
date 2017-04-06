@@ -54,10 +54,12 @@ export default {
   margin: 0 auto;
 }
 .contactTitle h2{
-  font-size: 22.5px;
-  font-family: "Adobe Heiti Std";
+  font-size: 18px;
   color: rgb( 254, 108, 0 );
-  border-bottom: 2px solid;
+  border-bottom: 1px solid;
+  padding: 10px 0px 10px 0px;
+  letter-spacing: 3px;
+  font-weight: normal;
 }
 .contactCon{
   width: 800px;

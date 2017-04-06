@@ -56,24 +56,25 @@ export default {
   margin: 0 auto;
 }
 .servicesTitle h2{
-  font-size: 25px;
-font-family: "Adobe Heiti Std";
+  font-size: 18px;
 color: rgb( 254, 108, 0 );
-border-bottom: 2px solid;
+border-bottom: 1px solid;
+padding: 10px 0px 10px 0px;
+font-weight: normal;
+letter-spacing: 3px;
 }
 .servicesCon{
   width: 800px;
   margin: 50px auto;
 }
 h5{
-  font-size: 20px;
-  font-family: "FZLTZHK";
+  font-size: 16px;
   color: rgb( 254, 108, 0 );
 }
 .servicesAbout{
   width: 800px;
   margin:0 auto 50px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 30px;
   font-family: "FZLTZHK";

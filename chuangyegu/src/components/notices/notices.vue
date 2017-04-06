@@ -3,26 +3,21 @@
     <v-header></v-header>
     <div class="newscon">
       <div class="newsleft">
-        <h2>通知公告</h2>
+        <h3>通知公告</h3>
         <ul>
-          <li v-for="notice in noticeslists.data" v-on:click="goNoticeDetail(notice.id)"><a href="javascript:;">
+          <li v-for="notice in noticeslists">
+            <a href="javascript:;" v-bind:href="'/noticesDetail/' + notice.id" target=_blank>
             <p class="newstitle">{{notice.title}}</p>
             <p class="newsintr">{{notice.content}}</p>
             <p class="newstime">{{notice.date}}</p>
           </a></li>
         </ul>
-        <div class="block" style="margin:30px 0;">
-          <!-- <span class="demonstration">页数较少时的效果</span> -->
-          <el-pagination
-            @current-change="handleCurrentChange"
-            :current-page="noticeslists.currentPage"
-            layout="prev, pager, next"
-            :total="noticeslists.totalNumber">
-          </el-pagination>
+        <div class="block" >
+          <page v-on:page="changePage" v-bind:args="newsArgs"></page>
         </div>
       </div>
       <div class="newsright">
-        <h2>精粹要闻</h2>
+        <h3>精粹要闻</h3>
         <ul>
           <li><a href="javascript:;">
             <div style="display:inline-block">
@@ -69,53 +64,51 @@ import header from '../header'
 import footer from '../footer'
 import axios from 'axios'
 import global from '../../global/global'
+import page from '../page'
 export default {
   name: 'news',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      noticeslists: '',
-      changePage: function (val) {
-        var self = this
-        axios.get(global.baseUrl + 'notice/getNoticeList?numPerPage=4&pageNum=' + val)
-        .then((res) => {
-          for (let i in res.data.data) {
-            res.data.data[i].content = res.data.data[i].content.replace(/<[^>]+>/g, '')
-            res.data.data[i].content = res.data.data[i].content.replace(/&nbsp;/g, '')
-            res.data.data[i].date = self.timeFilter(res.data.data[i].date * 1000)
-          }
-          self.noticeslists = res.data
-        })
+      noticeslists: [],
+      newsArgs: {
+        numPerPage: 6,
+        pageNum: 1,
+        totalPage: -1
       }
     }
   },
   created () {
-    var self = this
-    axios.get(global.baseUrl + 'notice/getNoticeList?numPerPage=4')
-    .then((res) => {
-      // console.log(res)
-      for (let i in res.data.data) {
-        res.data.data[i].content = res.data.data[i].content.replace(/<[^>]+>/g, '')
-        res.data.data[i].content = res.data.data[i].content.replace(/&nbsp;/g, '')
-        res.data.data[i].date = self.timeFilter(res.data.data[i].date * 1000)
-      }
-      self.noticeslists = res.data
-    })
+    this.getNoticeList(this.newsArgs)
   },
   methods: {
-    handleCurrentChange: function (val) {
-      this.changePage(val)
-    },
     timeFilter: function (value) {
       return new Date(parseInt(value)).getFullYear() + '-' + (new Date(parseInt(value)).getMonth() + 1) + '-' + new Date(parseInt(value)).getDate()
     },
-    goNoticeDetail (id) {
-      this.$router.push({ name: 'noticesDetail', params: {id: id} })
+    changePage: function (value) {
+      this.newsArgs.pageNum = value
+      this.getNoticeList(this.newsArgs)
+    },
+    getNoticeList: function (args) {
+      var self = this
+      axios.get(global.baseUrl + 'notice/getNoticeList?' + global.getHttpData(args))
+      .then((res) => {
+        self.newsArgs.pageNum = res.data.currentPage
+        self.newsArgs.totalPage = res.data.totalPage
+        for (let i in res.data.data) {
+          res.data.data[i].content = res.data.data[i].content.replace(/<[^>]+>/g, '')
+          res.data.data[i].content = res.data.data[i].content.replace(/&nbsp;/g, '')
+          res.data.data[i].date = self.timeFilter(res.data.data[i].date * 1000)
+        }
+        self.noticeslists = res.data.data
+        console.log(self.noticeslists)
+      })
     }
   },
   components: {
     'v-header': header,
-    'v-footer': footer
+    'v-footer': footer,
+    page
   }
 }
 </script>
@@ -131,14 +124,23 @@ export default {
   width: 1000px;
   margin: 0 auto;
 }
-h2{
-  font-family: "Adobe Heiti Std";
+/*h2{
   color: rgb( 254, 108, 0 );
   font-size: 22.49px;
+}*/
+h3{
+  color: rgb( 254, 108, 0 );
+  font-size: 18px;
+  font-weight: normal;
+}
+.newsleft h3 {
+  padding: 10px 0px 10px 0px;
+  letter-spacing: 3px;
+  font-weight: normal;
 }
 .newsleft{
   width: 600px;
-  float: left;
+  display: inline-block;
   list-style: disc!important;
 }
 .newsleft ul{
@@ -155,9 +157,10 @@ h2{
 }
 .newsright{
   width: 300px;
-  float: right;
-  position: relative;
-  top: 100px;
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 50px;
+  margin-top: 100px;
 }
 .newspages{
   clear: both;
@@ -169,24 +172,21 @@ h2{
   float: left;
 }
 .newstitle{
-  font-size: 19.99px;
+  font-size: 16px;
   color: #000;
   font-weight: bold;
-  font-family: "Adobe Heiti Std";
   color: rgba( 0, 0, 0, 0.8 );
 }
 .newsintr{
   text-overflow:ellipsis;
   white-space:nowrap;
   overflow:hidden;
-  font-size: 12.5px;
-  font-family: "FZLTXHK";
+  font-size: 14px;
   font-weight: bold;
   color: rgba( 0, 0, 0, 0.651 );
 }
 .newstime{
-  font-size: 15px;
-  font-family: "HelveticaNeue";
+  font-size: 12px;
   color: rgb( 254, 108, 0 );
 }
 .ywbg{

@@ -157,6 +157,8 @@ h3{
 }
 .newsleft h3 {
   padding: 10px 0px 10px 0px;
+  letter-spacing: 3px;
+  font-weight: normal;
 }
 
 .newsleft ul{
@@ -193,6 +195,12 @@ h3{
   font-weight: bold;
   color: rgba( 0, 0, 0, 0.8 );
 }
+/*.newstitle:before{
+  content: '·';
+  font-size: 24px;
+  margin-right: 10px;
+  float:left;
+}*/
 .newsintr{
   text-overflow:ellipsis;
   white-space:nowrap;
