@@ -18,7 +18,8 @@
     "vue-m-carousel": "^2.0.0",
     "vue-quill-editor": "^1.1.1",
     "vue-router": "^2.2.0",
-    "vue-slide": "^1.1.1"
+    "vue-slide": "^1.1.1",
+    "vue-summernote": "^1.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",

@@ -3,14 +3,14 @@
     <div class="function">
       <el-row>
         <el-col :span="24">
-          <el-button type="primary" @click.native="isDialogShow = !isDialogShow">发布新闻</el-button>
+          <el-button type="primary" @click.native="addNewsAlert">发布新闻</el-button>
         </el-col>
       </el-row>
     </div>
     <div id="table">
       <el-table
         :data="tableData"
-        stripe
+        border
         style="width: 100%">
         <el-table-column
           prop="id"
@@ -20,50 +20,36 @@
           prop="title"
           label="新闻名称">
         </el-table-column>
-        <!-- <el-table-column
-          prop="types"
-          label="阅读">
-        </el-table-column> -->
         <el-table-column
           prop="date"
           label="发布时间">
         </el-table-column>
-        <!-- <el-table-column
-          prop="create"
-          label="创建人">
-        </el-table-column>
-        <el-table-column
-          prop="lastUpdate"
-          label="最后更新">
-        </el-table-column> -->
-        <!-- <el-table-column
-          prop="status"
-          label="新闻状态">
-        </el-table-column> -->
-
-        <el-table-column
-          :context="_self"
-          inline-template
-          label="操作"
-          width=120>
-          <span>
-            <el-button @click="onEditClick($index)" type="text" size="small">编辑</el-button>
-            <el-button @click="onDelClick($index)" type="text" size="small">删除</el-button>
-            <el-button type="text" size="small">上线</el-button>
-          </span>
+        <el-table-column label="操作">
+          <template scope="scope">
+            <el-button
+              size="small"
+              @click="onEditClick(scope.row.id)">编辑</el-button>
+            <el-button
+              size="small"
+              type="danger"
+              @click="onDelClick(scope.row.id)">删除</el-button>
+          </template>
         </el-table-column>
       </el-table>
+
+      <!-- 分页 -->
       <div class="adminBlock">
-        <!-- <span class="demonstration">页数较少时的效果</span> -->
         <el-pagination
-          @current-change="handleCurrentChange"
-          :current-page="pages.currentPage"
+          @current-change="changePage"
+          :current-page="newsArgs.pageNum"
           layout="prev, pager, next"
-          :total="pages.totalNumber">
+          :page-count="newsArgs.totalPage">
         </el-pagination>
       </div>
     </div>
-    <el-dialog title="发布新闻" v-model="isDialogShow" size="small">
+
+    <!-- 发布新闻 -->
+    <el-dialog :title="alertTitle" v-model="newsMsgShow" size="small">
       <el-row type="flex" class="row-bg" justify="space-between">
       <el-form :model="addNewsMsg">
         <el-col :span="5"><div class="grid-content bg-purple">
@@ -84,15 +70,17 @@
                <quill-editor ref="myTextEditor"
                 :content="addNewsMsg.content"
                 :config="editorOption"
-                @change="onEditorChange($event)">
+                @change="onEditorChange($event)"
+                @onImageUpload="imgUpload($event)">
               </quill-editor>
              </el-form-item>
            </div></el-col>
            </el-form>
              </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="isDialogShow = false">取 消</el-button>
-        <el-button type="submit" @click="addNews">确 定</el-button>
+        <el-button @click="newsMsgShow = false">取 消</el-button>
+        <el-button type="button" @click="addNews" v-if="addNewShow">确 定</el-button>
+        <el-button type="button" @click="editNews" v-if="editNewShow">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -108,113 +96,132 @@
       return {
         editorOption: {},
         input: '',
-        dialogTitle: '',
-        isDialogShow: false,
+        alertTitle: '添加新闻',
+        newsMsgShow: false,
+        editNewShow: false,
+        addNewShow: true,
         tableData,
         imageUrl: '',
         addNewsMsg: {
-          title: '',
-          pic: '',
-          content: ''
+          title: null,
+          pic: null,
+          content: null
+        },
+        newsArgs: {
+          ifImage: null,
+          numPerPage: 10,
+          pageNum: 1,
+          totalPage: -1
         },
         uploadUrl: global.baseUrl + 'file/upload?token=' + localStorage.token,
-        formLabelWidth: '120px',
-        currentPage: '1',
-        pages: '',
-        changePage: function (val) {
-          var self = this
-          axios.get(global.baseUrl + 'news/getNewsList?pageNum=' + val)
-          .then((res) => {
-            console.log(res)
-            for (let i in res.data.data) {
-              res.data.data[i].date = self.timeFilter(res.data.data[i].date * 1000)
-            }
-            self.tableData = res.data.data
-            self.pages = res.data
-          })
-        }
+        formLabelWidth: '120px'
       }
     },
     created () {
-      var self = this
-      axios.get(global.baseUrl + 'news/getNewsList')
-      .then((res) => {
-        console.log(res)
-        for (let i in res.data.data) {
-          res.data.data[i].date = self.timeFilter(res.data.data[i].date * 1000)
-        }
-        self.tableData = res.data.data
-        self.pages = res.data
-      })
+      this.getNewsList(this.newsArgs)
     },
     methods: {
-      // 表格内编辑按钮点击实现
-      onEditClick: function (index) {
-        this.dialogTitle = '编辑方案'
-        this.isDialogShow = true
+      getNewsList (args) {
+        var self = this
+        axios.get(global.baseUrl + 'news/getNewsList?' + global.getHttpData(args))
+        .then((res) => {
+          for (let i in res.data.data) {
+            res.data.data[i].date = self.timeFilter(res.data.data[i].date * 1000)
+          }
+          self.tableData = res.data.data
+          self.newsArgs.pageNum = res.data.currentPage
+          self.newsArgs.totalPage = res.data.totalPage
+        })
       },
+      changePage (val) {
+        this.newsArgs.pageNum = val
+        this.getNewsList(this.newsArgs)
+      },
+
+      // 修改新闻
+      onEditClick: function (newsId) {
+        this.addNewsMsg.id = newsId
+        this.alertTitle = '修改新闻'
+        this.newsMsgShow = true
+        this.editNewShow = true
+        this.addNewShow = false
+        var self = this
+        axios.get(global.baseUrl + 'news/getById?newsId=' + newsId)
+        .then((res) => {
+          res.data.data.content = res.data.data.content.replace(/src="/gi, 'src="http://123.56.220.72:8080/cyg/')
+          self.addNewsMsg = res.data.data
+        })
+      },
+      editNews () {
+        var self = this
+        axios.post(global.baseUrl + 'news/update', global.postHttpDataWithToken(this.addNewsMsg))
+        .then((res) => {
+          if (res.data.callStatus === 'SUCCEED') {
+            self.newsMsgShow = false
+            global.success(self, '修改成功', '')
+            self.getNewsList(self.newsArgs)
+          }
+        })
+      },
+      // 过滤时间
       timeFilter: function (value) {
         return new Date(parseInt(value)).getFullYear() + '-' + (new Date(parseInt(value)).getMonth() + 1) + '-' + new Date(parseInt(value)).getDate()
       },
+      // 上传缩略图
       handleAvatarScucess (res, file) {
         this.imageUrl = URL.createObjectURL(file.raw)
-        console.log(res)
         this.addNewsMsg.pic = res.data
       },
-      // 表格内删除按钮点击实现
-      onDelClick: function (index) {
-        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          // 此处应为异步请求服务器进行数据库的操作
-          this.tableData.splice(index, 1)
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
-        })
-      },
-      onEditorChange ({ editor, html, text }) {
-        // console.log('editor change!', editor, html, text)
-        console.log(editor, html, text)
-        this.addNewsMsg.content = html
-      },
-      handleCurrentChange: function (val) {
-        this.changePage(val)
-      },
-      // 添加新闻
-      addNews () {
+
+      // 删除新闻
+      onDelClick: function (newsId) {
         var self = this
-        var newsMsg = new FormData()
-        newsMsg.append('title', this.addNewsMsg.title)
-        newsMsg.append('content', this.addNewsMsg.content)
-        newsMsg.append('pic', this.addNewsMsg.pic)
-        axios.post(global.baseUrl + 'news/addNews?token=' + localStorage.token, newsMsg)
+        axios.post(global.baseUrl + 'news/deleteNews?newsId=' + newsId + '&token=' + global.getToken())
         .then((res) => {
           console.log(res)
           if (res.data.callStatus === 'SUCCEED') {
+            global.success(self, '删除成功', '')
+            self.getNewsList(self.newsArgs)
+          }
+        })
+      },
+      onEditorChange ({ editor, html, text }) {
+        console.log(editor, html, text)
+        this.addNewsMsg.content = html
+      },
+      imgUpload (ele) {
+        console.log(ele)
+      },
+
+      // 添加新闻
+      addNewsAlert () {
+        this.newsMsgShow = true
+        if (this.addNewsMsg.id) {
+          this.addNewsMsg.id = null
+        }
+        this.addNewsMsg.title = null
+        this.addNewsMsg.content = null
+        this.addNewsMsg.pic = null
+        var self = this
+        var editer = self.$refs.myTextEditor
+        console.log(editer)
+      },
+      addNews () {
+        this.editNewShow = false
+        this.addNewShow = true
+        var self = this
+        axios.post(global.baseUrl + 'news/addNews', global.postHttpDataWithToken(this.addNewsMsg))
+        .then((res) => {
+          console.log(res)
+          if (res.data.callStatus === 'SUCCEED') {
+            self.newsArgs.pageNum = 1
             self.$message({
               message: '发布新闻成功',
               type: 'success',
               duration: '1000',
               onClose: function () {
-                self.isDialogShow = false
-                axios.get(global.baseUrl + 'news/getNewsList')
-                .then((res) => {
-                  console.log(res)
-                  for (let i in res.data.data) {
-                    res.data.data[i].date = self.timeFilter(res.data.data[i].date * 1000)
-                  }
-                  self.tableData = res.data.data
-                  self.pages = res.data
-                })
+                self.newsMsgShow = false
+                self.getNewsList(self.newsArgs)
               }
             })
           }
@@ -223,14 +230,6 @@
     },
     components: {
       quillEditor
-    },
-    mounted () {
-      const self = this
-      const editer = self.$refs.myTextEditor
-      console.log(editer)
-      editer.$on('onImageUpload', function (files) {
-        console.log(files[0])
-      })
     }
   }
 </script>

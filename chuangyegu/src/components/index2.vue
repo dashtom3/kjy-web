@@ -21,7 +21,8 @@
       <div class="goAll">
           <a v-bind:href="'/news'" target=_blank>
             <span>ALL</span>
-            <img src="../images/gonews.png" alt="">
+            <img src="../images/gonews.png" alt="" class="showimg">
+            <img src="../images/Layer-12.png" alt="" class="hoverimg">
           </a>
       </div>
       <div class="newsContents">
@@ -59,6 +60,7 @@
         </ul>
       </div>
     </div>
+
     <div class="newsCenter" style="overflow:hidden">
       <div class="service s2 s1">
         <a href="javascript:;">
@@ -66,19 +68,27 @@
         </a>
       </div>
       <div class="service s3">
-        <a href="javascript:;" v-on:click="goApplyProject">
+        <a href="applyProject" target="_blank">
+          <span class="icon1 iconimg"></span>
+          <span class="cw">项目申请&nbsp;&nbsp;&nbsp;&nbsp;&gt;</span>
         </a>
       </div>
       <div class="service s4">
-        <a href="javascript:;" v-on:click="goArea">
+        <a href="area" target="_blank">
+          <span class="icon2 iconimg"></span>
+          <span class="cw">场地预定&nbsp;&nbsp;&nbsp;&nbsp;&gt;</span>
         </a>
       </div>
       <div class="service s6" style="float:right;position:relative;right:35px;">
-        <a href="javascript:;" v-on:click="goServices">
+        <a href="services" target="_blank">
+          <span class="icon3 iconimg"></span>
+          <span class="cw">服务介绍&nbsp;&nbsp;&nbsp;&nbsp;&gt;</span>
         </a>
       </div>
       <div class="service s2 s5">
-        <a href="javascript:;" v-on:click="goActive">
+        <a href="active" target="_blank">
+          <span class="icon4 iconimg"></span>
+          <span class="cw">活动预约&nbsp;&nbsp;&nbsp;&nbsp;&gt;</span>
         </a>
       </div>
       <div class="service s2 s7" style="float:right;position:relative;right:35px;">
@@ -87,15 +97,21 @@
         </a>
       </div>
       <div class="service s19">
-        <a href="javascript:;" v-on:click="goPhotoWall">
+        <a href="photoWall" target="_blank">
+          <span class="icon7 iconimg"></span>
+          <span class="cw">照片墙&nbsp;&nbsp;&nbsp;&nbsp;&gt;</span>
         </a>
       </div>
       <div class="service s20">
-        <a href="javascript:;" v-on:click="goDownload">
+        <a href="download" target="_blank">
+          <span class="icon6 iconimg"></span>
+          <span class="cw">资料下载&nbsp;&nbsp;&nbsp;&nbsp;&gt;</span>
         </a>
       </div>
       <div class="service s14" style="clear:both;position:absolute;top:527px;">
-        <a href="javascript:;" v-on:click="goNotices">
+        <a href="notices" target="_blank">
+          <span class="icon5 iconimg"></span>
+          <span class="cw">通知公告&nbsp;&nbsp;&nbsp;&nbsp;&gt;</span>
         </a>
       </div>
     </div>
@@ -106,7 +122,7 @@
       </div>
       <div class="projectContents">
         <div class="">
-          <a href="javascript:;" v-on:click="goProject">
+          <a href="project" target="_blank">
             <span>PROJECT DOCKING</span>
             <img src="../images/docking.png" alt="">
           </a>
@@ -121,7 +137,9 @@
       <div class="goAll">
           <a v-bind:href="'/videos'" target=_blank>
             <span>MORE</span>
-            <img src="../images/gonews.png" alt="">
+            <!-- <img src="../images/gonews.png" alt=""> -->
+            <img src="../images/gonews.png" alt="" class="showimg">
+            <img src="../images/Layer-12.png" alt="" class="hoverimg">
           </a>
       </div>
       <div class="video">
@@ -150,7 +168,7 @@
             </a>
         </div>
         <div class="phone">
-            <a href="javascript:;" v-on:click="goContact">
+            <a href="contact" target="_blank">
               <span></span>
               <p>CONTACT US</p>
               <p>联系我们</p>
@@ -214,52 +232,6 @@ export default {
       self.newslists.push(item2)
       self.newslists.push(item3)
     })
-  },
-  methods: {
-    goNews: function () {
-      global.goPath(this, 'news')
-    },
-    goProject: function () {
-      global.goPath(this, 'project')
-    },
-    goCompany: function () {
-      global.goPath(this, 'company')
-    },
-    goAbout: function () {
-      global.goPath(this, 'about')
-    },
-    goContact: function () {
-      global.goPath(this, 'contact')
-    },
-    goApplyProject: function () {
-      global.goPath(this, 'applyProject')
-    },
-    goArea: function () {
-      global.goPath(this, 'area')
-    },
-    goServices: function () {
-      global.goPath(this, 'services')
-    },
-    goActive: function () {
-      global.goPath(this, 'active')
-    },
-    goPhotoWall: function () {
-      global.goPath(this, 'photoWall')
-    },
-    goNotices: function () {
-      global.goPath(this, 'notices')
-    },
-    goDownload: function () {
-      global.goPath(this, 'download')
-    },
-    goVideos: function () {
-      global.goPath(this, 'videos')
-    },
-    // 新闻详情
-    goNewsDetial (newsid) {
-      document.body.scrollTop = 0 + 'px'
-      this.$router.push({ name: 'newsDetail', params: {id: newsid} })
-    }
   },
   components: {
     'v-header': header,
@@ -390,34 +362,94 @@ export default {
 .s1{
   background: url('../images/newactive_02.jpg');
 }
-.s3{
-  background: url('../images/active_03.png') no-repeat;
+/*.s3{
+  background: url('../images/icon1.png') no-repeat;
+}*/
+.cw{
+  color: #000;
+  font-size: 20px;
+  font-weight: 700;
+  position: relative;
 }
-.s3:hover{
-  background: url('../images/hover_03_03.png') no-repeat;
+.iconimg{
+  display: block;
+  width: 58px;
+  height: 58px;
+  margin: 0 auto;
+  position: relative;
+  top: 65px;
 }
-.s4{
-  background: url('../images/active_04.png') no-repeat;
+.service:hover{
+  background-color: #000;
 }
-.s4:hover{
-  background: url('../images/hover_03_06.jpg') no-repeat;
+.service:hover .cw{
+  color: #fff;
 }
-.s5{
-  background: url('../images/active_09.png') no-repeat;
+/*.s3 a,.s14 a,.s19 a{
+  border-bottom: 5px solid #fafafa;
+  border-right: 5px solid #fafafa;
 }
-.s5:hover{
-  background: url('../images/hover-1_03.png') no-repeat;
+.s20 a{
+  border-bottom: 5px solid #fafafa;
+  border-top: 5px solid #fafafa;
+}*/
+.s3:hover .icon1{
+  background: url('../images/iconhover1.png') no-repeat;
 }
-.s6{
-  background: url('../images/active_06.png') no-repeat;
+.icon1{
+  background: url('../images/icon1.png') no-repeat;
 }
-.s6:hover{
-  background: url('../images/hover_03.png') no-repeat;
+.iconimg+.cw{
+  top: 105px;
+  left: 20px;
+}
+.icon4+.cw{
+  top: 250px;
+}
+.s4:hover .icon2{
+  background: url('../images/iconhover2.png') no-repeat;
+}
+.icon2{
+  background: url('../images/icon2.png') no-repeat;
+}
+.s6:hover .icon3{
+  background: url('../images/iconhover3.png') no-repeat;
+}
+.icon3{
+  background: url('../images/icon3.png') no-repeat;
+}
+.service.s5,.service.s20{
+  width: 389px;
+}
+.s5:hover .icon4{
+  background: url('../images/iconhover4.png') no-repeat;
+}
+.icon4{
+  background: url('../images/icon4.png') no-repeat;
+  top: 200px;
+}
+.s14:hover .icon5{
+  background: url('../images/iconhover5.png') no-repeat;
+}
+.icon5{
+  background: url('../images/icon5.png') no-repeat;
+}
+.s20:hover .icon6{
+  background: url('../images/iconhover6.png') no-repeat;
+}
+.icon6{
+  background: url('../images/icon6.png') no-repeat;
+}
+.s19:hover .icon7{
+  background: url('../images/iconhover7.png') no-repeat;
+}
+.icon7{
+  background: url('../images/icon7.png') no-repeat;
 }
 .s7{
   background: url('../images/newactive_05.png');
 }
-.s19{
+/*.s19{
   background: url('../images/active_19.png') no-repeat;
 }
 .s19:hover{
@@ -428,13 +460,13 @@ export default {
 }
 .s20:hover{
   background: url('../images/hover_03_11.jpg') no-repeat;
-}
-.s14{
+}*/
+/*.s14{
   background: url('../images/active_14.png') no-repeat;
 }
 .s14:hover{
   background: url('../images/hover_06.png') no-repeat;
-}
+}*/
 .newsContents ul li div.gonews a img{
   width: 125px;
   top: 45px;
@@ -459,9 +491,14 @@ export default {
   top: 35px;
   right: 30px;
 }
-.goAll:hover a span{
-  color: #ff9b3c;
-  transition: color .5s;
+img.hoverimg{
+  display: none;
+}
+.goAll:hover a img.showimg{
+  display: none;
+}
+.goAll:hover a img.hoverimg{
+  display: block;
 }
 .goAll a span{
   position: absolute;
@@ -469,6 +506,10 @@ export default {
   left:25px;
   color: #fff;
   font-size: 15px;
+}
+.goAll a img{
+  width: 141px;
+  height: 39px;
 }
 .newsContents ul li{
   float: left;

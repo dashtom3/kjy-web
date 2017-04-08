@@ -36,9 +36,9 @@
         <dd>地址：中国上海杨浦区彰武路100号</dd>
         <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 创业大楼（四平创业谷）</dd>
       </dl>
-      <dl class="">
-        <dt class="goDownload" v-on:click="goDownload">资料下载</dt><br>
-        <dt class="goNotices" v-on:click="goNotices">通告公知</dt>
+      <dl class="link">
+        <dt class="goDownload"><a href="download" target="_blank">资料下载</a></dt><br>
+        <dt class="goNotices"><a href="notices" target="_blank">通告公知</a></dt>
       </dl>
       <dl class="">
         <dt>关注</dt>
@@ -53,20 +53,11 @@
 </template>
 
 <script>
-import global from '../global/global'
 export default {
   name: 'footer',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
-    }
-  },
-  methods: {
-    goDownload: function () {
-      global.goPath(this, 'download')
-    },
-    goNotices: function () {
-      global.goPath(this, 'notices')
     }
   }
 }
@@ -127,5 +118,8 @@ export default {
 }
 .goDownload:hover,.goNotices:hover{
   cursor: pointer;
+}
+.link a{
+  color: #fff;
 }
 </style>

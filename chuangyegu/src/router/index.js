@@ -30,6 +30,7 @@ import admUser from '@/components/admin/admUser'
 import admNotice from '@/components/admin/admNotice'
 import admActive from '@/components/admin/admActive'
 import admProject from '@/components/admin/admProject'
+// import test from '@/components/test'
 
 Vue.use(Router)
 Vue.use(ElementUI)
