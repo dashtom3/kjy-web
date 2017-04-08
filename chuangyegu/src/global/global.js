@@ -48,16 +48,16 @@ export default{
     return temp
   },
   getToken: function () {
-    return localStorage.getItem('token')
+    return localStorage.getItem('cygtoken')
   },
   setToken: function (token) {
-    localStorage.setItem('token', token)
+    localStorage.setItem('cygtoken', token)
   },
   getUser: function () {
-    return JSON.parse(localStorage.getItem('caruser'))
+    return JSON.parse(localStorage.getItem('cyguser'))
   },
   setUser: function (caruser) {
-    localStorage.setItem('caruser', JSON.stringify(caruser))
+    localStorage.setItem('cygcaruser', JSON.stringify(caruser))
   },
   getToday: function () {
     var today = new Date()
