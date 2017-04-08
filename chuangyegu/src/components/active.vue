@@ -7,9 +7,15 @@
       </div>
       <div class="activeDate">
         <ul>
-          <li v-for="n in 16">
+          <li v-for="n in 16" v-on:click="getActiveDetial(startDate+(n-1)*86400000)">
           <!-- <li v-for="n in 16" v-on:click="getActiveDetial(active.id)"> -->
-            <div class="activePage" :class="{isactive: isExist(startDate+(n-1)*86400000)}">
+            <div class="activePage" v-if="actives[format(startDate+(n-1)*86400000)] == null">
+              <span class="lt">&lt;</span>
+              <span>{{startDate+(n-1)*86400000 | week}}<p>{{startDate+(n-1)*86400000 | time}}</p></span>
+              <span class="gt">&gt;</span>
+              <p class="activeNo">{{state[0]}}</p>
+            </div>
+            <div class="activePage isactive" v-if="actives[format(startDate+(n-1)*86400000)] != null">
               <span class="lt">&lt;</span>
               <span>{{startDate+(n-1)*86400000 | week}}<p>{{startDate+(n-1)*86400000 | time}}</p></span>
               <span class="gt">&gt;</span>
@@ -19,27 +25,23 @@
         </ul>
         <div class="block" style="margin:30px 0;">
           <!-- <span class="demonstration">页数较少时的效果</span> -->
-          <el-pagination
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            layout="prev, pager, next"
-            :total="1000">
-          </el-pagination>
         </div>
       </div>
-      <el-dialog title="活动详情" v-model="activeAlert">
+      <!-- <el-dialog v-model="activeAlert"> -->
+      <div class="activealert" v-if="activeAlert != null">
+        <div class="activealertbody">
         <div class="activePage alertDiv">
-          <span class="lt">&lt;</span>
-          <span>周一<p>2016-12-12</p></span>
-          <span class="gt">&gt;</span>
+          <span class="lt">&lt;&nbsp;&nbsp;&nbsp;</span>
+          <span>{{activeAlert | week}}<p>{{activeAlert | time}}</p></span>
+          <span class="gt">&nbsp;&nbsp;&nbsp;&gt;</span>
           <!-- <a href="javascript:;" class="qx">×</a> -->
+          <button v-on:click="closeActive">X</button>
         </div>
-        <el-table :data="gridData">
-          <el-table-column property="date" label="日期" width="150"></el-table-column>
-          <el-table-column property="name" label="姓名" width="200"></el-table-column>
-          <el-table-column property="address" label="地址"></el-table-column>
-        </el-table>
-      </el-dialog>
+        <div v-for="active in activeData" class="alertcontent">
+          <a href="">&gt;&nbsp;{{active.eventName}}</a>
+        </div>
+        </div>
+      </div>
     </div>
     <v-footer></v-footer>
   </div>
@@ -83,33 +85,23 @@ export default {
   name: 'active',
   data () {
     return {
-      activeAlert: false,
+      activeAlert: null,
       currentPage: 1,
-      actives: '',
-      state: ['暂无活动安排', '此处有活动请戳~'],
-      gridData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }],
+      actives: [],
+      state: ['暂无活动', '此处有活动，请戳~'],
+      activeData: null,
       startDate: '',
       xingqi: '',
       args: {
         startDate: null,
-        endDate: null
+        endDate: null,
+        status: 2
       }
+    }
+  },
+  computed: {
+    dataDate: function (date) {
+      return this.actives.match(date)
     }
   },
   created () {
@@ -117,19 +109,40 @@ export default {
     // var start = Date.parse(new Date())
     var start = Date.parse(new Date('2017-03-16'))
     this.startDate = start
+    this.args.startDate = global.getDateStr(start)
+    this.args.endDate = global.getDateStr(start + 15 * 86400000)
+    this.getEventList(this.args)
   },
   methods: {
-    handleCurrentChange: function (val) {
-      console.log(val)
+    dataFilter: function (data) {
+      this.actives = {}
+      for (var i = 0; i < data.length; i++) {
+        if (this.actives[data[i].useDate] == null) {
+          this.actives[data[i].useDate] = [data[i]]
+        } else {
+          this.actives[data[i].useDate].push(data[i])
+        }
+      }
+    },
+    getActiveDetial: function (time) {
+      console.log(time)
+      var temp = this.format(time)
+      if (this.actives[temp] != null) {
+        this.activeAlert = time
+        this.activeData = this.actives[temp]
+      }
+    },
+    closeActive: function () {
+      this.activeAlert = null
     },
     getEventList: function (data) {
+      var self = this
       axios.get(global.baseUrl + 'event/getEventList?' + global.getHttpData(data))
       .then((res) => {
-        console.log(res)
-        self.actives = res.data.data
+        self.dataFilter(res.data.data)
       })
     },
-    format (val) {
+    format: function (val) {
       var month = new Date(val).getMonth() + 1
       var date = new Date(val).getDate()
       if (month < 10) {
@@ -139,17 +152,6 @@ export default {
         date = '0' + date
       }
       return new Date(val).getFullYear() + '-' + month + '-' + date
-    },
-    isExist (val) {
-      val = this.format(val)
-      for (let i in this.actives) {
-        console.log(this.actives[i].useDate.match(val))
-        if (this.actives[i].useDate.match(val)) {
-          return true
-        } else {
-          return false
-        }
-      }
     }
   },
   components: {
@@ -202,6 +204,46 @@ export default {
 .activeDate ul li:hover{
   cursor: pointer;
 }
+.activealert {
+  position: fixed;
+  top:0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.5);
+}
+.activealertbody {
+  margin: auto;
+  width: 300px;
+  margin-top: 10%;
+  background-color: rgba(255,255,255,0.8);
+  height: 400px;
+  padding: 30px;
+  border-radius: 8px;
+}
+.activealertbody button {
+  border: none;
+  background-color: transparent;
+  color: #999999;
+  font-size: 16px;
+  float: right;
+  outline: 0;
+}
+.activealertbody button:hover {
+  color:#fe6c00;
+  cursor: pointer;
+}
+.activealertbody .gt {
+  margin-bottom: 20px;
+}
+.activealertbody a {
+  color: #fe6c00;
+  outline: 0;
+  text-decoration: none;
+}
+.alertcontent {
+  margin-bottom: 10px;
+}
 .activeDate ul li div span.lt,.activeDate ul li div span.gt{
   position: absolute;
 }
@@ -215,21 +257,31 @@ export default {
   display: inline-block;
 }
 .activePage span,.activePage p{
-  font-size: 12.5px;
-  color: #999999;
+  font-size: 12px;
+  color: #fff;
 }
+
 .activePage span.lt,.activePage span.gt{
   font-size: 22.5px;
 }
-.activePage p.activeIntr{
-  font-size: 17.5px;
-  color: rgb( 191, 191, 191 );
+
+.activeNo {
+  color: #999999 !important;
+  margin-top: 20px;
+  margin-left: 10px;
+  letter-spacing: 2px;
+  text-align: left;
+  font-size: 14px !important;
+}
+.activeIntr {
+  margin-top: 20px;
+  margin-left: 10px;
+  letter-spacing: 2px;
+  text-align: left;
+  font-size: 14px !important;
 }
 .isactive{
-  background-color: #fe6c00;
-}
-.isactive p{
-  color: #fff!important;
+  background-color: rgba(254,108,0,.8);
 }
 .alertActiveDetial{
   border-radius: 9px;

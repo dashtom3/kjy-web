@@ -66,5 +66,9 @@ export default{
     today.setSeconds(0)
     today.setMilliseconds(0)
     return today
+  },
+  getDateStr: function (time) {
+    var temp = new Date(parseInt(time))
+    return temp.getFullYear() + '-' + (temp.getMonth() + 1) + '-' + temp.getDate()
   }
 }
