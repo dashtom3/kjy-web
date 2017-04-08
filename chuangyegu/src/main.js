@@ -17,7 +17,16 @@ Vue.config.productionTip = false
 // }).$mount('')
 //
 // router.push({ path: '/index' })
-
+Vue.filter('dateMM', function (time) {
+  return new Date(parseInt(time)).getMonth() + 1 + '月'
+})
+Vue.filter('dateDay', function (time) {
+  return new Date(parseInt(time)).getDate() + 1
+})
+Vue.filter('dateAll', function (time) {
+  var temp = new Date(parseInt(time))
+  return temp.getFullYear() + '/' + (temp.getMonth() + 1) + '/' + temp.getDate() + ' ' + temp.getHours() + ':' + temp.getMinutes()
+})
 new Vue({
   el: '#app',
   render: h => h(App),
