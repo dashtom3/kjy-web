@@ -32,7 +32,7 @@
               <li>
                 <div class="newint" style="margin-right:50px;">
                   <span>{{newslist[0].date | time}}</span><br>
-                  <span v-html="newslist[0].content.slice(0,100)"></span>
+                  <p v-html="newslist[0].content.slice(0,100)"></p>
                 </div>
                 <div class="gonews">
                   <a v-bind:href="'/newsDetail/' + newslist[0].id" target=_blank>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="newint" style="margin-left:50px;">
                   <span>{{newslist[1].date | time}}</span><br>
-                  <span v-html="newslist[1].content.slice(0,100)"></span>
+                  <p v-html="newslist[1].content.slice(0,100)"></p>
                 </div>
               </li>
             </ol>
@@ -322,6 +322,7 @@ export default {
   position: relative;
   /*top: -55px;*/
   overflow: hidden;
+  padding: 5px;
 }
 .newint,.img{
   display: inline-block;
@@ -334,16 +335,14 @@ export default {
   transition: opacity .5s;
 }
 .newint span:nth-child(1){
-  font-family: "FZLTXHK";
   color: rgb( 254, 108, 0 );
   text-align: center;
-  font-size: 15px;
+  font-size: 14px;
   display: inline-block;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
-.newint span:last-child{
-  font-size: 11.25px;
-  font-family: "HiraginoSansGB";
+.newint p{
+  font-size: 12px;
   color: rgb( 0, 0, 0 );
   text-align: left;
 }

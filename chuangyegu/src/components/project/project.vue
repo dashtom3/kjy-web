@@ -29,26 +29,6 @@
                   <td class="color999">
                       需求：人才&nbsp;&nbsp;| 项目来源：个人  &nbsp;&nbsp;|&nbsp;&nbsp;项目类型：文化创意组和服务咨询</td>
                 </tr>
-                <tr style="height:10px"></tr>
-                <tr class="tr_hidden tr122">
-                  <td class="case_info">随着微信平台的人气暴涨，微信宣传已经成为了商家不惜花重金打造的一块宣传宝地。但是基础的微信功能并不能满足商家的需要，进阶的功能又需要一定的后台开发能力。本项目就将致力于帮助用户快速建立优质的、个性化的微信平台。商家在我们提供的投票、抽奖、预约、微网站...</td>
-                  <td align="center" valign="top">&nbsp;</td>
-                </tr>
-              </tbody>
-            </table>
-        </span><span class="dateState">2016-12-12<br>
-            <a href="javascript:void(0)" class="state">已截止</a>
-        </span>
-        </li>
-        <li><span class="projectName">
-          [<i>NO.1</i>]<b>这是一个项目对接这是一个项目对接</b>
-          <table class="tab_cont">
-              <tbody>
-                <tr class="tr_hidden tr122">
-                  <td class="color999">
-                      需求：人才&nbsp;&nbsp;| 项目来源：个人  &nbsp;&nbsp;|&nbsp;&nbsp;项目类型：文化创意组和服务咨询</td>
-                </tr>
-                <tr style="height:10px"></tr>
                 <tr class="tr_hidden tr122">
                   <td class="case_info">随着微信平台的人气暴涨，微信宣传已经成为了商家不惜花重金打造的一块宣传宝地。但是基础的微信功能并不能满足商家的需要，进阶的功能又需要一定的后台开发能力。本项目就将致力于帮助用户快速建立优质的、个性化的微信平台。商家在我们提供的投票、抽奖、预约、微网站...</td>
                   <td align="center" valign="top">&nbsp;</td>
@@ -163,24 +143,24 @@ export default {
   margin: 0 auto;
 }
 .projectTitle h2{
-  font-size: 22.51px;
-  font-family: "Adobe Heiti Std";
+  font-size: 18px;
   color: rgb( 254, 108, 0 );
   /*line-height: 0.001;*/
-  border-bottom: 2px solid;
+  border-bottom: 1px solid;
+  font-weight: normal;
+  padding: 10px 0px 10px 0px;
+  letter-spacing: 3px;
 }
 .tab_cont{
   display: none;
 }
 i{
   font-style: normal;
-  font-size: 18.75px;
-  font-family: "Adobe Heiti Std";
+  font-size: 14px;
   color: #fe6c00;
 }
 b{
-  font-size: 18.76px;
-  font-family: "Adobe Heiti Std";
+  font-size: 14px;
   color: rgba( 0, 0, 0, 0.8 );
 }
 .filter{
@@ -193,11 +173,10 @@ b{
   overflow: hidden;
 }
 dt{
-  font-size: 18.08px;
-  font-family: "Adobe Heiti Std";
+  font-size: 14px;
   color: rgb( 0, 0, 0 );
   text-align: center;
-  font-weight: bold;
+  padding-top: 6px;
 }
 .filter dt,dd{
   float: left;
@@ -208,9 +187,9 @@ dd{
   border-radius: 16px;
   background-color: rgb( 238, 238, 238 );
   width: 82px;
-  height: 32px;
+  height: 30px;
   text-align: center;
-  line-height: 32px;
+  line-height: 30px;
   overflow: hidden;
 }
 dd a{
@@ -238,8 +217,7 @@ dd a{
 }
 .filter dl a{
   color: #fff;
-  font-size: 13.56px;
-  font-family: "Adobe Heiti Std";
+  font-size: 12px;
 }
 .filter dl a.active{
   background-color: rgb( 254, 108, 0 );
@@ -267,23 +245,21 @@ dd a{
 .projectCon ul li:nth-child(1){
   border-radius: 16px;
   background-color: rgb( 254, 108, 0 );
-  height: 33px;
-  line-height: 33px;
+  height: 30px;
+  line-height: 30px;
   color: #fff;
   overflow: hidden;
   margin-bottom: 45px;
 }
 .projectCon ul li:nth-child(1) span{
-  font-size: 20px!important;
-  font-family: "Adobe Heiti Std";
+  font-size: 14px!important;
   color: rgb( 255, 255, 255 )!important;
 }
 .projectCon ul li span:nth-child(1){
   float: left;
   padding-left: 25px;
-  font-size: 20px;
+  font-size: 18px;
   width: 80%;
-  font-family: "Adobe Heiti Std";
   color: rgba( 0, 0, 0, 0.8 );
 }
 .projectName:before{
@@ -316,15 +292,12 @@ th td:nth-child(2){
   padding-right: 25px;
 }
 table tr:nth-child(1) td{
-  font-size: 12.5px;
-  font-weight: 600;
-  font-family: "FZLTXHK";
+  font-size: 12px;
   color: rgb( 0, 0, 0 );
 }
 table tr:nth-child(2) td{
   font-size: 12px;
   line-height: 28px;
-  font-family: "微软雅黑";
   color: #888;
 }
 .state{
@@ -338,6 +311,6 @@ table tr:nth-child(2) td{
   color:#fff;
 }
 .case_info{
-  font-size: 11.25px;
+  font-size: 12px;
 }
 </style>

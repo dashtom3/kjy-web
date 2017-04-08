@@ -1,37 +1,27 @@
 <template>
     <div class="header">
       <div class="logo">
-        <a href="javascript:;" v-on:click="goIndex"> &nbsp;&nbsp;<img src="../images/logo.jpg" alt=""></a>
+        <a v-bind:href="'/index'" > &nbsp;&nbsp;<img src="../images/logo.jpg" alt=""></a>
       </div>
       <div class="nav">
         <span>本站导航<i class="icon"></i></span>
         <ul tab>
           <li class="tab-item" v-for="header in data"><router-link v-bind:to=header[0]><a href="javascript:;">{{header[1]}}</a></router-link></li>
-          <!-- <li class="tab-item"><router-link to="/"><a href="javascript:;">项目活动</a></router-link></li>
-          <li class="tab-item"><router-link to="/services"><a href="javascript:;">创业服务</a></router-link></li>
-          <li class="tab-item"><router-link to="/project"><a href="javascript:;">项目对接</a></router-link></li>
-          <li class="tab-item"><router-link to="/videos"><a href="javascript:;">慕课(MOOC)</a></router-link></li>
-          <li class="tab-item"><router-link to="/services"><a href="javascript:;">合作与联系</a></router-link></li>
-          <li class="tab-item"><router-link to="/download"><a href="javascript:;">资料下载</a></router-link></li>
-          <li class="tab-item"><router-link :to=isLogin><a href="javascript:;">个人页面</a></router-link></li> -->
         </ul>
       </div>
     </div>
 </template>
 
 <script>
-import global from '../global/global'
+// import global from '../global/global'
 export default {
   data () {
     return {
-      data: [['/index', '首页'], ['/news', '新闻中心'], ['/notices', '通知公告'], ['/videos', '慕课(MOOC)'], ['/services', '活动预约'], ['/index', '合作与联系'], ['/download', '资料下载'], ['/personal', '登录·注册']],
+      data: [['/index', '首页'], ['/news', '新闻中心'], ['/notices', '通知公告'], ['/videos', '慕课(MOOC)'], ['/services', '活动预约'], ['/area', '场地预约'], ['/photowall', '照片墙'], ['/download', '资料下载'], ['/personal', '登录·注册']],
       isLogin: '/login'
     }
   },
   methods: {
-    goIndex: function () {
-      global.goPath(this, 'index')
-    }
   },
   mounted () {
     var data = Date.parse(new Date()) / 1000
