@@ -16,6 +16,7 @@
           </select> -->
           <el-select v-model="select" placeholder="请选择"  @change="selectCampus(select)">
             <el-option
+              :key="campus"
               v-for="(campu, index) in campus"
               :value=index
               :label=campu>
@@ -24,6 +25,7 @@
           <span style="margin-left:68px;">年级</span>
           <el-select v-model="collage" placeholder="请选择">
             <el-option
+              :key="collage"
               v-for="(collage, index) in collages"
               :value=index
               :label=collage>
@@ -42,6 +44,7 @@
               <span>项目类别</span>
               <el-select v-model="projectKind" placeholder="请选择">
                 <el-option
+                  :key="projectKind"
                   v-for="(projectKind, index) in projectKinds"
                   :label=projectKind
                   :value=index>

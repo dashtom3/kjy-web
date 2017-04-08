@@ -16,7 +16,7 @@
               :key="campu"
               v-for="(campu, index) in campus"
               :label=campu.data
-              :value=campu>
+              :value=campu.value>
             </el-option>
           </el-select>
         </div>
@@ -25,22 +25,22 @@
           <div class="place">
             <input type="text" v-model="areaMsg.eventName" required placeholder="活动名称"><br><br>
             <span>租借场地类型</span>
-            <el-select v-model="place" placeholder="请选择">
+            <el-select v-model="areaMsg.rentalPlace" placeholder="请选择" v-on:change="selectRentalPlace">
               <el-option
                 :key="place"
                 v-for="(place, index) in places"
                 :label=place
-                :value=index>
+                :value=place>
               </el-option>
             </el-select>
-            <textarea name="name" rows="8" cols="80" placeholder="活动内容简介"></textarea>
+            <textarea name="name" v-model="areaMsg.eventContent" rows="8" cols="80" placeholder="活动内容简介"></textarea>
           </div>
           <div class="yulan">
             <div class="tu">
               <span class="date">场地图片预览</span>
             </div>
             <div>
-              <img src="../images/poster.png" alt="">
+              <img :src="showImgSrc" alt="">
             </div>
           </div>
           <div class="">
@@ -57,18 +57,18 @@
             <div class="" style="width:200px;vertical-align:top;">
               <span class="date">活动时间段</span>
             </div>
-            <div>
+            <div class="selecttime">
               <div class="">
-                <input type="checkbox" name="time" id="time1" value=""><label for="time1" style="margin-right:78px">8:00-10:00</label>
-                <input type="checkbox" name="time" id="time2" value=""><label for="time2">10:00-12:00</label>
-                <input type="checkbox" name="time" id="time3" value=""><label for="time3">12:00-13:30</label>
-                <input type="checkbox" name="time" id="time4" value=""><label for="time4">13:30-15:00</label>
+                <input type="checkbox" v-model="areaMsg.useTimeId" name="time" id="time1" value="1"><label for="time1" style="margin-right:78px">8:00-10:00</label>
+                <input type="checkbox" v-model="areaMsg.useTimeId" name="time" id="time2" value="2"><label for="time2">10:00-12:00</label>
+                <input type="checkbox" v-model="areaMsg.useTimeId" name="time" id="time3" value="3"><label for="time3">12:00-13:30</label>
+                <input type="checkbox" v-model="areaMsg.useTimeId" name="time" id="time4" value="4"><label for="time4">13:30-15:00</label>
               </div>
               <div>
-                <input type="checkbox" name="time" id="time5" value=""><label for="time5">15:00-17:00</label>
-                <input type="checkbox" name="time" id="time6" value=""><label for="time6">17:00-18:30</label>
-                <input type="checkbox" name="time" id="time7" value=""><label for="time7">18:30-20:00</label>
-                <input type="checkbox" name="time" id="time8" value=""><label for="time8">20:00-22:00</label>
+                <input type="checkbox" v-model="areaMsg.useTimeId" name="time" id="time5" value="5"><label for="time5">15:00-17:00</label>
+                <input type="checkbox" v-model="areaMsg.useTimeId" name="time" id="time6" value="6"><label for="time6">17:00-18:30</label>
+                <input type="checkbox" v-model="areaMsg.useTimeId" name="time" id="time7" value="7"><label for="time7">18:30-20:00</label>
+                <input type="checkbox" v-model="areaMsg.useTimeId" name="time" id="time8" value="8"><label for="time8">20:00-22:00</label>
               </div>
             </div>
           </div>
@@ -76,24 +76,24 @@
             <div class="" style="width:200px;vertical-align:top;">
               <span class="date">活动所需器材</span>
             </div>
-            <div class="">
+            <div class="selectequipment">
               <div class="">
-                <input type="checkbox" name="equipment" id="equipment1" value=""><label for="equipment1" style="margin-right:104px">会议室</label>
-                <input type="checkbox" name="equipment" id="equipment2" value=""><label for="equipment2" style="margin-right:116px;">茶几</label>
-                <input type="checkbox" name="equipment" id="equipment3" value=""><label for="equipment3" style="margin-right:62px;">多媒体投影仪</label>
-                <input type="checkbox" name="equipment" id="equipment4" value=""><label for="equipment4">触摸演示屏</label>
+                <input type="checkbox" v-model="areaMsg.eventEquipment" id="equipment1" value="会议室"><label for="equipment1" style="margin-right:104px">会议室</label>
+                <input type="checkbox" v-model="areaMsg.eventEquipment" id="equipment2" value="茶几"><label for="equipment2" style="margin-right:116px;">茶几</label>
+                <input type="checkbox" v-model="areaMsg.eventEquipment" id="equipment3" value="多媒体投影仪"><label for="equipment3" style="margin-right:62px;">多媒体投影仪</label>
+                <input type="checkbox" v-model="areaMsg.eventEquipment" id="equipment4" value="触摸演示屏"><label for="equipment4">触摸演示屏</label>
               </div>
               <div class="">
-                <input type="checkbox" name="equipment" id="equipment5" value=""><label for="equipment5" style="margin-right:39px;">茶点(付费或自带)</label>
-                <input type="checkbox" name="equipment" id="equipment6" value=""><label for="equipment6" style="margin-right:15px;">CD DVD卡带(请自带)</label>
-                <input type="checkbox" name="equipment" id="equipment7" value=""><label for="equipment7">其他</label>
+                <input type="checkbox" v-model="areaMsg.eventEquipment" id="equipment5" value="茶点(付费或自带)"><label for="equipment5" style="margin-right:39px;">茶点(付费或自带)</label>
+                <input type="checkbox" v-model="areaMsg.eventEquipment" id="equipment6" value="CD DVD卡带(请自带)"><label for="equipment6" style="margin-right:15px;">CD DVD卡带(请自带)</label>
+                <input type="checkbox" v-model="areaMsg.eventEquipment" id="equipment7" value="其他"><label for="equipment7">其他</label>
               </div>
             </div>
           </div>
           <div class="upload">
             <div class="uploadleft">
               <div class="">
-                <img src="" alt="">
+                <img :src=posterImgSrc alt="">
               </div>
             </div>
             <div class="a-upload" v-on:change="uploadPoster">
@@ -108,7 +108,7 @@
             <h5>①请提前3日预约14日内的场地 ②必须上传活动海报后才能审核通过</h5>
           </div>
           <div class="tj">
-            <a href="javascript:;" v-on:click="subArea">提交</a>
+            <a href="javascript:;" v-on:click="submitAreaMsg">提交</a>
           </div>
         </div>
       </div>
@@ -120,60 +120,117 @@
 <script>
 import header from './header'
 import footer from './footer'
+import axios from 'axios'
+import global from '../global/global'
+import hddt from '../images/hddt.jpg'
+import hys1 from '../images/hys1.jpg'
+import hys2 from '../images/hys2.jpg'
+import hys3 from '../images/hys3.jpg'
+import hys4 from '../images/hys4.jpg'
+import ydmzwt from '../images/ydmzwt.jpg'
+import bfyyhys from '../images/bfyyhys.jpg'
+import lstvhys from '../images/lstvhys.jpg'
+import qqhys from '../images/qqhyq.jpg'
+import sfhys from '../images/sfhyq.jpg'
+import dsyhys from '../images/dsyhyq.jpg'
+import hwwt from '../images/hwwt.jpg'
 export default {
   name: 'area',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
       campus: [
-        { data: '四平校区', val: 1 },
-        { data: '嘉定校区', val: 2 }
+        { data: '四平校区', value: 1 },
+        { data: '嘉定校区', value: 2 }
       ],
-      places: '',
-      place: '',
-      value: '',
-      campu: '',
-      value1: '',
       places1: ['活动大厅', '会议室1', '会议室2', '会议室3', '会议室4', '移动木制舞台'],
+      placesOneimg: [hddt, hys1, hys2, hys3, hys4, ydmzwt],
       places2: ['暴风影音会议室', '乐视TV会议室(可与暴风影音会议室合借)', '秋千会议区', '沙发会议区', '大师椅会议区', '户外舞台'],
+      placestwoimg: [bfyyhys, lstvhys, qqhys, sfhys, dsyhys, hwwt],
+      showImgSrc: null,
+      posterImgSrc: null,
       areaMsg: {
         applyUnit: null,
         contactName: null,
         contactPhone: null,
         mobilePhone: null,
         useDateStr: null,
-        useTimeId: null,
+        useTimeId: [],
         eventName: null,
         eventContent: null,
-        campus: null,
+        campus: 1,
         rentalPlace: null,
-        eventEquipment: null,
+        eventEquipment: [],
         otherEquipment: null,
         file: null
       }
     }
   },
   methods: {
-    selectCampus: function (value) {
-      if (value.val === 1) {
+    selectCampus: function () {
+      if (this.areaMsg.campus === 1) {
         this.places = this.places1
+        this.areaMsg.rentalPlace = '活动大厅'
       } else {
         this.places = this.places2
+        this.areaMsg.rentalPlace = '暴风影音会议室'
       }
     },
     selectPlace: function (value) {
       console.log(value)
     },
+    format (val) {
+      var month = new Date(val).getMonth() + 1
+      var date = new Date(val).getDate()
+      if (month < 10) {
+        month = '0' + month
+      }
+      if (date < 10) {
+        date = '0' + date
+      }
+      return new Date(val).getFullYear() + '-' + month + '-' + date
+    },
     // 上传海报
     uploadPoster () {
       this.areaMsg.file = document.getElementById('file').files[0]
+      if (window.FileReader) {
+        var reader = new FileReader()
+        var self = this
+        reader.readAsDataURL(this.areaMsg.file)
+        reader.onloadend = function (e) {
+          self.posterImgSrc = e.target.result
+        }
+      }
     },
-    subArea () {
+    // 场地图片预览
+    selectRentalPlace () {
+      var index
+      if (this.areaMsg.campus === 1) {
+        index = this.places1.indexOf(this.areaMsg.rentalPlace)
+        this.showImgSrc = this.placesOneimg[index]
+      } else {
+        index = this.places2.indexOf(this.areaMsg.rentalPlace)
+        this.showImgSrc = this.placestwoimg[index]
+      }
+    },
+    submitAreaMsg () {
+      this.areaMsg.eventEquipment = this.areaMsg.eventEquipment.join('、')
+      this.areaMsg.useTimeId = this.areaMsg.useTimeId.join(',')
+      this.areaMsg.useDateStr = this.format(this.areaMsg.useDateStr)
       console.log(this.areaMsg)
+      var self = this
+      axios.post(global.baseUrl + 'event/add', global.postHttpDataWithToken(this.areaMsg))
+      .then((res) => {
+        console.log(res)
+        if (res.data.callStatus === 'SUCCEED') {
+          global.success(self, '申请成功请等待审核', '/')
+        }
+      })
     }
   },
   created () {
-    this.places = this.places1
+    this.selectCampus()
+    this.selectRentalPlace()
   },
   components: {
     'v-footer': footer,
@@ -250,7 +307,7 @@ input:-ms-input-placeholder{
   top:-180px;
 }
 .yulan div:nth-child(2) img{
-  width: 350px;
+  max-width: 350px;
   height: 200px;
 }
 .card span{
@@ -337,6 +394,8 @@ h2{
   margin: 5px;
   height: 95%;
   background-color: #fff;
+  text-align: center;
+  overflow: hidden;
 }
 .a-upload {
     padding: 4px 10px;
