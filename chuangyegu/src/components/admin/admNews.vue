@@ -49,48 +49,51 @@
     </div>
 
     <!-- 发布新闻 -->
-    <el-dialog :title="alertTitle" v-model="newsMsgShow" size="small">
-      <el-row type="flex" class="row-bg" justify="space-between">
-      <el-form :model="addNewsMsg">
-        <el-col :span="5"><div class="grid-content bg-purple">
-          <el-upload
-            class="avatar-uploader"
-            :action=uploadUrl
-            :show-file-list="false"
-            :on-success="handleAvatarScucess">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-        </div><p style="text-align:center">上传新闻缩略图</p></el-col>
-          <el-col :span="18"><div class="grid-content bg-purple">
-             <el-form-item label="新闻名称" :label-width="formLabelWidth">
-               <el-input v-model="addNewsMsg.title" required auto-complete="off"></el-input>
-             </el-form-item>
-             <el-form-item label="新闻内容" :label-width="formLabelWidth">
-               <quill-editor ref="myTextEditor"
-                :content="addNewsMsg.content"
-                :config="editorOption"
-                @change="onEditorChange($event)"
-                @onImageUpload="imgUpload($event)">
-              </quill-editor>
-             </el-form-item>
-           </div></el-col>
-           </el-form>
-             </el-row>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="newsMsgShow = false">取 消</el-button>
-        <el-button type="button" @click="addNews" v-if="addNewShow">确 定</el-button>
-        <el-button type="button" @click="editNews" v-if="editNewShow">确 定</el-button>
-      </span>
-    </el-dialog>
+    <div class="alertBg" v-show="newsMsgShow">
+      <div :title="alertTitle" size="small" class="alertBgContent">
+        <el-row type="flex" class="row-bg" justify="space-between">
+        <el-form :model="addNewsMsg">
+          <el-col :span="5"><div class="grid-content bg-purple">
+            <el-upload
+              class="avatar-uploader"
+              :action=uploadUrl
+              :show-file-list="false"
+              :on-success="handleAvatarScucess">
+              <img v-if="imageUrl" :src="imageUrl" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </div><p style="text-align:center">上传新闻缩略图</p></el-col>
+            <el-col :span="18"><div class="grid-content bg-purple">
+               <el-form-item label="新闻名称" :label-width="formLabelWidth">
+                 <el-input v-model="addNewsMsg.title" required auto-complete="off"></el-input>
+               </el-form-item>
+               <el-form-item label="新闻内容" :label-width="formLabelWidth">
+                 <!-- <el-row :gutter="100"> -->
+                   <vue-summernote ref="editer"></vue-summernote>
+                 <!-- </el-row> -->
+                 <!-- <quill-editor ref="myTextEditor"
+                  :content="addNewsMsg.content"
+                  :config="editorOption"
+                  @change="editorChange($event)"
+                  @onImageUpload="imgUpload($event)">
+                </quill-editor> -->
+               </el-form-item>
+             </div></el-col>
+             </el-form>
+               </el-row>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="newsMsgShow = false">取 消</el-button>
+          <el-button type="button" @click="addNews" v-if="addNewShow">确 定</el-button>
+          <el-button type="button" @click="editNews" v-if="editNewShow">确 定</el-button>
+        </span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-  import { quillEditor } from 'vue-quill-editor'
   import axios from 'axios'
   import global from '../../global/global'
-  import tableData from './testProject.js'
   export default {
     data () {
       return {
@@ -100,7 +103,7 @@
         newsMsgShow: false,
         editNewShow: false,
         addNewShow: true,
-        tableData,
+        tableData: null,
         imageUrl: '',
         addNewsMsg: {
           title: null,
@@ -169,6 +172,7 @@
       },
       // 上传缩略图
       handleAvatarScucess (res, file) {
+        console.log(res)
         this.imageUrl = URL.createObjectURL(file.raw)
         this.addNewsMsg.pic = res.data
       },
@@ -185,7 +189,7 @@
           }
         })
       },
-      onEditorChange ({ editor, html, text }) {
+      editorChange ({ editor, html, text }) {
         console.log(editor, html, text)
         this.addNewsMsg.content = html
       },
@@ -195,6 +199,7 @@
 
       // 添加新闻
       addNewsAlert () {
+        this.alertTitle = '添加新闻'
         this.newsMsgShow = true
         if (this.addNewsMsg.id) {
           this.addNewsMsg.id = null
@@ -228,8 +233,16 @@
         })
       }
     },
-    components: {
-      quillEditor
+    mounted () {
+      const self = this
+      const editer = self.$refs.editer
+      editer.$on('onImageUpload', function (files) {
+        console.log(files[0])
+        // 这里做上传图片的操作，上传成功之后便可以用到下面这句将图片插入到编辑框中
+      })
+      editer.$on('onChange', function (contents) {
+        console.log('onChange:', contents)
+      })
     }
   }
 </script>
@@ -247,6 +260,32 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
+}
+.alertBg{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0,0,0,.5);
+  z-index: 999;
+}
+.alertBgContent{
+  width: 50%;
+  position: absolute;
+  top: 10%;
+  left: 20%;
+  margin: 20px auto;
+  background: #fff;
+}
+.alertBgContent .el-form{
+  padding: 20px;
+}
+.alertBgContent .el-upload__input{
+  display: none
+}
+.modal-backdrop{
+  z-index: 99;
 }
 .avatar-uploader .el-upload:hover {
   border-color: #20a0ff;

@@ -2,31 +2,20 @@
   <div class="testUser">
     <div class="function">
       <el-row>
-        <el-radio-group v-model="radio2" @change="radioKind(radio2)">
+        <el-radio-group v-model="userlistMsg.identity" @change="radioKind(userlistMsg.identity)">
           <el-radio :label="1">企业</el-radio>
           <el-radio :label="2">个人</el-radio>
           <el-radio :label="3">老师(校内)</el-radio>
           <el-radio :label="4">学生(校内)</el-radio>
         </el-radio-group>
-        <!-- <el-col :span="4">
-          <div class="grid-content bg-purple">
-            <el-input
-              placeholder="请输入用户ID名称"
-              icon="search"
-              v-model="input">
-            </el-input>
-          </div>
-        </el-col>
-        <el-col :span="20">
-          <el-button type="primary">新建用户测试</el-button>
-        </el-col> -->
       </el-row>
     </div>
     <div id="table">
       <!-- 企业 -->
       <el-table
-        :data="tableData"
+        :data="userlist"
         stripe
+        border
         style="width: 100%" v-show="company">
         <el-table-column
           prop="companyName"
@@ -44,21 +33,24 @@
           prop="registTime"
           label="注册时间">
         </el-table-column>
-        <el-table-column
-          :context="_self"
-          inline-template
-          label="操作">
-          <span>
-            <el-button @click="handleClick(id)" type="text" size="small">查看</el-button>
-            <el-button type="text" size="small">编辑</el-button>
-          </span>
+        <el-table-column label="操作">
+          <template scope="scope">
+            <el-button
+              size="small"
+              @click="userDetail(scope.row.id)">查看</el-button>
+            <el-button
+              size="small"
+              type="danger"
+              @click="onDelClick(scope.row.id)">删除</el-button>
+          </template>
         </el-table-column>
       </el-table>
 
       <!-- 个人 -->
       <el-table
-        :data="tableData"
+        :data="userlist"
         stripe
+        border
         style="width: 100%" v-show="personal">
         <el-table-column
           prop="name"
@@ -80,21 +72,24 @@
           prop="registTime"
           label="注册时间">
         </el-table-column>
-        <el-table-column
-          :context="_self"
-          inline-template
-          label="操作">
-          <span>
-            <el-button @click="handleClick(id)" type="text" size="small">查看</el-button>
-            <el-button type="text" size="small">编辑</el-button>
-          </span>
+        <el-table-column label="操作">
+          <template scope="scope">
+            <el-button
+              size="small"
+              @click="userDetail(scope.row.id)">查看</el-button>
+            <el-button
+              size="small"
+              type="danger"
+              @click="onDelClick(scope.row.id)">删除</el-button>
+          </template>
         </el-table-column>
       </el-table>
 
       <!-- 老师 -->
       <el-table
-        :data="tableData"
+        :data="userlist"
         stripe
+        border
         style="width: 100%" v-show="teacher">
         <el-table-column
           prop="id"
@@ -112,21 +107,24 @@
           prop="registTime"
           label="注册时间">
         </el-table-column>
-        <el-table-column
-          :context="_self"
-          inline-template
-          label="操作">
-          <span>
-            <el-button @click="handleClick(id)" type="text" size="small">查看</el-button>
-            <el-button type="text" size="small">编辑</el-button>
-          </span>
+        <el-table-column label="操作">
+          <template scope="scope">
+            <el-button
+              size="small"
+              @click="userDetail(scope.row.id)">查看</el-button>
+            <el-button
+              size="small"
+              type="danger"
+              @click="onDelClick(scope.row.id)">删除</el-button>
+          </template>
         </el-table-column>
       </el-table>
 
       <!-- 学生 -->
       <el-table
-        :data="tableData"
+        :data="userlist"
         stripe
+        border
         style="width: 100%" v-show="student">
         <el-table-column
           prop="id"
@@ -148,71 +146,105 @@
           <template scope="scope">
             <el-button
               size="small"
-              type="text"
-              @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+              @click="userDetail(scope.row.id)">查看</el-button>
             <el-button
               size="small"
-              type="text"
-              @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+              type="danger"
+              @click="onDelClick(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <div class="admimBlock">
         <el-pagination
           @current-change="handleCurrentChange"
-          :current-page="pages.currentPage"
+          :current-page="userlistMsg.pageNum"
           layout="prev, pager, next"
-          :total="pages.totalNumber">
+          :page-count="userlistMsg.totalPage">
         </el-pagination>
+      </div>
+
+      <div class="userDetailAlert" v-if="userDetailAlert">
+        <div class="userDetailAlertContent">
+          <div class="center">
+            <span>登录名:</span><span>&nbsp;{{userDetailMsg.loginName}}</span>
+          </div>
+          <div class="center">
+            <span>用户名:</span><span>&nbsp;{{userDetailMsg.name}}</span>
+          </div>
+          <div class="center">
+            <span>电话:</span><span>&nbsp;{{userDetailMsg.phone}}</span>
+          </div>
+          <div class="center">
+            <span>邮箱:</span><span>&nbsp;{{userDetailMsg.email}}</span>
+          </div>
+          <div class="center">
+            <span>注册时间:</span><span>&nbsp;{{userDetailMsg.registTime | time}}</span>
+          </div>
+          <span class="close" v-on:click="userDetailAlert = false">×</span>
+          <el-button v-on:click="userDetailAlert = false" style="text-align:center;margin-bottom:20px;">关闭</el-button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import tableData from './testProject.js'
 import axios from 'axios'
 import global from '../../global/global'
 export default {
   data () {
     return {
-      input: '',
-      radio2: 1,
       company: true,
       personal: false,
       teacher: false,
       student: false,
-      tableData,
-      pages: '',
-      changePage: function (val) {
-        var self = this
-        axios.get(global.baseUrl + 'user/getUserList?token=' + localStorage.token + '&identity=' + this.radio2 + '&pageNum=' + val)
-        .then((res) => {
-          console.log(res)
-          for (let i in res.data.data) {
-            res.data.data[i].registTime = self.timeFilter(res.data.data[i].registTime)
-          }
-          self.tableData = res.data.data
-          self.pages = res.data
-        })
+      userDetailAlert: false,
+      userlist: null,
+      userDetailMsg: null,
+      userlistMsg: {
+        identity: 1,
+        phone: null,
+        email: null,
+        companyName: null,
+        name: null,
+        totalPage: null,
+        pageNum: 1
       }
     }
   },
   created () {
-    var self = this
-    axios.get(global.baseUrl + 'user/getUserList?token=' + localStorage.token + '&identity=' + this.radio2)
-    .then((res) => {
-      console.log(res)
-      for (let i in res.data.data) {
-        res.data.data[i].registTime = self.timeFilter(res.data.data[i].registTime)
-      }
-      self.tableData = res.data.data
-      self.pages = res.data
-    })
+    this.getUserList(this.userlistMsg)
   },
   methods: {
+    getUserList (args) {
+      var self = this
+      axios.get(global.baseUrl + 'user/getUserList?token=' + global.getToken() + global.getHttpData(args))
+      .then((res) => {
+        for (let i in res.data.data) {
+          res.data.data[i].registTime = self.timeFilter(res.data.data[i].registTime)
+        }
+        self.userlist = res.data.data
+        self.userlistMsg.totalPage = res.data.totalPage
+        self.userlistMsg.pageNum = res.data.currentPage
+      })
+    },
     handleCurrentChange (val) {
-      this.changePage(val)
+      this.userlistMsg.pageNum = val
+      this.getUserList(this.userlistMsg)
+    },
+    userDetail (id) {
+      console.log(id)
+      var self = this
+      this.userDetailAlert = true
+      axios.get(global.baseUrl + 'user/getById?userId=' + id + '&token=' + global.getToken())
+      .then((res) => {
+        // console.log(res)
+        self.userDetailMsg = res.data.data
+        console.log(self.userDetailMsg)
+      })
+    },
+    onDelClick (id) {
+      console.log(id)
     },
     handleEdit (index, row) {
       console.log(index, row)
@@ -224,9 +256,9 @@ export default {
       return new Date(parseInt(value)).getFullYear() + '-' + (new Date(parseInt(value)).getMonth() + 1) + '-' + new Date(parseInt(value)).getDate()
     },
     radioKind: function (index) {
-      console.log(index)
-      this.radio2 = index
-      this.changePage(1)
+      this.userlistMsg.identity = index
+      this.userlistMsg.pageNum = 1
+      this.getUserList(this.userlistMsg)
       if (index === 1) {
         this.company = true
         this.personal = false
@@ -257,5 +289,51 @@ export default {
 .admimBlock{
   float: right;
   margin-top: 20px;
+}
+.userDetailAlert{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 999;
+}
+.userDetailAlertContent{
+  position: absolute;
+  top: 15%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  width: 50%;
+  text-align: center;
+  /*height: 500px;*/
+  margin: 0 auto;
+  border-radius: 6px;
+}
+.close{
+  font-size: 20px;
+  position: absolute;
+  right: 10px;
+  top: 0;
+}
+.close:hover{
+  cursor: pointer;
+}
+.center{
+  text-align: center;
+  margin: 20px auto;
+  width: 300px;
+}
+.center span:nth-child(1){
+  display: inline-block;
+  float: left;
+  text-align: left;
+  width: 80px;
+}
+.center span:nth-child(2){
+  display: inline-block;
+  text-align: left;
+  width: 100px;
 }
 </style>

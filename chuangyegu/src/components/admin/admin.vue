@@ -36,7 +36,8 @@ export default {
         axios.post(global.baseUrl + 'user/login?type=0', adminMsg)
         .then((res) => {
           if (res.data.callStatus === 'SUCCEED') {
-            localStorage.token = res.data.token
+            global.setToken(res.data.token)
+            // localStorage.token = res.data.token
             localStorage.time = ((Date.parse(new Date())) / 1000) + 1800
             // localStorage.username = res.data.data.username
             global.userMsg = res.data.data

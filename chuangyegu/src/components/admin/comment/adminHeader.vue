@@ -11,7 +11,7 @@
                 Admin<i class="el-icon-caret-bottom el-icon--right"></i>
               </span>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>退出</el-dropdown-item>
+                    <el-dropdown-item v-on:click.native="exit">退出</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
         </li>
@@ -19,11 +19,17 @@
 </div>
 </template>
 <script type="text/javascript">
+import global from '../../../global/global'
 export default {
   mounted () {
-    var date = Date.parse(new Date()) / 1000
-    if (!localStorage.token || date > localStorage.time) {
+    if (!global.getToken()) {
       this.$router.push('/admin')
+    }
+  },
+  methods: {
+    exit () {
+      this.$router.push('/admin')
+      global.setToken('')
     }
   }
 }

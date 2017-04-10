@@ -93,7 +93,6 @@
 </template>
 
 <script>
-import tableData from './testProject.js'
 export default {
   data () {
     return {
@@ -102,7 +101,7 @@ export default {
       demand: 1,
       kinds: 1,
       sources: 1,
-      tableData
+      tableData: null
     }
   },
   methods: {

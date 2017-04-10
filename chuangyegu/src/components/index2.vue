@@ -163,7 +163,7 @@
         <div class="about">
             <a v-bind:href="'/about'" target=_blank>
               <span></span>
-              <p>ABOUTS US</p>
+              <p>ABOUT US</p>
               <p>关于我们</p>
             </a>
         </div>
@@ -448,27 +448,9 @@ export default {
 .s7{
   background: url('../images/newactive_05.png');
 }
-/*.s19{
-  background: url('../images/active_19.png') no-repeat;
-}
-.s19:hover{
-  background: url('../images/hover_02.png') no-repeat;
-}
-.s20{
-  background: url('../images/active_20.png') no-repeat;
-}
-.s20:hover{
-  background: url('../images/hover_03_11.jpg') no-repeat;
-}*/
-/*.s14{
-  background: url('../images/active_14.png') no-repeat;
-}
-.s14:hover{
-  background: url('../images/hover_06.png') no-repeat;
-}*/
 .newsContents ul li div.gonews a img{
   width: 125px;
-  top: 45px;
+  top: 55px;
   right: 80px;
   position: absolute;
   z-index: 999;

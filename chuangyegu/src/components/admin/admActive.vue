@@ -34,25 +34,13 @@
           <el-radio :label="7">18:30-20:00</el-radio>
           <el-radio :label="8">20:00-22:00</el-radio>
         </el-radio-group>
-        <!-- <el-col :span="4">
-          <div class="grid-content bg-purple">
-            <el-input
-              placeholder="请输入用户ID名称"
-              icon="search"
-              v-model="input">
-            </el-input>
-          </div>
-        </el-col> -->
-        <!-- <el-col :span="20">
-          <el-button type="primary">新建用户测试</el-button>
-        </el-col> -->
       </el-row>
     </div>
     <div id="table">
       <el-table
         :data="tableData"
         stripe
-        style="width: 100%">
+        border>
         <el-table-column
           prop="eventName"
           label="活动名称">
@@ -81,24 +69,35 @@
           prop="status"
           label="状态">
         </el-table-column>
-        <el-table-column
-          :context="_self"
-          inline-template
-          label="操作">
-          <span>
-            <el-button @click="handleClick" type="text" size="small">通过</el-button>
-            <el-button type="text" size="small">不通过</el-button>
-          </span>
+        <el-table-column label="操作">
+          <template scope="scope">
+            <el-button
+              size="small"
+              @click="adopt(scope.row.id)">通过</el-button>
+            <el-button
+              size="small"
+              type="danger"
+              @click="nopass(scope.row.id)">不通过</el-button>
+          </template>
         </el-table-column>
       </el-table>
       <div class="admimBlock">
         <el-pagination
           @current-change="handleCurrentChange"
-          :current-page="pages.currentPage"
+          :current-page="activeArgs.pageNum"
           layout="prev, pager, next"
-          :total="pages.totalNumber">
+          :page-count="activeArgs.totalPage">
         </el-pagination>
       </div>
+
+      <!-- 提示框 -->
+      <el-dialog :title="eventAlertTitle" v-model="eventAlert" size="tiny">
+        <span slot="footer" class="dialog-footer" style="text-align:center;">
+          <el-button @click="eventAlert = false">取 消</el-button>
+          <el-button type="primary" @click="passEvent" v-if="passShow">确 定</el-button>
+          <el-button type="primary" @click="noPassEvent" v-if="noPassShow">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -115,62 +114,109 @@ export default {
       kinds: 0,
       sources: 0,
       tableData: null,
+      selectUrl: '',
       pages: '',
-      changePage: function (val) {
-        var self = this
-        axios.get(global.baseUrl + 'event/getEventList?token=' + localStorage.token + '&pageNum=' + val)
-        .then((res) => {
-          console.log(res)
-          for (let i in res.data.data) {
-            res.data.data[i].status = self.selectStatus(res.data.data[i].status)
-          }
-          self.tableData = res.data.data
-          self.pages = res.data
-        })
+      eventAlert: false,
+      passShow: false,
+      noPassShow: false,
+      delShow: false,
+      eventAlertTitle: '',
+      activeMsg: {
+        eventId: null,
+        status: null
+      },
+      activeArgs: {
+        numPerPage: 10,
+        pageNum: 1,
+        totalPage: null,
+        status: null,
+        useTimeId: null,
+        rentalPlace: null
       }
     }
   },
   created () {
-    var self = this
-    axios.get(global.baseUrl + 'event/getEventList?token=' + localStorage.token)
-    .then((res) => {
-      console.log(res)
-      for (let i in res.data.data) {
-        res.data.data[i].status = self.selectStatus(res.data.data[i].status)
-      }
-      self.tableData = res.data.data
-      self.pages = res.data
-    })
+    this.getActivelist(this.activeArgs)
   },
   methods: {
-    handleCurrentChange (val) {
-      this.changePage(val)
-    },
-    handleClick: function () {
-      alert('click')
-    },
-    // 筛选
-    select: function () {
-      var url = 'token=' + localStorage.token
-      if (this.verify !== 0) {
-        url += '&status=' + this.verify
-      }
-      if (this.kinds !== 0) {
-        url += '&rentalPlace=' + this.kinds
-      }
-      if (this.sources !== 0) {
-        url += '&useTimeId=' + this.sources
-      }
+    getActivelist (args) {
       var self = this
-      axios.get(global.baseUrl + 'event/getEventList?' + url)
+      axios.get(global.baseUrl + 'event/getEventList?token=' + global.getToken() + '&' + global.getHttpData(args))
       .then((res) => {
-        console.log(res)
         for (let i in res.data.data) {
           res.data.data[i].status = self.selectStatus(res.data.data[i].status)
         }
         self.tableData = res.data.data
-        self.pages = res.data
+        self.activeArgs.pageNum = res.data.currentPage
+        self.activeArgs.totalPage = res.data.totalPage
       })
+      return false
+    },
+    handleCurrentChange (val) {
+      this.activeArgs.pageNum = val
+      this.getActivelist(this.activeArgs)
+    },
+    handleClick: function () {
+      alert('click')
+    },
+    // 设置活动状态
+    eventOption (msg) {
+      var self = this
+      axios.post(global.baseUrl + 'event/verify', global.postHttpDataWithToken(this.activeMsg))
+      .then((res) => {
+        console.log(res)
+        if (res.data.callStatus === 'SUCCEED') {
+          self.eventAlert = false
+          global.success(self, msg, '')
+          self.getActivelist(this.activeArgs)
+        }
+      })
+    },
+
+    // 通过活动
+    adopt (eventId) {
+      this.eventAlert = true
+      this.passShow = true
+      this.noPassShow = false
+      this.delShow = false
+      this.eventAlertTitle = '确认通过吗？'
+      this.activeMsg.eventId = eventId
+      this.activeMsg.status = 2
+    },
+    passEvent () {
+      this.eventOption('通过成功')
+    },
+
+    // 不通过活动
+    nopass (eventId) {
+      this.eventAlert = true
+      this.passShow = false
+      this.noPassShow = true
+      this.delShow = false
+      this.eventAlertTitle = '确认不通过吗？'
+      this.activeMsg.eventId = eventId
+      this.activeMsg.status = 3
+    },
+    noPassEvent () {
+      this.eventOption('设置成功')
+    },
+
+    // 筛选
+    select: function () {
+      this.activeArgs.pageNum = 1
+      this.activeArgs.status = null
+      this.activeArgs.rentalPlace = null
+      this.activeArgs.useTimeId = null
+      if (this.verify !== 0) {
+        this.activeArgs.status = this.verify
+      }
+      if (this.kinds !== 0) {
+        this.activeArgs.rentalPlace = this.kinds
+      }
+      if (this.sources !== 0) {
+        this.activeArgs.useTimeId = this.sources
+      }
+      this.getActivelist(this.activeArgs)
     },
     selectStatus (val) {
       var state

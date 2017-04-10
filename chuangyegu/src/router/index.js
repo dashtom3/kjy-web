@@ -4,33 +4,35 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import VueQuillEditor from 'vue-quill-editor'
 import Router from 'vue-router'
-import index from '@/components/index2'
-import news from '@/components/news/news'
-import newsDetail from '@/components/news/newsDetail'
-import photoWall from '@/components/photoWall'
-import area from '@/components/area'
-import services from '@/components/services'
-import personal from '@/components/personal'
-import contact from '@/components/contact'
-import company from '@/components/company'
-import about from '@/components/about'
-import project from '@/components/project/project'
-import projectDetail from '@/components/project/projectDetail'
-import applyProject from '@/components/project/applyProject'
-import notices from '@/components/notices/notices'
-import noticesDetail from '@/components/notices/noticesDetail'
-import active from '@/components/active'
-import login from '@/components/login'
-import download from '@/components/download'
-import videos from '@/components/videos'
-import admin from '@/components/admin/admin'
-import adm from '@/components/admin/adm'
-import admNews from '@/components/admin/admNews'
-import admUser from '@/components/admin/admUser'
-import admNotice from '@/components/admin/admNotice'
-import admActive from '@/components/admin/admActive'
-import admProject from '@/components/admin/admProject'
-// import test from '@/components/test'
+import index from '../components/index2'
+import news from '../components/news/news'
+import newsDetail from '../components/news/newsDetail'
+import photoWall from '../components/photoWall'
+import area from '../components/area'
+import services from '../components/services'
+import personal from '../components/personal'
+import contact from '../components/contact'
+import company from '../components/company'
+import about from '../components/about'
+import project from '../components/project/project'
+import projectDetail from '../components/project/projectDetail'
+import applyProject from '../components/project/applyProject'
+import notices from '../components/notices/notices'
+import noticesDetail from '../components/notices/noticesDetail'
+import active from '../components/active'
+import login from '../components/login'
+import download from '../components/download'
+import videos from '../components/videos'
+import admin from '../components/admin/admin'
+import adm from '../components/admin/adm'
+import admNews from '../components/admin/admNews'
+import admUser from '../components/admin/admUser'
+import admNotice from '../components/admin/admNotice'
+import admActive from '../components/admin/admActive'
+import admProject from '../components/admin/admProject'
+import admVideo from '../components/admin/admVideo'
+import admFile from '../components/admin/admFiles'
+import test from '../components/test'
 
 Vue.use(Router)
 Vue.use(ElementUI)
@@ -56,6 +58,9 @@ export default new Router({
   routes: [{
     path: '/',
     component: index
+  }, {
+    path: '/test',
+    component: test
   }, {
     path: '/index',
     name: 'index',
@@ -160,6 +165,14 @@ export default new Router({
       path: '/admNotice',
       name: '公告管理',
       component: admNotice
+    }, {
+      path: '/admVideo',
+      name: '视频管理',
+      component: admVideo
+    }, {
+      path: '/admFile',
+      name: '资料管理',
+      component: admFile
     }]
   }]
 })
