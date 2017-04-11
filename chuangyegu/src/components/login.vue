@@ -10,18 +10,18 @@
           <p>and Technology Park</p>
         </div>
         <div class="fromData">
-          <span>登录用户</span>
+          <p>登录用户</p>
           <div class="selectLogin">
             <button type="button" name="button" v-for="(loginKind, index) in selectLogin" :class="{'active':loginKind.active,'unactive':!loginKind.active}" v-on:click="selectKind(loginKind, index)">{{loginKind.data}}</button>
           </div>
           <div class="xn" v-show="xn">
-            <form method="post" action="http://tjis.tongji.edu.cn:58080/amserver/UI/Login?goto=http://www.baidu.com"&gotoOnFail=http://www.baidu.com">
+            <form method="post" action="http://tjis.tongji.edu.cn:58080/amserver/UI/Login?goto=http://chuangyegu.tongji.edu.cn/index.php?classid=6740&action=tj_login&gotoOnFail=http://chuangyegu.tongji.edu.cn/index.php?classid=6740&action=tj_login">
               <div class="loginInput">
                 <input type="text" v-model="xnMessages.loginName" placeholder="账号" name="Login.Token1"><br>
                 <input type="password" v-model="xnMessages.password" name="Login.Token2" placeholder="密码">
               </div>
               <div class="sub">
-                <a href="javascript:;" v-on:click="xnLogin"><input type="submit" value="登录"></a>
+                <a href="javascript:;" v-on:click="xnLogin">登录</a>
               </div>
             </form>
           </div>
@@ -141,8 +141,7 @@ export default {
   top: 30%;
 }
 .loginConLeft p{
-    font-size: 22.5px;
-    font-family: "HelveticaNeue";
+    font-size: 18px;
     color: rgb( 254, 108, 0 );
     line-height: 2.3;
 }
@@ -151,27 +150,32 @@ export default {
   right: 85px;
   top:20%;
 }
+/*<<<<<<< Updated upstream
 .fromData span{
   font-size: 20px;
   display: block;
   margin-bottom: 20px;
   font-family: "Adobe Heiti Std";
+=======*/
+.fromData p{
+  font-size: 18px;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
   color: rgb( 255, 255, 255 );
 }
 .selectLogin{
   margin-bottom: 20px;
 }
 .selectLogin button{
-  border-width: 1.25px;
+  border-width: 1px;
   border-color: rgb( 255, 255, 255 );
   border-style: solid;
-  border-radius: 6px;
+  border-radius: 4px;
   background-color: rgb( 255, 255, 255 );
   width: 100.5px;
-  height: 37.5px;
+  height: 34px;
   margin-right: 15px;
-  font-size: 15px;
-  font-family: "Adobe Heiti Std";
+  font-size: 14px;
   color: rgb( 191, 191, 191 );
   outline: none;
 }
@@ -187,21 +191,22 @@ input{
   -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background-color: #fff;
+    background-color: #fff !important;
     background-image: none;
     border-radius: 6px;
-    border: 2px solid rgb( 254, 108, 0 );
+    /*border: 1px solid rgb( 254, 108, 0 );*/
+    border: none;
     box-sizing: border-box;
     color: #1f2d3d;
     display: block;
     font-size: inherit;
-    height: 36px;
+    height: 40px;
     line-height: 1;
     outline: 0;
     padding: 3px 10px;
     width: 362.5px;
-    height: 50.5px;
-    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+    font-size: 14px;
+    /*transition: border-color .2s cubic-bezier(.645,.045,.355,1);*/
 }
 .sub{
   position: absolute;

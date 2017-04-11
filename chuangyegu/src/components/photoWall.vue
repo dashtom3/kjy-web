@@ -3,9 +3,9 @@
     <v-header></v-header>
     <div class="photos">
       <div class="photoyear">
-        <h2>2016</h2>
+        <h2>照片墙</h2>
         <ul>
-          <li v-for="photoInfo in lastYearPhotoList" v-on:click="showImgAlert(photoInfo.src)">
+          <li v-for="photoInfo in photoData" v-on:click="showImgAlert(photoInfo.src)">
             <a href="javascript:;"><img :src="'http://123.56.220.72:8080/cyg/'+photoInfo.src" alt=""></a>
             <a href="javascript:;" class="big">
               <p class="photoDate">{{photoInfo.date}}</p>
@@ -14,22 +14,11 @@
           </li>
         </ul>
         <div class="block" style="margin:30px 0;">
-          <page v-on:page="lastyearChangePage" v-bind:args="lastYearPhotoArgs" v-if="lastYearPhotoArgs.totalPage === 1"></page>
-        </div>
-      </div>
-      <div class="photoyear">
-        <h2>2017</h2>
-        <ul>
-          <li v-for="photoInfo in thisYearPhotoList" v-on:click="showImgAlert(photoInfo.src)">
-            <a href="javascript:;"><img :src="'http://123.56.220.72:8080/cyg/'+photoInfo.src" alt=""></a>
-            <a href="javascript:;" class="big">
-              <p class="photoDate">{{photoInfo.date}}</p>
-              <p class="photoIntr">{{photoInfo.content}}</p>
-            </a>
-          </li>
-        </ul>
-        <div class="block" style="margin:30px 0;">
-          <page v-on:page="thisyearChangePage" v-bind:args="thisYearPhotoArgs" v-if="thisYearPhotoArgs.totalPage === 1"></page>
+          <!-- <page v-on:page="lastyearChangePage" v-bind:args="lastYearPhotoArgs" v-if="lastYearPhotoArgs.totalPage === 1"></page> -->
+          <div class="morePhotos">
+            <button v-on:click="loadMorePhotos" v-if="args.pageNum != args.totalPage">加载更多</button>
+            <label v-if="args.pageNum == args.totalPage">没有更多内容了</label>
+          </div>
         </div>
       </div>
     </div>
@@ -56,42 +45,30 @@ export default {
       imgAlert: false,
       alertImgSrc: null,
       currentPage: 1,
-      lastYearPhotoList: [],
-      thisYearPhotoList: [],
-      // photoList: [],
-      lastYearPhotoArgs: {
-        year: 2016,
-        numPerPage: 20,
-        pageNum: 1,
-        totalPage: -1
-      },
-      thisYearPhotoArgs: {
-        year: 2017,
-        numPerPage: 20,
+      photoData: [],
+      args: {
+        numPerPage: 24,
         pageNum: 1,
         totalPage: -1
       }
     }
   },
   created: function () {
-    this.getPhotoList(this.lastYearPhotoArgs)
-    this.getPhotoList(this.thisYearPhotoArgs)
+    this.getPhotoList(this.args)
   },
   methods: {
     getPhotoList: function (args) {
       var self = this
       axios.get(global.baseUrl + 'photoWall/getPhotoList?' + global.getHttpData(args))
       .then((res) => {
-        if (args.year === 2016) {
-          self.lastYearPhotoList = res.data.data
-          self.lastYearPhotoList.pageNum = res.data.currentPage
-          self.lastYearPhotoList.totalPage = res.data.totalPage
-        } else {
-          self.thisYearPhotoList = res.data.data
-          self.thisYearPhotoList.pageNum = res.data.currentPage
-          self.thisYearPhotoList.totalPage = res.data.totalPage
-        }
+        self.photoData = self.photoData.concat(res.data.data)
+        self.args.pageNum = res.data.currentPage
+        self.args.totalPage = res.data.totalPage
       })
+    },
+    loadMorePhotos: function () {
+      this.args.pageNum++
+      this.getPhotoList(this.args)
     },
     showImgAlert (src) {
       this.imgAlert = true
@@ -194,4 +171,20 @@ h2{
   font-size: 60px;
 }
 
+.morePhotos{
+  text-align: center;
+  margin-bottom: 50px;
+}
+.morePhotos button {
+  width: 155px;
+  color: white;
+  font-size: 13px;
+  border-radius: 20px;
+  font-weight: normal;
+  height: 40px;
+  background-color: rgb(254, 108, 0 );
+  border: none;
+  outline: 0px;
+  cursor: pointer;
+}
 </style>

@@ -1,5 +1,6 @@
 export default{
   userMsg: {},
+  content: {alert: '请先登录'},
   baseUrl: 'http://123.56.220.72:8080/cyg/api/',
   goPath: function (obj, url) {
     document.body.scrollTop = 0 + 'px'

@@ -226,7 +226,7 @@ export default {
 .activealertbody button {
   border: none;
   background-color: transparent;
-  color: #999999;
+  color: #444444;
   font-size: 16px;
   float: right;
   outline: 0;
@@ -239,9 +239,12 @@ export default {
   margin-bottom: 20px;
 }
 .activealertbody a {
-  color: #fe6c00;
+  color: #444444;
   outline: 0;
   text-decoration: none;
+}
+.activealertbody a:hover {
+  color: #fe6c00;
 }
 .alertcontent {
   margin-bottom: 10px;
