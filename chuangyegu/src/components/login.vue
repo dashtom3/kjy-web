@@ -32,7 +32,7 @@
             </div>
             <div class="sub">
               <a href="javascript:;" v-on:click="xwLogin">登录</a>
-              <a href="javascript:;">注册</a>
+              <a href="javascript:;" class="reg">注册</a>
             </div>
           </div>
         </div>
@@ -153,6 +153,8 @@ export default {
 }
 .fromData span{
   font-size: 20px;
+  display: block;
+  margin-bottom: 20px;
   font-family: "Adobe Heiti Std";
   color: rgb( 255, 255, 255 );
 }
@@ -228,5 +230,9 @@ input[type="submit"]{
     border: none;
     position: relative;
     top: -3px;
+}
+.sub a.reg{
+  position: relative;
+  left: -230px;
 }
 </style>

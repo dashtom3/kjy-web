@@ -21,6 +21,9 @@ export default {
 a,a:hover{
   text-decoration: none;
 }
+a:focus, a:hover{
+  text-decoration: none!important;
+}
 a:hover{
   color:#ff9b3c
 }

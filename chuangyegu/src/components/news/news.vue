@@ -20,7 +20,7 @@
             <a href="javascript:;" v-bind:href="'/newsDetail/' + newslist.id" target=_blank>
             <p class="newstitle">{{newslist.title}}</p>
             <p class="newsintr">{{newslist.content}}</p>
-            <p class="newstime">{{newslist.date*1000 | time}}</p>
+            <p class="newstime">{{newslist.date}}</p>
             </a>
           </li>
         </ul>
@@ -31,37 +31,16 @@
       <div class="newsright">
         <h3>精粹要闻</h3>
         <ul>
-          <li><a href="javascript:;">
-            <div style="display:inline-block">
-              <img src="../../images/Layer-12.png" alt="" class="goyw">
-              <img src="../../images/news.png" alt="" class=ywbg><br>
-            </div>
-            <div class="ywtime">
-              <span>2017-12-12</span><br>
-              <span>这是新闻介绍</span>
-            </div>
-            </a>
-          </li>
-          <li><a href="javascript:;">
-            <div style="display:inline-block">
-              <img src="../../images/Layer-12.png" alt="" class="goyw">
-              <img src="../../images/news.png" alt="" class=ywbg><br>
-            </div>
-            <div class="ywtime">
-              <span>2017-12-12</span><br>
-              <span>这是新闻介绍</span>
-            </div>
-            </a>
-          </li>
-          <li><a href="javascript:;">
-            <div style="display:inline-block">
-              <img src="../../images/Layer-12.png" alt="" class="goyw">
-              <img src="../../images/news.png" alt="" class=ywbg><br>
-            </div>
-            <div class="ywtime">
-              <span>2017-12-12</span><br>
-              <span>这是新闻介绍</span>
-            </div>
+          <li v-for="item in 3">
+            <a :href="'/newsDetail/' + newslists[item-1].id" target="_blank">
+              <div style="display:inline-block">
+                <img src="../../images/Layer-12.png" alt="" class="goyw">
+                <img :src="'http://123.56.220.72:8080/cyg/'+newslists[item-1].pic" alt="" class=ywbg><br>
+              </div>
+              <div class="ywtime">
+                <span>{{newslists[item-1].date}}</span><br>
+                <span>{{newslists[item-1].content}}</span>
+              </div>
             </a>
           </li>
         </ul>
@@ -101,15 +80,19 @@ export default {
       this.newsArgs.pageNum = value
       this.getNewsList(this.newsArgs)
     },
+    timeFilter: function (value) {
+      return new Date(parseInt(value)).getFullYear() + '-' + (new Date(parseInt(value)).getMonth() + 1) + '-' + new Date(parseInt(value)).getDate()
+    },
     getNewsList: function (args) {
       var self = this
       axios.get(global.baseUrl + 'news/getNewsList?' + global.getHttpData(args))
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         self.newslists = res.data.data
         self.newsArgs.pageNum = res.data.currentPage
         self.newsArgs.totalPage = res.data.totalPage
         for (let i in self.newslists) {
+          self.newslists[i].date = self.timeFilter(self.newslists[i].date * 1000)
           self.newslists[i].content = self.newslists[i].content.replace(/<[^>]+>/g, '')
           self.newslists[i].content = self.newslists[i].content.replace(/&nbsp;/g, '')
         }
@@ -161,13 +144,17 @@ h3{
   border-top:2px solid rgb( 254, 108, 0 )
 }
 .newsleft ul li{
-  margin: 20px 0;
+  margin: 20px 0 0 35px;
 }
 .newsleft ul li a p{
   line-height: 35px;
 }
 .newsleft ul li:hover a p.newstitle{
   color:rgb( 254, 108, 0 );
+}
+.newsright ul li:hover a div .ywbg{
+  filter:gray;
+  -webkit-filter:grayscale(100%);
 }
 .newsright{
   width: 300px;
@@ -190,13 +177,19 @@ h3{
   color: #000;
   font-weight: bold;
   color: rgba( 0, 0, 0, 0.8 );
+  position: relative;
 }
-/*.newstitle:before{
-  content: '·';
-  font-size: 24px;
-  margin-right: 10px;
-  float:left;
-}*/
+.newstitle:before{
+  content: '';
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 9px;
+  background-color: #000;
+  position: absolute;
+  left: -35px;
+  top: 10px;
+}
 .newsintr{
   text-overflow:ellipsis;
   white-space:nowrap;
@@ -219,8 +212,8 @@ h3{
   width: 84px;
   height: 29px;
   position: absolute;
-  top: -40px;
-  left:50px;
+  top: -5px;
+  left:58px;
   display: none;
 }
 .newsright ul li:hover a img.goyw{
@@ -236,6 +229,7 @@ h3{
   left: 10px;
   width: 95px;
   height: 85px;
+  vertical-align: top;
   overflow: hidden;
 }
 .ywtime span{

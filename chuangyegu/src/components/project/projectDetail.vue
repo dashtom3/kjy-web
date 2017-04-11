@@ -32,12 +32,13 @@
         <p><span class="w120">项目市场性: </span><span class="w700">你好你好你好你好</span></p>
         <p><span class="w120">项目优势: </span><span class="w700">你好你好你好你好</span></p>
         <p><span class="w120">项目人员需求详情: </span><span class="w700">你好你好你好你好</span></p>
-        <p><span class="w120">项目汇报模式: </span><span class="w700">你好你好你好你好</span></p>
+        <p><span class="w120">项目汇报模式: </span><span class="w700">你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好</span></p>
         <p><span class="w120">资金开发情况及用途: &nbsp;</span><span class="w700">你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好</span></p>
       </div>
       <div class="projectMsg">
         <p class="projectMsgTitle">项目组成人员情况</p>
         <el-table
+        border
           :data="tableData"
           style="width: 100%">
           <el-table-column
@@ -66,11 +67,25 @@
       </div>
       <div class="projectMsg">
         <p class="projectMsgTitle">项目需求</p>
+        <el-table
+        border
+          :data="tableData"
+          style="width: 100%">
+          <el-table-column
+            prop="kind"
+            label="岗位类型">
+          </el-table-column>
+          <el-table-column
+            prop="studentId"
+            label="数量">
+          </el-table-column>
+        </el-table>
       </div>
       <div class="projectMsg">
         <p class="projectMsgTitle">项目推进时间表(要求以月为单位,作为项目的考核标准)</p>
         <p><span>项目总时间：六个月</span></p>
         <el-table
+        border
           :data="tableData"
           style="width: 100%">
           <el-table-column
@@ -149,6 +164,7 @@ export default {
   font-family: "Adobe Heiti Std";
   color: rgb( 254, 108, 0 );
   border-bottom: 2px solid;
+  padding-bottom: 10px;
 }
 .projectCon{
   width: 865px;
@@ -180,7 +196,6 @@ export default {
 }
 .projectMsg p{
   margin: 15px 0;
-  overflow: hidden;
 }
 .projectMsg p span{
   font-size: 12.5px;
@@ -201,8 +216,8 @@ p.projectMsgTitle{
 .w120{
   width: 120px;
   display: inline-block;
-  float: left;
-  text-align: right;
+  /*float: left;*/
+  /*text-align: right;*/
 }
 .w700{
   display: inline-block;

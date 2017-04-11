@@ -15,37 +15,16 @@
       <div class="newsDetialConRight">
         <h2>精粹要闻</h2>
         <ul>
-          <li><a href="javascript:;">
-            <div style="display:inline-block">
-              <img src="../../images/Layer-12.png" alt="" class="goyw">
-              <img src="../../images/news.png" alt="" class=ywbg><br>
-            </div>
-            <div class="ywtime">
-              <span>2017-12-12</span><br>
-              <span>这是新闻介绍</span>
-            </div>
-            </a>
-          </li>
-          <li><a href="javascript:;">
-            <div style="display:inline-block">
-              <img src="../../images/Layer-12.png" alt="" class="goyw">
-              <img src="../../images/news.png" alt="" class=ywbg><br>
-            </div>
-            <div class="ywtime">
-              <span>2017-12-12</span><br>
-              <span>这是新闻介绍</span>
-            </div>
-            </a>
-          </li>
-          <li><a href="javascript:;">
-            <div style="display:inline-block">
-              <img src="../../images/Layer-12.png" alt="" class="goyw">
-              <img src="../../images/news.png" alt="" class=ywbg><br>
-            </div>
-            <div class="ywtime">
-              <span>2017-12-12</span><br>
-              <p>这是新闻介绍这是新闻介绍这是新闻介绍</p>
-            </div>
+          <li v-for="item in 3">
+            <a :href="'/newsDetail/' + newslists[item-1].id" target="_blank">
+              <div style="display:inline-block">
+                <img src="../../images/Layer-12.png" alt="" class="goyw">
+                <img :src="'http://123.56.220.72:8080/cyg/'+newslists[item-1].pic" alt="" class=ywbg><br>
+              </div>
+              <div class="ywtime">
+                <span>{{newslists[item-1].date}}</span><br>
+                <span>{{newslists[item-1].content}}</span>
+              </div>
             </a>
           </li>
         </ul>
@@ -65,7 +44,8 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       newsid: this.$route.params.id,
-      newsDetialContent: ''
+      newsDetialContent: '',
+      newslists: []
     }
   },
   created () {
@@ -76,6 +56,20 @@ export default {
       self.newsDetialContent = res.data.data
       self.newsDetialContent.content = self.newsDetialContent.content.replace(/src="/gi, 'src="http://123.56.220.72:8080/cyg/')
     })
+    axios.get(global.baseUrl + 'news/getNewsList')
+    .then((res) => {
+      self.newslists = res.data.data
+      for (let i in self.newslists) {
+        self.newslists[i].date = self.timeFilter(self.newslists[i].date * 1000)
+        self.newslists[i].content = self.newslists[i].content.replace(/<[^>]+>/g, '')
+        self.newslists[i].content = self.newslists[i].content.replace(/&nbsp;/g, '')
+      }
+    })
+  },
+  methods: {
+    timeFilter: function (value) {
+      return new Date(parseInt(value)).getFullYear() + '-' + (new Date(parseInt(value)).getMonth() + 1) + '-' + new Date(parseInt(value)).getDate()
+    }
   },
   components: {
     'v-header': header,
@@ -116,6 +110,7 @@ export default {
   font-size: 12.5px;
   color: rgb( 254, 108, 0 );
 }
+
 .newsintr p{
   font-size: 14px;
   color: rgb( 0, 0, 0 );
@@ -141,12 +136,16 @@ h2{
   width: 84px;
   height: 29px;
   position: absolute;
-  top: -40px;
+  top: -5px;
   left:50px;
   display: none;
 }
 .newsDetialConRight ul li:hover a img.goyw{
   display: block;
+  /*transition: display 5s;*/
+}
+.newsDetialConRight ul li:hover a img.ywbg{
+  -webkit-filter:grayscale(100%);
   /*transition: display 5s;*/
 }
 .newsDetialConRight ul li{
@@ -159,6 +158,7 @@ h2{
   width: 95px;
   height: 85px;
   overflow: hidden;
+  vertical-align: top;
   font-size: 9.73px;
 }
 .newsDetialConRight ul li:hover .ywtime{

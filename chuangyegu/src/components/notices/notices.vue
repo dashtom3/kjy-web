@@ -19,37 +19,16 @@
       <div class="newsright">
         <h3>精粹要闻</h3>
         <ul>
-          <li><a href="javascript:;">
-            <div style="display:inline-block">
-              <img src="../../images/Layer-12.png" alt="" class="goyw">
-              <img src="../../images/news.png" alt="" class=ywbg><br>
-            </div>
-            <div class="ywtime">
-              <span>2017-12-12</span><br>
-              <span>这是新闻介绍</span>
-            </div>
-            </a>
-          </li>
-          <li><a href="javascript:;">
-            <div style="display:inline-block">
-              <img src="../../images/Layer-12.png" alt="" class="goyw">
-              <img src="../../images/news.png" alt="" class=ywbg><br>
-            </div>
-            <div class="ywtime">
-              <span>2017-12-12</span><br>
-              <span>这是新闻介绍</span>
-            </div>
-            </a>
-          </li>
-          <li><a href="javascript:;">
-            <div style="display:inline-block">
-              <img src="../../images/Layer-12.png" alt="" class="goyw">
-              <img src="../../images/news.png" alt="" class=ywbg><br>
-            </div>
-            <div class="ywtime">
-              <span>2017-12-12</span><br>
-              <span>这是新闻介绍</span>
-            </div>
+          <li v-for="item in 3">
+            <a :href="'/noticesDetail/' + topNoticesList[item-1].id">
+              <div style="display:inline-block">
+                <img src="../../images/Layer-12.png" alt="" class="goyw">
+                <img :src="'http://123.56.220.72:8080/cyg/'+topNoticesList[item-1].pic" alt="" class=ywbg><br>
+              </div>
+              <div class="ywtime">
+                <span>{{topNoticesList[item-1].date}}</span><br>
+                <span>{{topNoticesList[item-1].content}}</span>
+              </div>
             </a>
           </li>
         </ul>
@@ -71,6 +50,7 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       noticeslists: [],
+      topNoticesList: [],
       newsArgs: {
         numPerPage: 6,
         pageNum: 1,
@@ -79,7 +59,19 @@ export default {
     }
   },
   created () {
+    var self = this
     this.getNoticeList(this.newsArgs)
+    axios.get(global.baseUrl + 'notice/getNoticeList?numPerPage=20')
+    .then((res) => {
+      for (let i in res.data.data) {
+        if (res.data.data[i].pic !== '') {
+          res.data.data[i].content = res.data.data[i].content.replace(/<[^>]+>/g, '')
+          res.data.data[i].content = res.data.data[i].content.replace(/&nbsp;/g, '')
+          res.data.data[i].date = self.timeFilter(res.data.data[i].date * 1000)
+          self.topNoticesList.push(res.data.data[i])
+        }
+      }
+    })
   },
   methods: {
     timeFilter: function (value) {
@@ -101,7 +93,6 @@ export default {
           res.data.data[i].date = self.timeFilter(res.data.data[i].date * 1000)
         }
         self.noticeslists = res.data.data
-        console.log(self.noticeslists)
       })
     }
   },
@@ -124,10 +115,6 @@ export default {
   width: 1000px;
   margin: 0 auto;
 }
-/*h2{
-  color: rgb( 254, 108, 0 );
-  font-size: 22.49px;
-}*/
 h3{
   color: rgb( 254, 108, 0 );
   font-size: 18px;
@@ -147,7 +134,7 @@ h3{
   border-top:2px solid rgb( 254, 108, 0 )
 }
 .newsleft ul li{
-  margin: 20px 0;
+  margin: 20px 0 0 35px;
 }
 .newsleft ul li a p{
   line-height: 35px;
@@ -161,6 +148,9 @@ h3{
   vertical-align: top;
   margin-left: 50px;
   margin-top: 100px;
+}
+.newsright ul li:hover .ywbg{
+  -webkit-filter:grayscale(100%);
 }
 .newspages{
   clear: both;
@@ -176,6 +166,18 @@ h3{
   color: #000;
   font-weight: bold;
   color: rgba( 0, 0, 0, 0.8 );
+  position: relative;
+}
+.newstitle:before{
+  content: '';
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 9px;
+  background-color: #000;
+  position: absolute;
+  left: -35px;
+  top: 10px;
 }
 .newsintr{
   text-overflow:ellipsis;
@@ -200,8 +202,8 @@ h3{
   width: 84px;
   height: 29px;
   position: absolute;
-  top: -40px;
-  left:50px;
+  top: -5px;
+  left:56px;
   display: none;
 }
 .newsright ul li:hover a img.goyw{
@@ -217,6 +219,7 @@ h3{
   left: 10px;
   width: 95px;
   height: 85px;
+  vertical-align: top;
   overflow: hidden;
 }
 .newsright ul li:hover .ywtime{

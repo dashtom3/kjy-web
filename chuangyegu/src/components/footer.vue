@@ -119,6 +119,9 @@ export default {
 .goDownload:hover,.goNotices:hover{
   cursor: pointer;
 }
+.goDownload:hover a,.goNotices:hover a{
+  color: #fff;
+}
 .link a{
   color: #fff;
 }

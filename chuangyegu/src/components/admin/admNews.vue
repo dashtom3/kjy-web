@@ -51,6 +51,7 @@
     <!-- 发布新闻 -->
     <div class="alertBg" v-show="newsMsgShow">
       <div :title="alertTitle" size="small" class="alertBgContent">
+        <h4 v-text="alertTitle"></h4>
         <el-row type="flex" class="row-bg" justify="space-between">
         <el-form :model="addNewsMsg">
           <el-col :span="5"><div class="grid-content bg-purple">
@@ -68,24 +69,19 @@
                  <el-input v-model="addNewsMsg.title" required auto-complete="off"></el-input>
                </el-form-item>
                <el-form-item label="新闻内容" :label-width="formLabelWidth">
-                 <!-- <el-row :gutter="100"> -->
-                   <vue-summernote ref="editer"></vue-summernote>
-                 <!-- </el-row> -->
-                 <!-- <quill-editor ref="myTextEditor"
-                  :content="addNewsMsg.content"
-                  :config="editorOption"
-                  @change="editorChange($event)"
-                  @onImageUpload="imgUpload($event)">
-                </quill-editor> -->
+                   <vue-summernote ref="editer">
+                   </vue-summernote>
                </el-form-item>
              </div></el-col>
              </el-form>
                </el-row>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="newsMsgShow = false">取 消</el-button>
-          <el-button type="button" @click="addNews" v-if="addNewShow">确 定</el-button>
-          <el-button type="button" @click="editNews" v-if="editNewShow">确 定</el-button>
-        </span>
+        <div style="text-align:center">
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="newsMsgShow = false">取 消</el-button>
+            <el-button type="primary" @click="addNews" v-if="addNewShow">确 定</el-button>
+            <el-button type="primary" @click="editNews" v-if="editNewShow">确 定</el-button>
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -94,6 +90,21 @@
 <script>
   import axios from 'axios'
   import global from '../../global/global'
+  import Vue from 'vue'
+  import VueSummernote from 'vue-summernote'
+
+  // 载入bootstrap.js
+  require('bootstrap')
+  // 载入bootstrap以及summernote的样式
+  // 这里需要你的脚手架工具具有加载css的能力
+  require('bootstrap/dist/css/bootstrap.min.css')
+  require('summernote/dist/summernote.css')
+
+  // 这里设置summernote的初始化选项
+  // 可参考 http://summernote.org/deep-dive/#initialization-options
+  Vue.use(VueSummernote, {
+    dialogsFade: true
+  })
   export default {
     data () {
       return {
@@ -149,10 +160,16 @@
         this.editNewShow = true
         this.addNewShow = false
         var self = this
+        const editer = self.$refs.editer
         axios.get(global.baseUrl + 'news/getById?newsId=' + newsId)
         .then((res) => {
+          // console.log(res)
           res.data.data.content = res.data.data.content.replace(/src="/gi, 'src="http://123.56.220.72:8080/cyg/')
           self.addNewsMsg = res.data.data
+          if (res.data.data.pic !== '') {
+            self.imageUrl = 'http://123.56.220.72:8080/cyg/' + res.data.data.pic
+          }
+          editer.run('code', self.addNewsMsg.content)
         })
       },
       editNews () {
@@ -172,7 +189,7 @@
       },
       // 上传缩略图
       handleAvatarScucess (res, file) {
-        console.log(res)
+        // console.log(res)
         this.imageUrl = URL.createObjectURL(file.raw)
         this.addNewsMsg.pic = res.data
       },
@@ -182,42 +199,35 @@
         var self = this
         axios.post(global.baseUrl + 'news/deleteNews?newsId=' + newsId + '&token=' + global.getToken())
         .then((res) => {
-          console.log(res)
+          // console.log(res)
           if (res.data.callStatus === 'SUCCEED') {
             global.success(self, '删除成功', '')
             self.getNewsList(self.newsArgs)
           }
         })
       },
-      editorChange ({ editor, html, text }) {
-        console.log(editor, html, text)
-        this.addNewsMsg.content = html
-      },
-      imgUpload (ele) {
-        console.log(ele)
-      },
 
       // 添加新闻
       addNewsAlert () {
         this.alertTitle = '添加新闻'
         this.newsMsgShow = true
+        this.imageUrl = ''
         if (this.addNewsMsg.id) {
           this.addNewsMsg.id = null
         }
         this.addNewsMsg.title = null
         this.addNewsMsg.content = null
         this.addNewsMsg.pic = null
-        var self = this
-        var editer = self.$refs.myTextEditor
-        console.log(editer)
+        const editer = this.$refs.editer
+        editer.run('code', this.addNewsMsg.content)
       },
       addNews () {
         this.editNewShow = false
         this.addNewShow = true
+        this.addNewsMsg.content = this.addNewsMsg.content.replace(/http:\/\/123.56.220.72:8080\/cyg/g, '')
         var self = this
         axios.post(global.baseUrl + 'news/addNews', global.postHttpDataWithToken(this.addNewsMsg))
         .then((res) => {
-          console.log(res)
           if (res.data.callStatus === 'SUCCEED') {
             self.newsArgs.pageNum = 1
             self.$message({
@@ -237,11 +247,19 @@
       const self = this
       const editer = self.$refs.editer
       editer.$on('onImageUpload', function (files) {
-        console.log(files[0])
-        // 这里做上传图片的操作，上传成功之后便可以用到下面这句将图片插入到编辑框中
+        var fileMsg = {
+          file: files[0]
+        }
+        axios.post(global.baseUrl + 'file/upload', global.postHttpDataWithToken(fileMsg))
+        .then((res) => {
+          // 这里做上传图片的操作，上传成功之后便可以用到下面这句将图片插入到编辑框中
+          if (res.data.callStatus === 'SUCCEED') {
+            editer.run('insertImage', 'http://123.56.220.72:8080/cyg/' + res.data.data)
+          }
+        })
       })
       editer.$on('onChange', function (contents) {
-        console.log('onChange:', contents)
+        self.addNewsMsg.content = contents
       })
     }
   }
@@ -271,21 +289,20 @@
   z-index: 999;
 }
 .alertBgContent{
-  width: 50%;
+  width: 55%;
   position: absolute;
-  top: 10%;
-  left: 20%;
+  top: 7%;
+  left: 25%;
   margin: 20px auto;
   background: #fff;
-}
-.alertBgContent .el-form{
+  border-radius: 6px;
   padding: 20px;
 }
 .alertBgContent .el-upload__input{
   display: none
 }
 .modal-backdrop{
-  z-index: 99;
+  z-index: 99!important;
 }
 .avatar-uploader .el-upload:hover {
   border-color: #20a0ff;

@@ -64,7 +64,7 @@
     <div class="newsCenter" style="overflow:hidden">
       <div class="service s2 s1">
         <a href="javascript:;">
-          <img src="../images/Layer-12.png" alt="" class="gologo" style="top:240px;width:155px;">
+          <img src="../images/Layer-12-copy-2.png" alt="" class="gologo" style="top:240px;width:155px;">
         </a>
       </div>
       <div class="service s3">
@@ -93,7 +93,7 @@
       </div>
       <div class="service s2 s7" style="float:right;position:relative;right:35px;">
         <a href="javascript:;">
-          <img src="../images/Layer-12.png" alt="" class="gologo" style="width:155px;top:250px;">
+          <img src="../images/Layer-12-copy-2.png" alt="" class="gologo" style="width:155px;top:250px;">
         </a>
       </div>
       <div class="service s19">
@@ -116,7 +116,7 @@
       </div>
     </div>
     <!-- 项目对接 -->
-    <div class="newsCenter">
+    <div class="newsCenter" style="width:100%">
       <div class="newsCenterTitle">
         <img src="../images/project.png" alt="">
       </div>
@@ -257,7 +257,7 @@ export default {
   height: 18px!important;
 }
 .projectContents{
-  background: url('../images/projectbg.png') no-repeat;
+  background: url('../images/projectbg.jpg') no-repeat center;
   height: 580px;
 }
 .newsDetialConLeft .newsintr img{
@@ -503,7 +503,7 @@ img.hoverimg{
 }
 .projectContents div{
   position: absolute;
-  left: 4%;
+  left: 0;
   right: 0;
   top: 40%;
 }

@@ -56,9 +56,10 @@
 
       <!-- 发布公告 -->
       <div class="alertBg" v-show="newsMsgShow">
-      <div :title="alertTitle" size="small" class="alertBgContent">
+        <div :title="alertTitle" size="small" class="alertBgContent">
+          <h4 v-text="alertTitle"></h4>
         <el-row type="flex" class="row-bg" justify="space-between">
-        <el-form :model="addNewsMsg">
+        <el-form :model="addNoticeMsg">
           <el-col :span="5"><div class="grid-content bg-purple">
             <el-upload
               class="avatar-uploader"
@@ -70,13 +71,13 @@
             </el-upload>
           </div><p style="text-align:center">上传公告缩略图</p></el-col>
             <el-col :span="18"><div class="grid-content bg-purple">
-               <el-form-item label="公告名称" width="120px">
-                 <el-input v-model="addNewsMsg.title" required auto-complete="off"></el-input>
+               <el-form-item label="公告名称" :label-width="formLabelWidth">
+                 <el-input v-model="addNoticeMsg.title" required auto-complete="off"></el-input>
                </el-form-item>
-               <el-form-item label="公告内容" width="120px">
+               <el-form-item label="公告内容" :label-width="formLabelWidth">
                  <vue-summernote ref="editer"></vue-summernote>
                  <!-- <quill-editor ref="myTextEditor"
-                  :content="addNewsMsg.content"
+                  :content="addNoticeMsg.content"
                   :config="editorOption"
                   @change="onEditorChange($event)"
                   >
@@ -85,12 +86,15 @@
              </div></el-col>
              </el-form>
                </el-row>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="newsMsgShow = false">取 消</el-button>
-          <el-button type="button" v-if="addNewShow" v-on:click="addNews">确 定</el-button>
-          <el-button type="button" v-if="editNewShow">确 定</el-button>
-        </span>
+        <div style="text-align:center;">
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="newsMsgShow = false">取 消</el-button>
+            <el-button type="button" v-if="addNewShow" v-on:click="addNews">确 定</el-button>
+            <el-button type="button" v-if="editNewShow">确 定</el-button>
+          </span>
+        </div>
       </div>
+    </div>
     </div>
     </div>
   </div>
@@ -125,8 +129,9 @@ export default {
       editNewShow: false,
       uploadUrl: global.baseUrl + 'file/upload?token=' + localStorage.token,
       imageUrl: '',
+      formLabelWidth: '120px',
       editorOption: {},
-      addNewsMsg: {
+      addNoticeMsg: {
         title: null,
         pic: null,
         content: null
@@ -143,10 +148,20 @@ export default {
     const editer = self.$refs.editer
     editer.$on('onImageUpload', function (files) {
       console.log(files[0])
-      // 这里做上传图片的操作，上传成功之后便可以用到下面这句将图片插入到编辑框中
+      var fileMsg = {
+        file: files[0]
+      }
+      axios.post(global.baseUrl + 'file/upload', global.postHttpDataWithToken(fileMsg))
+      .then((res) => {
+        // console.log(res)
+        // 这里做上传图片的操作，上传成功之后便可以用到下面这句将图片插入到编辑框中
+        if (res.data.callStatus === 'SUCCEED') {
+          editer.run('insertImage', 'http://123.56.220.72:8080/cyg/' + res.data.data)
+        }
+      })
     })
     editer.$on('onChange', function (contents) {
-      console.log('onChange:', contents)
+      self.addNoticeMsg.content = contents
     })
   },
   created () {
@@ -167,12 +182,10 @@ export default {
         self.noticeArgs.totalPage = res.data.totalPage
       })
     },
-    handleClick: function () {
-      alert('click')
-    },
+    // 上传图片
     handleAvatarScucess (res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)
-      this.addNewsMsg.pic = res.data
+      this.addNoticeMsg.pic = res.data
     },
     timeFilter: function (value) {
       return new Date(parseInt(value)).getFullYear() + '-' + (new Date(parseInt(value)).getMonth() + 1) + '-' + new Date(parseInt(value)).getDate()
@@ -182,30 +195,29 @@ export default {
       this.noticeArgs.pageNum = val
       this.getNoticeList(this.noticeArgs)
     },
-    // 文本框内容
-    onEditorChange ({ editor, html, text }) {
-      console.log(editor, html, text)
-      this.addNewsMsg.content = html
-    },
 
     // 发布公告
     addNoticesAlert () {
       this.alertTitle = '添加公告'
       this.newsMsgShow = true
-      if (this.addNewsMsg.id) {
-        this.addNewsMsg.id = null
+      this.imageUrl = ''
+      if (this.addNoticeMsg.id) {
+        this.addNoticeMsg.id = null
       }
-      this.addNewsMsg.title = null
-      this.addNewsMsg.content = null
-      this.addNewsMsg.pic = null
+      this.addNoticeMsg.title = null
+      this.addNoticeMsg.content = null
+      this.addNoticeMsg.pic = null
+      const editer = this.$refs.editer
+      editer.run('code', this.addNoticeMsg.content)
     },
     addNews () {
       this.editNewShow = false
       this.addNewShow = true
+      this.addNoticeMsg.content = this.addNoticeMsg.content.replace(/http:\/\/123.56.220.72:8080\/cyg/g, '')
       var self = this
-      axios.post(global.baseUrl + 'notice/addNotice', global.postHttpDataWithToken(this.addNewsMsg))
+      axios.post(global.baseUrl + 'notice/addNotice', global.postHttpDataWithToken(this.addNoticeMsg))
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
           self.noticeArgs.pageNum = 1
           self.$message({
@@ -223,17 +235,20 @@ export default {
 
     // 修改公告
     onEditClick: function (noticeId) {
-      this.addNewsMsg.id = noticeId
+      this.addNoticeMsg.id = noticeId
       this.alertTitle = '修改公告'
       this.newsMsgShow = true
       this.editNewShow = true
       this.addNewShow = false
       var self = this
+      const editer = self.$refs.editer
       axios.get(global.baseUrl + 'notice/getById?noticeId=' + noticeId)
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         res.data.data.content = res.data.data.content.replace(/src="/gi, 'src="http://123.56.220.72:8080/cyg/')
-        self.addNewsMsg = res.data.data
+        self.addNoticeMsg = res.data.data
+        self.imageUrl = 'http://123.56.220.72:8080/cyg/' + res.data.data.pic
+        editer.run('code', self.addNoticeMsg.content)
       })
     },
 
@@ -264,14 +279,13 @@ export default {
   z-index: 999;
 }
 .alertBgContent{
-  width: 50%;
+  width: 55%;
   position: absolute;
-  top: 10%;
-  left: 20%;
+  top: 7%;
+  left: 25%;
   margin: 20px auto;
   background: #fff;
-}
-.alertBgContent .el-form{
+  border-radius: 6px;
   padding: 20px;
 }
 .alertBgContent .el-upload__input{

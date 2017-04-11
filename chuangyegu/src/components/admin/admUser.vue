@@ -38,10 +38,6 @@
             <el-button
               size="small"
               @click="userDetail(scope.row.id)">查看</el-button>
-            <el-button
-              size="small"
-              type="danger"
-              @click="onDelClick(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -77,10 +73,6 @@
             <el-button
               size="small"
               @click="userDetail(scope.row.id)">查看</el-button>
-            <el-button
-              size="small"
-              type="danger"
-              @click="onDelClick(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -112,10 +104,6 @@
             <el-button
               size="small"
               @click="userDetail(scope.row.id)">查看</el-button>
-            <el-button
-              size="small"
-              type="danger"
-              @click="onDelClick(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -147,10 +135,10 @@
             <el-button
               size="small"
               @click="userDetail(scope.row.id)">查看</el-button>
-            <el-button
+            <!-- <el-button
               size="small"
               type="danger"
-              @click="onDelClick(scope.row.id)">删除</el-button>
+              @click="onDelClick(scope.row.id)">删除</el-button> -->
           </template>
         </el-table-column>
       </el-table>
