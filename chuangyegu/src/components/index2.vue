@@ -40,6 +40,9 @@
                   </a>
                 </div>
                 <div class="img">
+                  <div class="newTitle">
+                    <p>{{newslist[0].title}}</p>
+                  </div>
                   <img :src=newslist[0].pic alt="">
                 </div>
               </li>
@@ -48,6 +51,9 @@
                   <a v-bind:href="'/newsDetail/' + newslist[1].id" target=_blank style="position:relative"><img src="../images/Layer-12.png" alt="" style="position:relative;" class="r80"></a>
                 </div>
                 <div class="img">
+                  <div class="newTitle">
+                    <p>{{newslist[1].title}}</p>
+                  </div>
                   <img :src=newslist[1].pic alt="">
                 </div>
                 <div class="newint" style="margin-left:50px;">
@@ -64,7 +70,7 @@
     <div class="newsCenter" style="overflow:hidden">
       <div class="service s2 s1">
         <a href="javascript:;">
-          <img src="../images/Layer-12-copy-2.png" alt="" class="gologo" style="top:240px;width:155px;">
+          <img src="../images/arrow1.png" alt="" class="gologo" style="top:240px;width:155px;">
         </a>
       </div>
       <div class="service s3">
@@ -93,7 +99,7 @@
       </div>
       <div class="service s2 s7" style="float:right;position:relative;right:35px;">
         <a href="javascript:;">
-          <img src="../images/Layer-12-copy-2.png" alt="" class="gologo" style="width:155px;top:250px;">
+          <img src="../images/arrow1.png" alt="" class="gologo" style="width:155px;top:250px;">
         </a>
       </div>
       <div class="service s19">
@@ -124,7 +130,8 @@
         <div class="">
           <a href="project" target="_blank">
             <span>PROJECT DOCKING</span>
-            <img src="../images/docking.png" alt="">
+            <img src="../images/Layer-12-copy-2.png" alt="" style="width:127px;position:relative;top:5px;">
+            <span class="goproject">项目对接</span>
           </a>
         </div>
       </div>
@@ -143,7 +150,7 @@
           </a>
       </div>
       <div class="video">
-        <video src="https://misc.rrcimg.com/pc/two_anniversary.mp4" controls>
+        <video :src=videoMsg.src controls>
         </video>
       </div>
     </div>
@@ -198,7 +205,8 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       images: [img1, img1, img1],
       vs: [v1, v2, v3],
-      newslists: []
+      newslists: [],
+      videoMsg: {}
     }
   },
   created () {
@@ -209,9 +217,8 @@ export default {
       }
     })
     var self = this
-    axios.get(global.baseUrl + 'news/getNewsList')
+    axios.get(global.baseUrl + 'news/getNewsList?ifImage=1')
     .then((res) => {
-      console.log(res)
       var items = res.data.data
       for (let i in items) {
         if (items[i].pic === '') {
@@ -232,6 +239,11 @@ export default {
       self.newslists.push(item2)
       self.newslists.push(item3)
     })
+    axios.get(global.baseUrl + 'mooc/getMoocList?numPerPage=1')
+    .then((res) => {
+      console.log(res)
+      self.videoMsg = res.data.data[0]
+    })
   },
   components: {
     'v-header': header,
@@ -245,7 +257,11 @@ export default {
 .newsCenter{
   margin:20px auto;
 }
-
+.projectContents div a span.goproject{
+  top: 12px;
+  right: 10px;
+  color: #fff;
+}
 .el-carousel__button{
   border-radius: 20px;
   width: 13px!important;
@@ -337,14 +353,23 @@ export default {
 .newint span:nth-child(1){
   color: rgb( 254, 108, 0 );
   text-align: center;
-  font-size: 14px;
+  font-size: 15px;
   display: inline-block;
   margin-bottom: 8px;
 }
 .newint p{
   font-size: 12px;
+  width: 149px;
+  max-height: 129px;
   color: rgb( 0, 0, 0 );
   text-align: left;
+  line-height: 19px;
+  word-break: break-all;
+    text-overflow: ellipsis;
+    display: -webkit-box; /** 对象作为伸缩盒子模型显示 **/
+    -webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
+    -webkit-line-clamp: 5; /** 显示的行数 **/
+    overflow: hidden;  /** 隐藏超出的内容 **/
 }
 .service{
   width: 388px;
@@ -397,6 +422,7 @@ export default {
 }
 .icon1{
   background: url('../images/icon1.png') no-repeat;
+  width: 41px;
 }
 .iconimg+.cw{
   top: 105px;
@@ -510,6 +536,27 @@ img.hoverimg{
 .newsContents ul li .img{
   height: 125px;
   overflow: hidden;
+  position: relative;
+}
+.newTitle{
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 216px;
+  max-height: 46px;
+  padding: 4px 10px;
+  background-color: rgba(255,255,255,.8);
+  margin: 0 auto;
+  top: 30%;
+}
+.newTitle p{
+  margin: 0;
+  overflow: hidden;
+  word-break: break-all;
+  text-overflow:ellipsis;
+  display: -webkit-box; /** 对象作为伸缩盒子模型显示 **/
+   -webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
+   -webkit-line-clamp: 2; /** 显示的行数 **/
 }
 .newsContents ul li .img img{
   width: 280px;

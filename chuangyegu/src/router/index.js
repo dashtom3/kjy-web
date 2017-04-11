@@ -20,6 +20,7 @@ import applyProject from '../components/project/applyProject'
 import notices from '../components/notices/notices'
 import noticesDetail from '../components/notices/noticesDetail'
 import active from '../components/active'
+import activeDetail from '../components/activeDetail'
 import login from '../components/login'
 import download from '../components/download'
 import videos from '../components/videos'
@@ -125,6 +126,9 @@ export default new Router({
     path: '/active',
     name: 'active',
     component: active
+  }, {
+    path: '/activeDetail/:id',
+    component: activeDetail
   }, {
     path: '/login',
     name: 'login',

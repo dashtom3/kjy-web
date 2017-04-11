@@ -29,17 +29,17 @@
         </div>
       </div>
       <div class="newsright">
-        <h3>精粹要闻</h3>
+        <h3>最新要闻</h3>
         <ul>
           <li v-for="item in 3">
             <a :href="'/newsDetail/' + newslists[item-1].id" target="_blank">
-              <div style="display:inline-block">
+              <div class="ywcontent">
                 <img src="../../images/Layer-12.png" alt="" class="goyw">
                 <img :src="'http://123.56.220.72:8080/cyg/'+newslists[item-1].pic" alt="" class=ywbg><br>
               </div>
               <div class="ywtime">
                 <span>{{newslists[item-1].date}}</span><br>
-                <span>{{newslists[item-1].content}}</span>
+                <span class="cb">{{newslists[item-1].title}}</span>
               </div>
             </a>
           </li>
@@ -188,7 +188,7 @@ h3{
   background-color: #000;
   position: absolute;
   left: -35px;
-  top: 10px;
+  top: 12px;
 }
 .newsintr{
   text-overflow:ellipsis;
@@ -202,23 +202,29 @@ h3{
   color: rgb( 254, 108, 0 );
 }
 .ywbg{
-  width: 198px;
-  height: 85px;
+  max-width: 198px;
+  /*height: 85px;*/
 }
 .newsright ul li a{
   position: relative;
+}
+.ywcontent{
+  display: inline-block;
+  width: 198px;
+  height: 95px;
+  overflow: hidden;
 }
 .goyw{
   width: 84px;
   height: 29px;
   position: absolute;
-  top: -5px;
+  top: -45px;
   left:58px;
   display: none;
+  z-index: 99;
 }
 .newsright ul li:hover a img.goyw{
-  display: block;
-  transition: display 5s;
+  display: -webkit-box;
 }
 .newsright ul li{
   margin: 20px 0;
@@ -227,14 +233,27 @@ h3{
   display: none;
   position: relative;
   left: 10px;
-  width: 95px;
+  width: 98px;
   height: 85px;
   vertical-align: top;
-  overflow: hidden;
 }
 .ywtime span{
   font-size: 9.73px;
   color:rgb( 254, 108, 0 );
+}
+.ywtime span.cb{
+  margin-top: 10px;
+  color: #000;
+  font-size: 12px;
+  display: -webkit-box;
+  width: 98px;
+  max-height: 70px;
+  overflow: hidden;
+  word-break: break-all;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
+    -webkit-line-clamp: 3; /** 显示的行数 **/
+    overflow: hidden;  /** 隐藏超出的内容 **/
 }
 .newsright ul li:hover .ywtime{
   display: inline-block;

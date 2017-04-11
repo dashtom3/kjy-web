@@ -89,8 +89,8 @@
         <div style="text-align:center;">
           <span slot="footer" class="dialog-footer">
             <el-button @click="newsMsgShow = false">取 消</el-button>
-            <el-button type="button" v-if="addNewShow" v-on:click="addNews">确 定</el-button>
-            <el-button type="button" v-if="editNewShow">确 定</el-button>
+            <el-button type="button" v-if="addNewShow" v-on:click="addNotice">确 定</el-button>
+            <el-button type="button" v-if="editNewShow" v-on:click="editNotice">确 定</el-button>
           </span>
         </div>
       </div>
@@ -201,6 +201,8 @@ export default {
       this.alertTitle = '添加公告'
       this.newsMsgShow = true
       this.imageUrl = ''
+      this.editNewShow = false
+      this.addNewShow = true
       if (this.addNoticeMsg.id) {
         this.addNoticeMsg.id = null
       }
@@ -210,9 +212,7 @@ export default {
       const editer = this.$refs.editer
       editer.run('code', this.addNoticeMsg.content)
     },
-    addNews () {
-      this.editNewShow = false
-      this.addNewShow = true
+    addNotice () {
       this.addNoticeMsg.content = this.addNoticeMsg.content.replace(/http:\/\/123.56.220.72:8080\/cyg/g, '')
       var self = this
       axios.post(global.baseUrl + 'notice/addNotice', global.postHttpDataWithToken(this.addNoticeMsg))
@@ -249,6 +249,17 @@ export default {
         self.addNoticeMsg = res.data.data
         self.imageUrl = 'http://123.56.220.72:8080/cyg/' + res.data.data.pic
         editer.run('code', self.addNoticeMsg.content)
+      })
+    },
+    editNotice () {
+      var self = this
+      axios.post(global.baseUrl + 'notice/update', global.postHttpDataWithToken(this.addNoticeMsg))
+      .then((res) => {
+        if (res.data.callStatus === 'SUCCEED') {
+          self.newsMsgShow = false
+          global.success(self, '修改成功', '')
+          self.getNoticeList(self.noticeArgs)
+        }
       })
     },
 

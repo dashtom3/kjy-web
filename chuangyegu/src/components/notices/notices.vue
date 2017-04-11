@@ -21,7 +21,7 @@
         <ul>
           <li v-for="item in 3">
             <a :href="'/noticesDetail/' + topNoticesList[item-1].id">
-              <div style="display:inline-block">
+              <div class="ywcontent">
                 <img src="../../images/Layer-12.png" alt="" class="goyw">
                 <img :src="'http://123.56.220.72:8080/cyg/'+topNoticesList[item-1].pic" alt="" class=ywbg><br>
               </div>
@@ -192,8 +192,8 @@ h3{
   color: rgb( 254, 108, 0 );
 }
 .ywbg{
-  width: 198px;
-  height: 85px;
+  max-width: 198px;
+  /*height: 85px;*/
 }
 .newsright ul li a{
   position: relative;
@@ -202,9 +202,16 @@ h3{
   width: 84px;
   height: 29px;
   position: absolute;
-  top: -5px;
+  top: -45px;
   left:56px;
   display: none;
+  z-index: 99;
+}
+.ywcontent{
+  display: inline-block;
+  width: 197px;
+  height: 95px;
+  overflow: hidden;
 }
 .newsright ul li:hover a img.goyw{
   display: block;

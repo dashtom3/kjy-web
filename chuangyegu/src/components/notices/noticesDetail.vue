@@ -14,36 +14,14 @@
       <div class="newsDetialConRight">
         <h2>精粹要闻</h2>
         <ul>
-          <li><a href="javascript:;">
-            <div style="display:inline-block">
+          <li v-for="item in 3"><a href="'/noticesDetail'+topNoticesList[item-1].id">
+            <div class="ywcontent">
               <img src="../../images/Layer-12.png" alt="" class="goyw">
-              <img src="../../images/news.png" alt="" class=ywbg><br>
+              <img :src="'http://123.56.220.72:8080/cyg/'+topNoticesList[item-1].pic" alt="" class=ywbg><br>
             </div>
             <div class="ywtime">
-              <span>2017-12-12</span><br>
-              <span>这是新闻介绍</span>
-            </div>
-            </a>
-          </li>
-          <li><a href="javascript:;">
-            <div style="display:inline-block">
-              <img src="../../images/Layer-12.png" alt="" class="goyw">
-              <img src="../../images/news.png" alt="" class=ywbg><br>
-            </div>
-            <div class="ywtime">
-              <span>2017-12-12</span><br>
-              <span>这是新闻介绍</span>
-            </div>
-            </a>
-          </li>
-          <li><a href="javascript:;">
-            <div style="display:inline-block">
-              <img src="../../images/Layer-12.png" alt="" class="goyw">
-              <img src="../../images/news.png" alt="" class=ywbg><br>
-            </div>
-            <div class="ywtime">
-              <span>2017-12-12</span><br>
-              <p>这是新闻介绍这是新闻介绍这是新闻介绍</p>
+              <span>{{topNoticesList[item-1].date}}</span><br>
+              <span>{{topNoticesList[item-1].title}}</span>
             </div>
             </a>
           </li>
@@ -64,17 +42,30 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       noticeid: this.$route.params.id,
-      noticeContent: ''
+      noticeContent: '',
+      topNoticesList: []
     }
   },
   created () {
     var self = this
     axios.get(global.baseUrl + 'notice/getById?noticeId=' + this.noticeid)
     .then((res) => {
-      console.log(res)
+      // console.log(res)
       res.data.data.date = self.timeFilter(res.data.data.date * 1000)
       res.data.data.content = res.data.data.content.replace(/src="/gi, 'src="http://123.56.220.72:8080/cyg/')
       self.noticeContent = res.data.data
+    })
+    axios.get(global.baseUrl + 'notice/getNoticeList?numPerPage=20')
+    .then((res) => {
+      for (let i in res.data.data) {
+        if (res.data.data[i].pic) {
+          res.data.data[i].content = res.data.data[i].content.replace(/<[^>]+>/g, '')
+          res.data.data[i].content = res.data.data[i].content.replace(/&nbsp;/g, '')
+          res.data.data[i].date = self.timeFilter(res.data.data[i].date * 1000)
+          self.topNoticesList.push(res.data.data[i])
+        }
+      }
+      console.log(self.topNoticesList)
     })
   },
   methods: {
@@ -141,7 +132,7 @@ h2{
   top: 100px;
 }
 .ywbg{
-  width: 250px;
+  max-width: 250px;
 }
 .newsDetialConRight ul li a{
   position: relative!important;
@@ -150,9 +141,16 @@ h2{
   width: 84px;
   height: 29px;
   position: absolute;
-  top: -40px;
+  top: -45px;
   left:50px;
   display: none;
+  z-index: 99;
+}
+.ywcontent{
+  display: inline-block;
+  width: 197px;
+  height: 85px;
+  overflow: hidden;
 }
 .newsDetialConRight ul li:hover a img.goyw{
   display: block;

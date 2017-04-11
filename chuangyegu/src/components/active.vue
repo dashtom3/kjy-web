@@ -39,6 +39,7 @@
         </div>
         <div v-for="active in activeData" class="alertcontent">
           <a href="">&gt;&nbsp;{{active.eventName}}</a>
+          <a :href="'/activeDetail/'+active.id">&gt;&nbsp;{{active.eventName}}</a>
         </div>
         </div>
       </div>
@@ -139,6 +140,7 @@ export default {
       var self = this
       axios.get(global.baseUrl + 'event/getEventList?' + global.getHttpData(data))
       .then((res) => {
+        console.log(res)
         self.dataFilter(res.data.data)
       })
     },
