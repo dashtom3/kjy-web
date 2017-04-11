@@ -14,11 +14,18 @@
 <script>
 import header from './header'
 import footer from './footer'
+import global from '../global/global'
 export default {
   name: 'personal',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
+    }
+  },
+  created: function () {
+    if (global.getToken() == null) {
+      this.$router.push('/login')
+      alert(global.content.alert)
     }
   },
   components: {

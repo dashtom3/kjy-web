@@ -13,18 +13,10 @@
 </template>
 
 <script>
-import global from '../global/global'
 export default {
-  created: function () {
-    if (global.getToken() != null) {
-      this.data[this.data.length - 1] = ['/personal', '个人中心']
-    } else {
-      this.data[this.data.length - 1] = ['/login', '登录·注册']
-    }
-  },
   data () {
     return {
-      data: [['/index', '首页'], ['/news', '新闻中心'], ['/notices', '通知公告'], ['/videos', '慕课(MOOC)'], ['/active', '活动预约'], ['/area', '场地预约'], ['/photowall', '照片墙'], ['/download', '资料下载'], ['/login', '登录·注册']]
+      data: [['/index', '首页'], ['/news', '新闻中心'], ['/notices', '通知公告'], ['/videos', '慕课(MOOC)'], ['/active', '活动预约'], ['/area', '场地预约'], ['/photowall', '照片墙'], ['/download', '资料下载'], ['/personal', '个人中心']]
     }
   },
   methods: {
