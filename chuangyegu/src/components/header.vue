@@ -16,7 +16,7 @@
 export default {
   data () {
     return {
-      data: [['/index', '首页'], ['/news', '新闻中心'], ['/notices', '通知公告'], ['/videos', '慕课(MOOC)'], ['/active', '活动预约'], ['/area', '场地预约'], ['/photowall', '照片墙'], ['/download', '资料下载'], ['/personal', '个人中心']]
+      data: [['/index', '首页'], ['/news', '新闻中心'], ['/notices', '通知公告'], ['/videos', '慕课(MOOC)'], ['/active', '活动预约'], ['/area', '场地预约'], ['/project', '项目对接'], ['/applyProject', '项目申请'], ['/photowall', '照片墙'], ['/download', '资料下载'], ['/personal', '个人中心']]
     }
   },
   methods: {

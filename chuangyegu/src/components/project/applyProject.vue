@@ -118,6 +118,13 @@ export default {
       places2: ['暴风影音会议室', '乐视TV会议室(可与暴风影音会议室合借)', '秋千会议区', '沙发会议区', '大师椅会议区', '户外舞台']
     }
   },
+  created: function () {
+    this.places = this.places1
+    if (global.getToken() == null) {
+      this.$router.push('/login')
+      alert(global.content.alert)
+    }
+  },
   methods: {
     selectCampus: function (value) {
       if (value === 0) {
@@ -129,9 +136,6 @@ export default {
     selectPlace: function (value) {
       console.log(value)
     }
-  },
-  created () {
-    this.places = this.places1
   },
   components: {
     'v-footer': footer,
@@ -165,20 +169,18 @@ export default {
 }
 .reserveHeader{
   font-size: 18px;
-  font-family: "Adobe Heiti Std";
   color: rgb( 254, 108, 0 );
-  border-bottom: 2px solid;
+  border-bottom: 1px solid;
   margin-bottom: 20px;
 }
 .reserveHeader h2{
-  font-size: 22.5px;
+  font-size: 18px;
 }
 .weixin{
   margin-right: 0!important;
 }
 .card h2{
-  font-size: 22.5px;
-  font-family: "Adobe Heiti Std";
+  font-size: 18px;
   color: rgb( 0, 0, 0 );
 }
 input,select,textarea{
@@ -188,17 +190,10 @@ input,select,textarea{
   height: 42px;
   background: #2d2d2d;
   background: rgba(45,45,45,.15);
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
   border-radius: 6px;
   border: 1px solid #3d3d3d;
   border: 1px solid rgba(255,255,255,.15);
-  -moz-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1) inset;
-  -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1) inset;
-  box-shadow: 0 1px 1px 0 rgba(0,0,0,.1) inset;
-  font-family: 'PT Sans', Helvetica, Arial, sans-serif;
   font-size: 14px;
-  text-shadow: 0 1px 2px rgba(0,0,0,.1)
 }
 select{
   position: relative;
@@ -241,20 +236,18 @@ input:-ms-input-placeholder{
   width: 350px;
 }
 .card span{
-  font-size: 15px;
-  font-family: "Adobe Heiti Std";
+  font-size: 14px;
   color: rgb( 83, 83, 83 );
   display: inline-block;
   margin-right: 30px;
 }
 .eventDetial h2{
   margin: 30px 0;
-  font-size: 22.5px;
+  font-size: 18px;
 }
 .place{
   position: relative;
-  font-size: 15px;
-  font-family: "Adobe Heiti Std";
+  font-size: 14px;
   color: rgb( 83, 83, 83 );
   display: block;
 }
@@ -287,21 +280,13 @@ input:-ms-input-placeholder{
   outline: none;
   background: #2d2d2d;
   background: rgba(45,45,45,.15);
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
   border-radius: 6px;
   border: 1px solid #3d3d3d;
   border: 1px solid rgba(255,255,255,.15);
-  -moz-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1) inset;
-  -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1) inset;
-  box-shadow: 0 1px 1px 0 rgba(0,0,0,.1) inset;
-  font-family: 'PT Sans', Helvetica, Arial, sans-serif;
   font-size: 14px;
-  text-shadow: 0 1px 2px rgba(0,0,0,.1)
 }
 .date{
-  font-size: 15px;
-  font-family: "Adobe Heiti Std";
+  font-size: 14px;
   color: rgb( 83, 83, 83 );
   line-height: 0.001;
   margin-right: 50px;
@@ -317,7 +302,6 @@ input:-ms-input-placeholder{
 }
 .time label{
   font-size: 14px;
-  font-family: "Adobe Heiti Std";
   color: rgb( 83, 83, 83 );
   line-height: 0.001;
   margin-right: 30px;
@@ -387,8 +371,7 @@ input:-ms-input-placeholder{
     text-decoration: none
 }*/
 h5{
-  font-size: 13.75px;
-  font-family: "Adobe Heiti Std";
+  font-size: 13px;
   color: rgb( 254, 108, 0 );
   border-bottom: 1px solid;
   margin:20px auto;
@@ -398,7 +381,6 @@ h5{
   text-align: right;
 }
 .tj a{
-  font-family: "Adobe Heiti Std";
   color: #fff;
   text-align: center;
   border-radius: 20px;
