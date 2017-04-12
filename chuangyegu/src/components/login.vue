@@ -9,30 +9,69 @@
           <p>to the Science</p>
           <p>and Technology Park</p>
         </div>
-        <div class="fromData">
+        <div class="fromData" v-if="loginState">
           <p>登录用户</p>
           <div class="selectLogin">
-            <button type="button" name="button" v-for="(loginKind, index) in selectLogin" :class="{'active':loginKind.active,'unactive':!loginKind.active}" v-on:click="selectKind(loginKind, index)">{{loginKind.data}}</button>
+            <button type="button" name="button" v-for="(loginKind, index) in selectLogin" :class="{'active':stateLoginName == loginKind.data,'unactive':stateLoginName != loginKind.data}" v-on:click="selectLoginKind(loginKind, index)">{{loginKind.data}}</button>
           </div>
-          <div class="xn" v-show="xn">
+          <div class="xn" v-show="loginInfo.type == -1">
             <form method="post" action="http://tjis.tongji.edu.cn:58080/amserver/UI/Login?goto=http://chuangyegu.tongji.edu.cn/index.php?classid=6740&action=tj_login&gotoOnFail=http://chuangyegu.tongji.edu.cn/index.php?classid=6740&action=tj_login">
               <div class="loginInput">
-                <input type="text" v-model="xnMessages.loginName" placeholder="账号" name="Login.Token1"><br>
-                <input type="password" v-model="xnMessages.password" name="Login.Token2" placeholder="密码">
+                <input type="text" v-model="loginInfo.loginName" placeholder="账号">
+                <br>
+                <input type="password" v-model="loginInfo.password" placeholder="密码">
               </div>
               <div class="sub">
-                <a href="javascript:;" v-on:click="xnLogin">登录</a>
+                <button v-on:click="loginUser">登录</button>
               </div>
             </form>
           </div>
-          <div class="xw" v-show="xw">
+          <div class="xw" v-show="loginInfo.type == -2">
             <div class="loginInput">
-              <input type="text" v-model="xwname" value="" placeholder="账号"><br>
-              <input type="password" v-model="xwpassword" placeholder="密码">
+              <input type="text" v-model="loginInfo.loginName" placeholder="账号"><br>
+              <input type="password" v-model="loginInfo.password" placeholder="密码">
             </div>
             <div class="sub">
-              <a href="javascript:;" v-on:click="xwLogin">登录</a>
-              <a href="javascript:;" class="reg">注册</a>
+              <button v-on:click="loginUser">登录</button>
+              <div class="line"></div>
+              <button class="reg" v-on:click="toRegisterUser">注册</button>
+            </div>
+          </div>
+        </div>
+        <div class="fromData" v-if="!loginState">
+          <div class="selectLogin">
+            <button type="button" name="button" v-for="(loginKind, index) in selectRegister" :class="{'active':stateRegName == loginKind.data,'unactive':stateRegName != loginKind.data}" v-on:click="selectRegKind(loginKind, index)">{{loginKind.data}}</button>
+          </div>
+          <div class="xn" v-show="registerInfo.identity == 1">
+              <div class="loginInput">
+                <input type="text" v-model="registerInfo.loginName" placeholder="用户名">
+                <br>
+                <input type="password" v-model="registerInfo.password" placeholder="密码">
+                <br>
+                <input type="password" v-model="repassword" placeholder="确认密码">
+                <br>
+                <input type="text" v-model="registerInfo.companyName" placeholder="企业名称">
+              </div>
+              <div class="sub">
+                <button v-on:click="registerUser">注册</button>
+                <div class="line"></div>
+                <button class="reg" v-on:click="toRegisterUser">登录</button>
+              </div>
+          </div>
+          <div class="xw" v-show="registerInfo.identity == 2">
+            <div class="loginInput">
+              <input type="text" v-model="registerInfo.loginName" placeholder="用户名">
+              <br>
+              <input type="password" v-model="registerInfo.password" placeholder="密码">
+              <br>
+              <input type="password" v-model="repassword" placeholder="确认密码">
+              <br>
+              <input type="text" v-model="registerInfo.name" placeholder="姓名">
+            </div>
+            <div class="sub">
+              <button v-on:click="registerUser">注册</button>
+              <div class="line"></div>
+              <button class="reg" v-on:click="toRegisterUser">登录</button>
             </div>
           </div>
         </div>
@@ -45,7 +84,7 @@
 <script>
 import header from './header'
 import footer from './footer'
-import Vue from 'vue'
+// import Vue from 'vue'
 import axios from 'axios'
 import global from '../global/global'
 export default {
@@ -53,67 +92,82 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       selectLogin: [
-        { data: '校内登录', val: 0 },
-        { data: '校外登录', val: 1 }
+        { data: '校内登录', val: '-1' },
+        { data: '校外登录', val: '-2' }
       ],
+      selectRegister: [
+        { data: '企业', val: '1' },
+        { data: '个人', val: '2' }
+      ],
+      loginState: true,
+      stateLoginName: '校内登录',
+      stateRegName: '企业',
       xn: true,
       xw: false,
       active: false,
       loginName: '',
-      xnMessages: {
+      loginInfo: {
         loginName: '',
-        password: ''
+        password: '',
+        type: '-1'
+      },
+      repassword: '',
+      registerInfo: {
+        loginName: '',
+        password: '',
+        identity: '1',
+        name: null,
+        companyName: null
       },
       xwname: '',
       xwpassword: ''
     }
   },
   created () {
-    Vue.set(this.selectLogin[0], 'active', true)
+    // Vue.set(this.selectLogin[0], 'active', true)
   },
   methods: {
-    selectKind: function (item, index) {
-      if (index === 1) {
-        this.xn = false
-        this.xw = true
-      } else {
-        this.xn = true
-        this.xw = false
-      }
-      var self = this
-      this.$nextTick(function () {
-        self.selectLogin.forEach(function (ele) {
-          Vue.set(ele, 'active', false)
-        })
-        Vue.set(item, 'active', true)
-      })
+    toRegisterUser: function () {
+      this.loginState = !this.loginState
+    },
+    selectRegKind: function (item, index) {
+      this.stateRegName = item.data
+      this.registerInfo.identity = item.val
+    },
+    selectLoginKind: function (item, index) {
+      this.stateLoginName = item.data
+      this.loginInfo.type = item.val
     },
     // 校内登录
-    xnLogin () {
-      var self = this
-      var xnMsg = new FormData()
-      xnMsg.append('loginName', this.xnMessages.loginName)
-      xnMsg.append('password', this.xnMessages.password)
-      axios.post(global.baseUrl + 'user/login?type=1', xnMsg)
+    loginUser () {
+      axios.post(global.baseUrl + 'user/login', global.postHttpData(this.loginInfo))
       .then((res) => {
         if (res.data.callStatus === 'SUCCEED') {
           global.success(self, '登陆成功', '/index')
           global.setToken(res.data.token)
           localStorage.token = res.data.token
           localStorage.time = Date.parse(new Date()) / 1000 + 1800
+        } else {
+          alert('用户名不存在或者密码错误')
         }
       })
     },
     // 校外登陆
-    xwLogin () {
-      var xwMsg = new FormData()
-      xwMsg.append('loginName', this.xwname)
-      xwMsg.append('password', this.xwpassword)
-      xwMsg.append('type', '2')
-      axios.post(global.baseUrl + 'user/login?type=2', xwMsg)
-      .then(function (res) {
-        console.log(res)
-      })
+    registerUser () {
+      if (this.repassword !== this.registerInfo.password) {
+        alert('两次输入密码不正确')
+      } else {
+        var self = this
+        axios.post(global.baseUrl + 'user/register', global.postHttpData(this.registerInfo))
+        .then(function (res) {
+          if (res.data.callStatus === 'SUCCEED') {
+            alert('注册成功')
+            self.loginState = true
+          } else {
+            alert('注册失败')
+          }
+        })
+      }
     }
   },
   components: {
@@ -127,19 +181,21 @@ export default {
 <style scoped>
 .loginDiv{
   width: 100%;
-  background-color: #000;
+  /*background-color: #000;*/
 }
 .loginCon{
-  width: 1200px;
-  margin: 20px auto 70px;
+  /*width: 1200px;*/
+  /*margin: 20px auto 70px;*/
   height: 520px;
-  background: url('../images/poster.png') no-repeat;
-  position: relative;
+  background: url('../images/login_banner.png') no-repeat center;
 }
 .loginConLeft{
-  position: absolute;
-  left: 90px;
-  top: 30%;
+  /*position: absolute;*/
+  /*left: 90px;*/
+  /*top: 30%;*/
+  margin-left: 200px;
+  margin-top: 150px;
+  display: inline-block;
 }
 .loginConLeft p{
     font-size: 18px;
@@ -147,9 +203,10 @@ export default {
     line-height: 2.3;
 }
 .fromData{
-  position: absolute;
-  right: 85px;
-  top:20%;
+  display: inline-block;
+  float: right;
+  margin-top: 50px;
+  margin-right: 200px;
 }
 /*<<<<<<< Updated upstream
 .fromData span{
@@ -160,7 +217,7 @@ export default {
 =======*/
 .fromData p{
   font-size: 18px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   letter-spacing: 2px;
   color: rgb( 255, 255, 255 );
 }
@@ -210,18 +267,21 @@ input{
     /*transition: border-color .2s cubic-bezier(.645,.045,.355,1);*/
 }
 .sub{
-  position: absolute;
-  right: 0;
+  /*position: absolute;*/
+  /*right: 0;*/
+  text-align: center;
 }
-.sub a{
-  display: block;
+.sub button{
+  border: none;
   color:#fff;
   width: 125px;
   height: 35px;
   line-height: 35px;
   text-align: center;
   margin:20px 0;
-  background: url('../images/Layer-9.png') no-repeat;
+  /*background: url('../images/Layer-9.png') no-repeat;*/
+  background-color: rgb( 254, 108, 0 );
+  border-radius: 4px;
 }
 input[type="submit"]{
   display: block;
@@ -237,8 +297,13 @@ input[type="submit"]{
     position: relative;
     top: -3px;
 }
-.sub a.reg{
-  position: relative;
-  left: -230px;
+.line {
+  height: 1px;
+  background-color: #fff;
+  width: 100%;
+}
+.sub button.reg{
+  background-color: transparent;
+  outline: none;
 }
 </style>
