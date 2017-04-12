@@ -53,6 +53,7 @@ export default {
   color: rgb( 254, 108, 0 );
   border-bottom: 2px solid;
   margin-bottom: 30px;
+  padding-bottom: 20px;
 }
 h3{
   margin: 20px 0 20px;

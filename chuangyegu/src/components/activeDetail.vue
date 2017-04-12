@@ -61,7 +61,7 @@ export default {
     var self = this
     axios.get(global.baseUrl + 'event/getById?eventId=' + this.activeId + '&token=' + global.getToken())
     .then((res) => {
-      console.log(res)
+      // console.log(res)
       self.activeDetailMsg = res.data.data
     })
   },
@@ -119,7 +119,6 @@ export default {
   margin-left: 70px;
 }
 .activeDetailContentTitle{
-  font-size: 14px;
   font-family: "Microsoft YaHei";
   color: rgb( 254, 108, 0 );
   /*margin:0;*/

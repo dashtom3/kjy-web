@@ -27,18 +27,15 @@
           <!-- <span class="demonstration">页数较少时的效果</span> -->
         </div>
       </div>
-      <!-- <el-dialog v-model="activeAlert"> -->
       <div class="activealert" v-if="activeAlert != null">
         <div class="activealertbody">
         <div class="activePage alertDiv">
           <span class="lt">&lt;&nbsp;&nbsp;&nbsp;</span>
           <span>{{activeAlert | week}}<p>{{activeAlert | time}}</p></span>
           <span class="gt">&nbsp;&nbsp;&nbsp;&gt;</span>
-          <!-- <a href="javascript:;" class="qx">×</a> -->
           <button v-on:click="closeActive">X</button>
         </div>
         <div v-for="active in activeData" class="alertcontent">
-          <a href="">&gt;&nbsp;{{active.eventName}}</a>
           <a :href="'/activeDetail/'+active.id">&gt;&nbsp;{{active.eventName}}</a>
         </div>
         </div>

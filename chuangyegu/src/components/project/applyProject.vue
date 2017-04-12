@@ -217,18 +217,6 @@ select{
   width: 296px;
   height: 30px;
 }
-input::webkit-input-placeholder{
-  color: red;
-}
-input:-moz-placeholder{
-  color: red
-}
-input::-moz-placeholder{
-  color: red;
-}
-input:-ms-input-placeholder{
-  color: red;
-}
 .card input{
   width: 296px;
   height: 38px;

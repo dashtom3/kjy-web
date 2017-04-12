@@ -21,7 +21,7 @@
             </div>
             <div class="ywtime">
               <span>{{topNoticesList[item-1].date}}</span><br>
-              <span>{{topNoticesList[item-1].title}}</span>
+              <span class="cb">{{topNoticesList[item-1].title}}</span>
             </div>
             </a>
           </li>
@@ -169,11 +169,28 @@ h2{
   font-size: 9.73px;
   font-family: '[FZLTXHK]';
 }
+.ywtime span{
+  font-size: 9.72px;
+  color:rgb(254,108,0);
+}
+.ywtime span.cb{
+  margin-top: 10px;
+    color: #000;
+    font-size: 12px;
+    display: -webkit-box;
+    width: 98px;
+    max-height: 70px;
+    overflow: hidden;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
 .newsDetialConRight ul li:hover .ywtime{
   display: inline-block;
 }
 .ywbg{
-  width: 198px;
-  height: 85px;
+  max-width: 198px;
 }
 </style>

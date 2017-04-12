@@ -98,6 +98,7 @@ export default {
       .then((res) => {
         if (res.data.callStatus === 'SUCCEED') {
           global.success(self, '登陆成功', '/index')
+          global.setToken(res.data.token)
           localStorage.token = res.data.token
           localStorage.time = Date.parse(new Date()) / 1000 + 1800
         }

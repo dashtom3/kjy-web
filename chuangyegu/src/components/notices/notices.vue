@@ -27,7 +27,7 @@
               </div>
               <div class="ywtime">
                 <span>{{topNoticesList[item-1].date}}</span><br>
-                <span>{{topNoticesList[item-1].content}}</span>
+                <span class="cb">{{topNoticesList[item-1].title}}</span>
               </div>
             </a>
           </li>
@@ -61,8 +61,9 @@ export default {
   created () {
     var self = this
     this.getNoticeList(this.newsArgs)
-    axios.get(global.baseUrl + 'notice/getNoticeList?numPerPage=20')
+    axios.get(global.baseUrl + 'notice/getNoticeList?ifImage=1&numPerPage=20')
     .then((res) => {
+      console.log(res)
       for (let i in res.data.data) {
         if (res.data.data[i].pic !== '') {
           res.data.data[i].content = res.data.data[i].content.replace(/<[^>]+>/g, '')
@@ -228,6 +229,24 @@ h3{
   height: 85px;
   vertical-align: top;
   overflow: hidden;
+}
+.ywtime span{
+  font-size: 9.72px;
+  color:rgb(254,108,0);
+}
+.ywtime span.cb{
+  margin-top: 10px;
+    color: #000;
+    font-size: 12px;
+    display: -webkit-box;
+    width: 98px;
+    max-height: 70px;
+    overflow: hidden;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
 }
 .newsright ul li:hover .ywtime{
   display: inline-block;

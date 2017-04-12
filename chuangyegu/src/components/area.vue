@@ -8,8 +8,8 @@
       <div class="reserveCont">
         <div class="card">
           <h2>身份信息</h2>
-          <input type="text" v-model="areaMsg.applyUnit" required placeholder="申请单位"> <input type="text" v-model="areaMsg.contactName" required placeholder="联系人">
-          <input type="text" v-model="areaMsg.contactPhone" required placeholder="联系电话" class="w265"> <input type="text" v-model="areaMsg.mobilePhone" placeholder="手机" class="w265"><br>
+          <input type="text" v-model="areaMsg.applyUnit" placeholder="申请单位"> <input type="text" v-model="areaMsg.contactName" placeholder="联系人">
+          <input type="text" v-model="areaMsg.contactPhone" placeholder="联系电话" class="w265"> <input type="text" v-model="areaMsg.mobilePhone" placeholder="手机" class="w265"><br>
           <span>校区</span>
           <el-select v-model="areaMsg.campus" placeholder="请选择" @change="selectCampus">
             <el-option
@@ -23,7 +23,7 @@
         <div class="eventDetial">
           <h2>活动信息</h2>
           <div class="place">
-            <input type="text" v-model="areaMsg.eventName" required placeholder="活动名称"><br><br>
+            <input type="text" v-model="areaMsg.eventName" placeholder="活动名称"><br><br>
             <span>租借场地类型</span>
             <el-select v-model="areaMsg.rentalPlace" placeholder="请选择" v-on:change="selectRentalPlace">
               <el-option
@@ -269,7 +269,6 @@ input,select{
   height: 42px;
   background: #eeedef;
   border-radius: 6px;
-  border: 1px solid #3d3d3d;
   border: 1px solid rgba(255,255,255,.15);
   font-size: 14px;
 }
@@ -278,18 +277,6 @@ select{
   top: -5px;
   width: 200px;
   height: 30px;
-}
-input::webkit-input-placeholder{
-  color: red;
-}
-input:-moz-placeholder{
-  color: red
-}
-input::-moz-placeholder{
-  color: red;
-}
-input:-ms-input-placeholder{
-  color: red;
 }
 .card input{
   width: 296px;

@@ -1,13 +1,14 @@
 <template>
   <div class="contact">
     <v-header></v-header>
-    <div class="contactTitle">
+    <div class="contactTitle backProject">
       <h2>项目对接 Project</h2>
+      <a href="/project">返回</a>
     </div>
     <div class="projectCon">
       <div class="projectConTitle">
-        <p>这是项目详情标题</p>
-        <p><span>人才对接数: 0</span><span>导师对接数: 0</span><span>企业对接数: 0</span><span>资金对接总数: 0</span></p>
+        <p>{{projectDetailMsg.project.projectName}}</p>
+        <p><span>人才对接数: {{talentNum}}</span><span>导师对接数: {{teacherNum}}</span><span>企业对接数: {{companyNum}}</span><span>资金对接总数: {{allMoney}}万元</span></p>
       </div>
       <div class="projectUser projectMsg">
         <p class="projectMsgTitle">立项人信息</p>
@@ -18,22 +19,26 @@
       </div>
       <div class="projectMsg">
         <p class="projectMsgTitle">项目情况</p>
-        <p><span>项目类型: </span><span>类型一&nbsp;&nbsp;</span><span>类型二</span></p>
-        <p><span>申请时间: </span><span>2016-12-12</span></p>
-        <p><span>是否已成立公司: </span><span>否</span></p>
+        <p><span>项目类型: </span><span>{{projectDetailMsg.project.projectType}}&nbsp;&nbsp;</span></p>
+        <p><span>申请时间: </span><span>{{projectDetailMsg.project.applyTime*1000 | time}}</span></p>
+        <p><span>是否已成立公司: </span><span>{{projectDetailMsg.project.isCompany}}</span></p>
       </div>
       <div class="projectMsg">
         <p class="projectMsgTitle">项目简介</p>
-        <p><span>个性宣传: </span><span>你好你好你好你好</span></p>
+        <p><span>目标: </span><span>{{projectDetailMsg.project.slogan}}</span></p>
+        <p><span>个性宣传: </span><span>{{projectDetailMsg.project.projectBrief}}</span></p>
       </div>
       <div class="projectMsg projectDetialIntr">
         <p class="projectMsgTitle">项目介绍</p>
-        <p><span class="w120">项目背景及前瞻性: </span><span class="w700">你好你好你好你好</span></p>
-        <p><span class="w120">项目市场性: </span><span class="w700">你好你好你好你好</span></p>
-        <p><span class="w120">项目优势: </span><span class="w700">你好你好你好你好</span></p>
-        <p><span class="w120">项目人员需求详情: </span><span class="w700">你好你好你好你好</span></p>
-        <p><span class="w120">项目汇报模式: </span><span class="w700">你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好</span></p>
-        <p><span class="w120">资金开发情况及用途: &nbsp;</span><span class="w700">你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好</span></p>
+        <p class="over"><span class="w120">项目背景及前瞻性: </span><span class="w700">{{projectDetailMsg.project.projectBackGround}}</span></p>
+        <p class="over"><span class="w120">项目市场性: </span><span class="w700">{{projectDetailMsg.project.projectMarket}}</span></p>
+        <p class="over"><span class="w120">项目优势: </span><span class="w700">{{projectDetailMsg.project.projectBenefits}}</span></p>
+        <p class="over"><span class="w120">项目人员需求详情: </span><span class="w700">{{projectDetailMsg.project.projectStaff}}</span></p>
+        <p class="over"><span class="w120">项目汇报模式: </span><span class="w700">{{projectDetailMsg.project.projectReport}}</span></p>
+        <p class="over"><span class="w120">资金开发情况及用途: &nbsp;</span><span class="w700">{{projectDetailMsg.project.projectFunding}}</span></p>
+      </div>
+      <div class="projectMsg">
+        <p class="projectMsgTitle">项目需要资金：{{projectDetailMsg.project.moneyNum}}万元</p>
       </div>
       <div class="projectMsg">
         <p class="projectMsgTitle">项目组成人员情况</p>
@@ -69,14 +74,14 @@
         <p class="projectMsgTitle">项目需求</p>
         <el-table
         border
-          :data="tableData"
+          :data="projectDetailMsg.projectPeopleDemands"
           style="width: 100%">
           <el-table-column
-            prop="kind"
+            prop="gwlx"
             label="岗位类型">
           </el-table-column>
           <el-table-column
-            prop="studentId"
+            prop="num"
             label="数量">
           </el-table-column>
         </el-table>
@@ -86,14 +91,14 @@
         <p><span>项目总时间：六个月</span></p>
         <el-table
         border
-          :data="tableData"
+          :data="projectDetailMsg.projectSchedules"
           style="width: 100%">
           <el-table-column
-            prop="dateTime"
+            prop="time"
             label="日期">
           </el-table-column>
           <el-table-column
-            prop="name"
+            prop="taskIntro"
             label="任务介绍">
           </el-table-column>
         </el-table>
@@ -116,34 +121,11 @@ export default {
       projectMsg: {
         projectId: this.$route.params.id
       },
-      projectDetailMsg: '',
-      tableData: [{
-        dateTime: '2016',
-        collage: '汽车学院',
-        major: '软件',
-        studentId: '21',
-        name: '王小虎',
-        kind: '科研',
-        money: '100'
-      }, {
-        collage: '汽车学院',
-        major: '软件',
-        studentId: '21',
-        name: '王小虎',
-        kind: '科研'
-      }, {
-        collage: '汽车学院',
-        major: '软件',
-        studentId: '21',
-        name: '王小虎',
-        kind: '科研'
-      }, {
-        collage: '汽车学院',
-        major: '软件',
-        studentId: '21',
-        name: '王小虎',
-        kind: '科研'
-      }]
+      talentNum: 0,
+      teacherNum: 0,
+      companyNum: 0,
+      allMoney: 0,
+      projectDetailMsg: ''
     }
   },
   created () {
@@ -151,6 +133,19 @@ export default {
     axios.get(global.baseUrl + 'project/getProjectDetails?' + global.getHttpData(this.projectMsg))
     .then((res) => {
       console.log(res)
+      for (let i in res.data.data.projectSchedules) {
+        res.data.data.projectSchedules[i].time = res.data.data.projectSchedules[i].time + '~' + res.data.data.projectSchedules[i].endTime
+      }
+      for (let i in res.data.data.projectButts) {
+        self.allMoney = res.data.data.projectButts[i].money + self.allMoney
+        if (res.data.data.projectButts[i].demandType === 1) {
+          self.talentNum++
+        } else if (res.data.data.projectButts[i].demandType === 2) {
+          self.teacherNum++
+        } else {
+          self.companyNum++
+        }
+      }
       self.projectDetailMsg = res.data.data
     })
   },
@@ -163,6 +158,23 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.backProject{
+  position: relative;
+}
+.backProject a{
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: #fff;
+  /*border: 1px solid;*/
+  padding:5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  background-color: rgb(254,108,0);
+}
+.backProject a:focus{
+  color: #fff;
+}
 .contact{
   width: 1200px;
   margin: 0 auto;
@@ -172,6 +184,9 @@ export default {
 .contactTitle{
   width: 865px;
   margin: 0 auto;
+}
+.projectMsg p.over{
+  overflow: hidden;
 }
 .contactTitle h2{
   font-size: 22.5px;

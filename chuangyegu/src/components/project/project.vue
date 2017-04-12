@@ -44,6 +44,9 @@
           </a>
         </li>
       </ul>
+      <div class="block projectPage">
+          <page v-on:page="changePage" v-bind:args="projectMsg"></page>
+      </div>
       <!-- <div class="block" style="margin-bottom:30px;">
         <el-pagination
           @current-change="handleCurrentChange"
@@ -63,6 +66,7 @@ import footer from '../footer'
 import axios from 'axios'
 import global from '../../global/global'
 import Vue from 'vue'
+import page from '../page'
 export default {
   name: 'project',
   data () {
@@ -158,7 +162,7 @@ export default {
       var self = this
       axios.get(global.baseUrl + 'project/getProjectList?' + global.getHttpData(args))
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         for (let i in res.data.data) {
           res.data.data[i].applyTime = self.timeFilter(res.data.data[i].applyTime * 1000)
           res.data.data[i].talent ? res.data.data[i].talent = '找人才' : res.data.data[i].talent = null
@@ -166,9 +170,13 @@ export default {
           res.data.data[i].money ? res.data.data[i].money = '找资金' : res.data.data[i].money = null
         }
         self.projectLists = res.data.data
-        // self.projectMsg.pageNum = res.data.currentPage
-        // self.projectMsg.totalPage = res.data.totalPage
+        self.projectMsg.pageNum = res.data.currentPage
+        self.projectMsg.totalPage = res.data.totalPage
       })
+    },
+    changePage (value) {
+      this.projectMsg.pageNum = value
+      this.getProjectLists(this.projectMsg)
     },
     timeFilter: function (value) {
       var month = new Date(parseInt(value)).getMonth() + 1
@@ -184,7 +192,8 @@ export default {
   },
   components: {
     'v-header': header,
-    'v-footer': footer
+    'v-footer': footer,
+    page
   }
 }
 </script>
@@ -278,18 +287,16 @@ dd a{
   margin-bottom: 20px;
 }
 .filter dl a{
-  color: #fff;
+  color: rgba(0,0,0,.8);
   font-size: 12px;
 }
 .filter dl a.active{
   background-color: rgb( 254, 108, 0 );
+  color:#fff;
 }
 .projectCon{
   width: 800px;
-  margin: 0 auto;
-}
-.projectCon ul{
-  margin-bottom: 50px;
+  margin: 0 auto 50px;
 }
 .projectCon ul li{
   overflow: hidden;
@@ -362,8 +369,12 @@ table tr:nth-child(1) td{
 }
 table tr:nth-child(2) td{
   font-size: 12px;
-  line-height: 28px;
+  line-height: 20px;
   color: #888;
+}
+.tr122{
+  display: block;
+  margin-bottom: 5px;
 }
 .state{
   display: inline-block;

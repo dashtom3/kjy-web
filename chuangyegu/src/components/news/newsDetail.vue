@@ -23,7 +23,7 @@
               </div>
               <div class="ywtime">
                 <span>{{newslists[item-1].date}}</span><br>
-                <span>{{newslists[item-1].content}}</span>
+                <span class="cb">{{newslists[item-1].title}}</span>
               </div>
             </a>
           </li>
@@ -56,7 +56,7 @@ export default {
       self.newsDetialContent = res.data.data
       self.newsDetialContent.content = self.newsDetialContent.content.replace(/src="/gi, 'src="http://123.56.220.72:8080/cyg/')
     })
-    axios.get(global.baseUrl + 'news/getNewsList')
+    axios.get(global.baseUrl + 'news/getNewsList?ifImage=1&numPerPage=3')
     .then((res) => {
       self.newslists = res.data.data
       for (let i in self.newslists) {
@@ -139,6 +139,7 @@ h2{
   top: -45px;
   left:50px;
   display: none;
+  z-index: 99;
 }
 .ywcontent{
   display: inline-block;
@@ -166,6 +167,20 @@ h2{
   overflow: hidden;
   vertical-align: top;
   font-size: 9.73px;
+}
+.ywtime span.cb{
+  margin-top: 10px;
+    color: #000;
+    font-size: 12px;
+    display: -webkit-box;
+    width: 98px;
+    max-height: 70px;
+    overflow: hidden;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
 }
 .newsDetialConRight ul li:hover .ywtime{
   display: inline-block;

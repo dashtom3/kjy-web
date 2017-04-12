@@ -243,7 +243,7 @@ export default {
     })
     axios.get(global.baseUrl + 'mooc/getMoocList?numPerPage=1')
     .then((res) => {
-      console.log(res)
+      // console.log(res)
       self.videoMsg = res.data.data[0]
     })
   },
@@ -547,18 +547,24 @@ img.hoverimg{
   width: 216px;
   max-height: 46px;
   padding: 4px 10px;
-  background-color: rgba(255,255,255,.8);
+  background-color: rgba(255,255,255,.7);
   margin: 0 auto;
-  top: 30%;
+  top: 40%;
 }
 .newTitle p{
   margin: 0;
   overflow: hidden;
-  word-break: break-all;
   text-overflow:ellipsis;
-  display: -webkit-box; /** 对象作为伸缩盒子模型显示 **/
-   -webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
-   -webkit-line-clamp: 2; /** 显示的行数 **/
+  white-space: nowrap;
+  /*overflow: hidden;
+  word-break: break-all;*/
+  /*text-overflow:ellipsis;
+  display: -webkit-box;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-line-clamp: 2;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: 2;*/
 }
 .newsContents ul li .img img{
   width: 280px;
