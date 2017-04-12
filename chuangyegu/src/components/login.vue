@@ -14,7 +14,7 @@
           <div class="selectLogin">
             <button type="button" name="button" v-for="(loginKind, index) in selectLogin" :class="{'active':stateLoginName == loginKind.data,'unactive':stateLoginName != loginKind.data}" v-on:click="selectLoginKind(loginKind, index)">{{loginKind.data}}</button>
           </div>
-          <div class="xn" v-show="loginInfo.type == -1">
+          <div class="xn" v-show="loginInfo.type == 1">
             <form method="post" action="http://tjis.tongji.edu.cn:58080/amserver/UI/Login?goto=http://chuangyegu.tongji.edu.cn/index.php?classid=6740&action=tj_login&gotoOnFail=http://chuangyegu.tongji.edu.cn/index.php?classid=6740&action=tj_login">
               <div class="loginInput">
                 <input type="text" v-model="loginInfo.loginName" placeholder="账号">
@@ -26,7 +26,7 @@
               </div>
             </form>
           </div>
-          <div class="xw" v-show="loginInfo.type == -2">
+          <div class="xw" v-show="loginInfo.type == 2">
             <div class="loginInput">
               <input type="text" v-model="loginInfo.loginName" placeholder="账号"><br>
               <input type="password" v-model="loginInfo.password" placeholder="密码">
@@ -92,8 +92,8 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       selectLogin: [
-        { data: '校内登录', val: '-1' },
-        { data: '校外登录', val: '-2' }
+        { data: '校内登录', val: '1' },
+        { data: '校外登录', val: '2' }
       ],
       selectRegister: [
         { data: '企业', val: '1' },
@@ -109,7 +109,7 @@ export default {
       loginInfo: {
         loginName: '',
         password: '',
-        type: '-1'
+        type: '1'
       },
       repassword: '',
       registerInfo: {
@@ -140,12 +140,14 @@ export default {
     },
     // 校内登录
     loginUser () {
+      var self = this
       axios.post(global.baseUrl + 'user/login', global.postHttpData(this.loginInfo))
       .then((res) => {
         if (res.data.callStatus === 'SUCCEED') {
           global.success(self, '登陆成功', '/index')
           global.setToken(res.data.token)
           localStorage.token = res.data.token
+          global.setUser(res.data.data)
           localStorage.time = Date.parse(new Date()) / 1000 + 1800
         } else {
           alert('用户名不存在或者密码错误')
