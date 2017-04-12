@@ -36,7 +36,7 @@
             <textarea name="name" v-model="areaMsg.eventContent" rows="8" cols="80" placeholder="活动内容简介"></textarea>
           </div>
           <div class="yulan">
-            <div class="tu">
+            <div class="tu" style="top:0px;">
               <span class="date">场地图片预览</span>
             </div>
             <div>

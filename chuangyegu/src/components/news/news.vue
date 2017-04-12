@@ -53,7 +53,8 @@
 <script>
 import header from '../header'
 import footer from '../footer'
-import img1 from '../../images/poster.png'
+import news1 from '../../images/news1.jpg'
+import news2 from '../../images/news2.jpg'
 import axios from 'axios'
 import global from '../../global/global'
 import page from '../page'
@@ -62,7 +63,7 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      srcs: [img1, img1],
+      srcs: [news1, news2],
       newsArgs: {
         ifImage: null,
         numPerPage: 6,

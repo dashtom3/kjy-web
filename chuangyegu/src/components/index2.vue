@@ -192,6 +192,8 @@ import header from './header'
 import footer from './footer'
 import Vue from 'vue'
 import img1 from '../images/poster.png'
+import img2 from '../images/img2.jpg'
+import img3 from '../images/img3.jpg'
 import v1 from '../images/v1.png'
 import v2 from '../images/v2.png'
 import v3 from '../images/v3.png'
@@ -203,7 +205,7 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      images: [img1, img1, img1],
+      images: [img1, img2, img3],
       vs: [v1, v2, v3],
       newslists: [],
       videoMsg: {}

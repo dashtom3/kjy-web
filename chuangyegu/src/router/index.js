@@ -107,7 +107,7 @@ export default new Router({
     name: 'project',
     component: project
   }, {
-    path: '/projectDetail',
+    path: '/projectDetail/:id',
     name: 'projectDetail',
     component: projectDetail
   }, {

@@ -35,39 +35,28 @@
           <el-radio :label="4">个人</el-radio>
           <el-radio :label="5">机构</el-radio>
         </el-radio-group>
-        <!-- <el-col :span="4">
-          <div class="grid-content bg-purple">
-            <el-input
-              placeholder="请输入用户ID名称"
-              icon="search"
-              v-model="input">
-            </el-input>
-          </div>
-        </el-col> -->
-        <!-- <el-col :span="20">
-          <el-button type="primary">新建用户测试</el-button>
-        </el-col> -->
       </el-row>
     </div>
     <div id="table">
       <el-table
-        :data="tableData"
+        :data="projectLists"
         stripe
+        border
         style="width: 100%">
         <el-table-column
           prop="id"
           label="项目ID">
         </el-table-column>
         <el-table-column
-          prop="testName"
+          prop="projectName"
           label="项目名称">
         </el-table-column>
         <el-table-column
-          prop="types"
+          prop="email"
           label="邮箱">
         </el-table-column>
         <el-table-column
-          prop="projectID"
+          prop="applyTime"
           label="申请时间">
         </el-table-column>
         <el-table-column
@@ -78,21 +67,30 @@
           prop="status"
           label="项目状态">
         </el-table-column>
-        <el-table-column
-          :context="_self"
-          inline-template
-          label="操作">
-          <span>
-            <el-button @click="handleClick" type="text" size="small">查看</el-button>
-            <el-button type="text" size="small">编辑</el-button>
-          </span>
+        <el-table-column label="操作">
+          <template scope="scope">
+            <el-button
+              size="small"
+              type="danger"
+              @click="onDelClick(scope.row.id)">删除</el-button>
+          </template>
         </el-table-column>
       </el-table>
+      <div class="adminBlock">
+        <el-pagination
+          @current-change="changePage"
+          :current-page="projectMsg.pageNum"
+          layout="prev, pager, next"
+          :page-count="projectMsg.totalPage">
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import global from '../../global/global'
 export default {
   data () {
     return {
@@ -101,20 +99,53 @@ export default {
       demand: 1,
       kinds: 1,
       sources: 1,
-      tableData: null
+      projectLists: null,
+      projectMsg: {
+        status: null,
+        demand: null,
+        projectType: null,
+        source: null,
+        pageNum: 1,
+        totalPage: null
+      }
     }
   },
+  created () {
+    this.getProjectLists(this.projectMsg)
+  },
   methods: {
-    handleClick: function () {
-      alert('click')
+    onDelClick: function (id) {
+      console.log(id)
     },
     select: function () {
       console.log(this.verify, this.demand, this.kinds, this.sources)
+    },
+    getProjectLists (args) {
+      var self = this
+      axios.get(global.baseUrl + 'project/getProjectList?' + global.getHttpData(args))
+      .then((res) => {
+        for (let i in res.data.data) {
+          res.data.data[i].applyTime = self.timeFilter(res.data.data[i].applyTime * 1000)
+        }
+        self.projectLists = res.data.data
+        self.projectMsg.pageNum = res.data.currentPage
+        self.projectMsg.totalPage = res.data.totalPage
+      })
+    },
+    changePage (val) {
+      this.projectMsg.pageNum = val
+      this.getProjectLists(this.projectMsg)
+    },
+    timeFilter: function (value) {
+      return new Date(parseInt(value)).getFullYear() + '-' + (new Date(parseInt(value)).getMonth() + 1) + '-' + new Date(parseInt(value)).getDate()
     }
   }
 }
 </script>
 
 <style media="screen">
-
+.adminBlock{
+  float: right;
+  margin-top: 20px;
+}
 </style>

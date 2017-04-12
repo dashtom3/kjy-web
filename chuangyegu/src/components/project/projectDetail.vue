@@ -12,8 +12,8 @@
       <div class="projectUser projectMsg">
         <p class="projectMsgTitle">立项人信息</p>
         <p>
-          <span>姓名: 李子林</span><span>学院: 同济大学艺术学院</span><span>专业: 其他</span><span>学号: 001</span><br>
-          <span>联系电话: 12121212</span><span>Email: 123456</span>
+          <span>姓名: {{projectDetailMsg.project.applyName}}</span><span>学院: {{projectDetailMsg.project.applyCollege}}</span><span>专业: {{projectDetailMsg.project.applyMajor}}</span><span>学号: {{projectDetailMsg.project.studentId}}</span><br>
+          <span>联系电话: {{projectDetailMsg.project.applyPhone}}</span><span>Email: {{projectDetailMsg.project.email}}</span>
         </p>
       </div>
       <div class="projectMsg">
@@ -39,20 +39,20 @@
         <p class="projectMsgTitle">项目组成人员情况</p>
         <el-table
         border
-          :data="tableData"
+          :data="projectDetailMsg.projectMembers"
           style="width: 100%">
           <el-table-column
-            prop="name"
+            prop="memberName"
             label="姓名"
             width="180">
           </el-table-column>
           <el-table-column
-            prop="collage"
+            prop="memberCollage"
             label="学院"
             width="180">
           </el-table-column>
           <el-table-column
-            prop="major"
+            prop="memberMajor"
             label="专业">
           </el-table-column>
           <el-table-column
@@ -60,7 +60,7 @@
             label="学号">
           </el-table-column>
           <el-table-column
-            prop="kind"
+            prop="gwlx"
             label="岗位类型">
           </el-table-column>
         </el-table>
@@ -106,11 +106,17 @@
 <script>
 import header from '../header'
 import footer from '../footer'
+import axios from 'axios'
+import global from '../../global/global'
 export default {
-  name: 'contact',
+  name: 'projectDetail',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
+      projectMsg: {
+        projectId: this.$route.params.id
+      },
+      projectDetailMsg: '',
       tableData: [{
         dateTime: '2016',
         collage: '汽车学院',
@@ -139,6 +145,14 @@ export default {
         kind: '科研'
       }]
     }
+  },
+  created () {
+    var self = this
+    axios.get(global.baseUrl + 'project/getProjectDetails?' + global.getHttpData(this.projectMsg))
+    .then((res) => {
+      console.log(res)
+      self.projectDetailMsg = res.data.data
+    })
   },
   components: {
     'v-header': header,

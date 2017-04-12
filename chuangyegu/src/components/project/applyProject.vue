@@ -8,26 +8,26 @@
       <div class="reserveCont">
         <div class="card">
           <h2>身份信息</h2>
-          <input type="text" name="" placeholder="企业/项目名称"> <input type="text" name="" placeholder="姓名"><br>
-          <input type="text" name="" placeholder="手机" class="w264"> <input type="text" name="" placeholder="邮箱" class="w264"><input type="text" name="" placeholder="微信" class="w264 weixin"><br>
+          <input type="text" name="" v-model="applyProjectMsg.projectName" placeholder="企业/项目名称"> <input type="text" name="" v-model="applyProjectMsg.name" placeholder="姓名"><br>
+          <input type="text" name="" v-model="applyProjectMsg.phone" placeholder="手机" class="w264"> <input type="text"  v-model="applyProjectMsg.email" placeholder="邮箱" class="w264"><input type="text"  v-model="applyProjectMsg.weixin" placeholder="微信" class="w264 weixin"><br>
           <span>校区(工作地点)</span>
           <!-- <select class="" name="" v-model="select">
             <option v-for="(campu, index) in campus" :value=index>{{campu}}</option>
           </select> -->
-          <el-select v-model="select" placeholder="请选择"  @change="selectCampus(select)">
+          <el-select v-model="applyProjectMsg.xiaoqu" placeholder="请选择" >
             <el-option
               :key="campus"
               v-for="(campu, index) in campus"
-              :value=index
+              :value=campu
               :label=campu>
             </el-option>
           </el-select>
           <span style="margin-left:68px;">年级</span>
-          <el-select v-model="collage" placeholder="请选择">
+          <el-select v-model="applyProjectMsg.grade" placeholder="请选择">
             <el-option
               :key="collage"
               v-for="(collage, index) in collages"
-              :value=index
+              :value=collage
               :label=collage>
             </el-option>
           </el-select>
@@ -38,21 +38,18 @@
         <div class="eventDetial">
           <h2>项目信息</h2>
           <div class="place">
-            <input type="text" name="" placeholder="(拟)注册资金" class=""> &nbsp;&nbsp;&nbsp;&nbsp;万元<br><br>
-            <textarea name="name" rows="8" cols="80" placeholder="团队成员"></textarea>
+            <input type="text" v-model="applyProjectMsg.zczj" placeholder="(拟)注册资金" class=""> &nbsp;&nbsp;&nbsp;&nbsp;万元<br><br>
+            <textarea v-model="applyProjectMsg.tdcy" rows="8" cols="80" placeholder="团队成员"></textarea>
             <div class="projectKind">
               <span>项目类别</span>
-              <el-select v-model="projectKind" placeholder="请选择">
+              <el-select v-model="applyProjectMsg.projectType" placeholder="请选择">
                 <el-option
                   :key="projectKind"
                   v-for="(projectKind, index) in projectKinds"
                   :label=projectKind
-                  :value=index>
+                  :value=projectKind>
                 </el-option>
               </el-select>
-              <!-- <select name="" v-model="projectKind">
-                <option v-for="(projectKind, index) in projectKinds" :value=index>{{projectKind}}</option>
-              </select> -->
             </div>
           </div>
           <div class="time">
@@ -61,25 +58,25 @@
             </div>
             <div>
               <div class="">
-                <input type="checkbox" name="time" id="time1" value=""><label for="time1">已上线</label>
-                <input type="checkbox" name="time" id="time2" value=""><label for="time2">有公众微信号</label>
-                <input type="checkbox" name="time" id="time3" value=""><label for="time3">即将上线</label>
-                <input type="checkbox" name="time" id="time4" value=""><label for="time4">开发中</label>
-                <input type="checkbox" name="time" id="time5" value=""><label for="time5">换方向</label>
-                <input type="checkbox" name="time" id="time6" value=""><label for="time6">初始阶段</label>
+                <input type="checkbox" v-model="applyProjectMsg.projectStatus" name="time" id="time1" value="已上线"><label for="time1">已上线</label>
+                <input type="checkbox" v-model="applyProjectMsg.projectStatus" name="time" id="time2" value="有公众微信号"><label for="time2">有公众微信号</label>
+                <input type="checkbox" v-model="applyProjectMsg.projectStatus" name="time" id="time3" value="即将上线"><label for="time3">即将上线</label>
+                <input type="checkbox" v-model="applyProjectMsg.projectStatus" name="time" id="time4" value="开发中"><label for="time4">开发中</label>
+                <input type="checkbox" v-model="applyProjectMsg.projectStatus" name="time" id="time5" value="换方向"><label for="time5">换方向</label>
+                <input type="checkbox" v-model="applyProjectMsg.projectStatus" name="time" id="time6" value="初始阶段"><label for="time6">初始阶段</label>
               </div>
             </div>
           </div>
           <div class="upload">
-            <textarea name="name" rows="8" cols="80" placeholder="项目简介(200字以内)"></textarea>
+            <textarea name="name" v-model="applyProjectMsg.content" rows="8" cols="80" placeholder="项目简介(200字以内)"></textarea>
             <div class="uploadRight">
               <div class="uploadleft">
                 <div class="">
-                  <img src="" alt="">
+                  <span>{{textName}}</span>
                 </div>
               </div>
-              <div class="a-upload">
-                <a href="javascript:;"><input type="file" value="上传文件"><span>上传</span><br><span>商务计划书</span></a>
+              <div class="a-upload" @change="uploadText">
+                <a href="javascript:;"><input type="file" id="file" value="上传文件"><span>上传</span><br><span>商务计划书</span></a>
               </div>
             </div>
           </div>
@@ -88,7 +85,7 @@
 会第一时间和你取得联系。</h5>
           </div>
           <div class="tj">
-            <a href="javascript:;">提交</a>
+            <a href="javascript:;" v-on:click="subApplyProject">提交</a>
           </div>
         </div>
       </div>
@@ -100,6 +97,8 @@
 <script>
 import header from '../header'
 import footer from '../footer'
+import global from '../../global/global'
+import axios from 'axios'
 // import calendar from './calendar.vue'
 export default {
   name: 'area',
@@ -107,34 +106,51 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       campus: ['四平校区', '嘉定校区'],
-      places: '',
-      place: '',
-      select: '',
-      collage: '',
-      projectKind: '',
       projectKinds: ['电商', '游戏', '社交', '教育', '金融', '大数据', '硬件', '技术', '新材料', '新能源', '医疗', '通讯', '其他'],
       collages: ['本科生', '研究生', '博士生', '毕业三年内', '毕业三年以上', '教师'],
       places1: ['活动大厅', '会议室1', '会议室2', '会议室3', '会议室4', '移动木制舞台'],
-      places2: ['暴风影音会议室', '乐视TV会议室(可与暴风影音会议室合借)', '秋千会议区', '沙发会议区', '大师椅会议区', '户外舞台']
+      places2: ['暴风影音会议室', '乐视TV会议室(可与暴风影音会议室合借)', '秋千会议区', '沙发会议区', '大师椅会议区', '户外舞台'],
+      applyProjectMsg: {
+        projectName: null,
+        name: null,
+        phone: null,
+        email: null,
+        weixin: null,
+        xiaoqu: null,
+        grade: null,
+        zczj: null,
+        tdcy: null,
+        projectType: null,
+        projectStatus: [],
+        jhs: null,
+        content: null
+      },
+      textName: ''
     }
   },
   created: function () {
-    this.places = this.places1
     if (global.getToken() == null) {
       this.$router.push('/login')
       alert(global.content.alert)
     }
   },
   methods: {
-    selectCampus: function (value) {
-      if (value === 0) {
-        this.places = this.places1
-      } else {
-        this.places = this.places2
-      }
+    uploadText () {
+      var file = document.getElementById('file').files[0]
+      this.applyProjectMsg.jhs = file
+      this.textName = file.name
     },
-    selectPlace: function (value) {
-      console.log(value)
+    subApplyProject () {
+      this.applyProjectMsg.projectStatus = this.applyProjectMsg.projectStatus.join(',')
+      var self = this
+      axios.post(global.baseUrl + 'project/apply', global.postHttpDataWithToken(this.applyProjectMsg))
+      .then((res) => {
+        if (res.data.callStatus === 'SUCCEED') {
+          global.success(self, '项目申请成功', '/personal')
+        } else {
+          global.error(self, '部分信息未填写', '')
+        }
+      })
     }
   },
   components: {
