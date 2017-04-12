@@ -17,9 +17,9 @@
           <div class="xn" v-show="loginInfo.type == 1">
             <form method="post" action="http://tjis.tongji.edu.cn:58080/amserver/UI/Login?goto=http://chuangyegu.tongji.edu.cn/index.php?classid=6740&action=tj_login&gotoOnFail=http://chuangyegu.tongji.edu.cn/index.php?classid=6740&action=tj_login">
               <div class="loginInput">
-                <input type="text" v-model="loginInfo.loginName" placeholder="账号">
+                <input type="text" name="login_name" id="login_name" placeholder="账号">
                 <br>
-                <input type="password" v-model="loginInfo.password" placeholder="密码">
+                <input type="password" name="login_password" id="login_password" placeholder="密码">
               </div>
               <div class="sub">
                 <button v-on:click="loginUser">登录</button>
@@ -143,7 +143,9 @@ export default {
       var self = this
       axios.post(global.baseUrl + 'user/login', global.postHttpData(this.loginInfo))
       .then((res) => {
+        console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
+          global.userMsg = res.data.data
           global.success(self, '登陆成功', '/index')
           global.setToken(res.data.token)
           localStorage.token = res.data.token
