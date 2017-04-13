@@ -33,6 +33,7 @@ import admActive from '../components/admin/admActive'
 import admProject from '../components/admin/admProject'
 import admVideo from '../components/admin/admVideo'
 import admFile from '../components/admin/admFiles'
+import admPhotoWall from '../components/admin/admPhotoWall'
 import test from '../components/test'
 
 Vue.use(Router)
@@ -177,6 +178,10 @@ export default new Router({
       path: '/admFile',
       name: '资料管理',
       component: admFile
+    }, {
+      path: '/admPhotoWall',
+      name: '照片墙管理',
+      component: admPhotoWall
     }]
   }]
 })

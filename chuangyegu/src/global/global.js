@@ -58,7 +58,7 @@ export default{
     return JSON.parse(localStorage.getItem('cyguser'))
   },
   setUser: function (caruser) {
-    localStorage.setItem('cygcaruser', JSON.stringify(caruser))
+    localStorage.setItem('cyguser', JSON.stringify(caruser))
   },
   getToday: function () {
     var today = new Date()

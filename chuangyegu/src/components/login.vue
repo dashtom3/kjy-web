@@ -15,11 +15,11 @@
             <button type="button" name="button" v-for="(loginKind, index) in selectLogin" :class="{'active':stateLoginName == loginKind.data,'unactive':stateLoginName != loginKind.data}" v-on:click="selectLoginKind(loginKind, index)">{{loginKind.data}}</button>
           </div>
           <div class="xn" v-show="loginInfo.type == 1">
-            <form method="post" action="http://tjis.tongji.edu.cn:58080/amserver/UI/Login?goto=http://chuangyegu.tongji.edu.cn/index.php?classid=6740&action=tj_login&gotoOnFail=http://chuangyegu.tongji.edu.cn/index.php?classid=6740&action=tj_login">
+            <form method="post" action="http://tjis.tongji.edu.cn:58080/amserver/UI/Login?goto=http://localhost:8080/personal&action=tj_login&gotoOnFail=http://localhost:8080/login?type=2&action=tj_login">
               <div class="loginInput">
-                <input type="text" name="login_name" id="login_name" placeholder="账号">
+                <input type="text" name="Login.Token1" id="login_name" placeholder="账号">
                 <br>
-                <input type="password" name="login_password" id="login_password" placeholder="密码">
+                <input type="password" name="Login.Token2" id="login_password" placeholder="密码">
               </div>
               <div class="sub">
                 <button v-on:click="loginUser">登录</button>
@@ -102,9 +102,6 @@ export default {
       loginState: true,
       stateLoginName: '校内登录',
       stateRegName: '企业',
-      xn: true,
-      xw: false,
-      active: false,
       loginName: '',
       loginInfo: {
         loginName: '',
@@ -124,7 +121,10 @@ export default {
     }
   },
   created () {
-    // Vue.set(this.selectLogin[0], 'active', true)
+    if (this.$route.query.type === '2') {
+      alert('校内登录账号或密码错误')
+      this.toRegisterUser()
+    }
   },
   methods: {
     toRegisterUser: function () {
@@ -146,9 +146,8 @@ export default {
         console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
           global.userMsg = res.data.data
-          global.success(self, '登陆成功', '/index')
+          global.success(self, '登陆成功', '/personal')
           global.setToken(res.data.token)
-          localStorage.token = res.data.token
           global.setUser(res.data.data)
           localStorage.time = Date.parse(new Date()) / 1000 + 1800
         } else {
@@ -277,6 +276,7 @@ input{
 }
 .sub button{
   border: none;
+  outline: none;
   color:#fff;
   width: 125px;
   height: 35px;

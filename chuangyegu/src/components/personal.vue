@@ -11,34 +11,31 @@
       <div class="personalCon">
         <div class="activeDetailContent" v-if="isActive === 0">
           <div class="w210">
-            <label for="">用户性质：</label><span>12</span>
+            <label for="">用户性质：</label><span>{{type[userinfo.identity-1]}}</span>
           </div>
           <div class="w210">
-            <label for="">学号：</label><span>1</span>
+            <label for="">学号：</label><span>{{userinfo.idNumber}}</span>
           </div>
           <div class="w210">
-            <label for="">姓名：</label><span>1</span>
+            <label for="">姓名：</label><span>{{userinfo.name}}</span>
           </div>
           <div class="w210">
-            <label for="">学院：</label><span>1</span>
+            <label for="">学院：</label><span>{{userinfo.college}}</span>
           </div>
           <div class="w210">
-            <label for="">专业：</label><span>1</span>
+            <label for="">专业：</label><span>{{userinfo.major}}</span>
           </div>
           <div class="w210">
-            <label for="">联系电话：</label><span>1</span>
+            <label for="">联系电话：</label><span>{{userinfo.phone}}</span>
           </div>
           <div class="w210">
-            <label for="">电子邮箱：</label><span>1</span>
+            <label for="">电子邮箱：</label><span>{{userinfo.email}}</span>
           </div>
           <div class="w210">
-            <label for="">你的意向：</label><span>1</span>
+            <label for="">你的意向：</label><span>{{userinfo.intention}}</span>
           </div>
           <div class="w210">
-            <label for="">注册时间：</label><span>1</span>
-          </div>
-          <div class="w210">
-            <label for="">积分：</label><span>1</span>
+            <label for="">注册时间：</label><span>{{userinfo.registTime | time}}</span>
           </div>
           <div class="w160">
             <el-button type="primary">修改个人资料</el-button>
@@ -148,7 +145,8 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       kindlists: [{ val: '个人资料' }, { val: '我对接的项目' }, { val: '我申请的项目' }, { val: '活动报名' }, { val: '场地预约' }],
       isActive: 0,
-      userinfo: global.userMsg,
+      userinfo: global.getUser(),
+      type: ['企业', '个人', '老师', '学生'],
       tableData: [{
         date: '2016-05-02',
         name: '王小虎',
@@ -200,6 +198,7 @@ export default {
 .w160{
   text-align: center;
   margin: 20px auto;
+  clear: both;
 }
 .w160 button{
   width: 160px;
@@ -212,7 +211,7 @@ export default {
   font-weight: normal;
 }
 .w210{
-  width: 210px;
+  width: 250px;
   /*margin-left: 70px;*/
   margin: 20px 0 20px 70px;
   float: left;
