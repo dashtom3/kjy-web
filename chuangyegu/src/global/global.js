@@ -1,7 +1,11 @@
 export default{
-  userMsg: {},
+  userMsg: {
+    intentionArray: []
+  },
   content: {alert: '请先登录'},
   baseUrl: 'http://123.56.220.72:8080/cyg/api/',
+  successUrl: 'http://123.56.220.72:8080/personal',
+  errorUrl: 'http://123.56.220.72:8080/login?type=2',
   goPath: function (obj, url) {
     document.body.scrollTop = 0 + 'px'
     obj.$router.push({ name: url })

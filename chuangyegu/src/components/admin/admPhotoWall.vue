@@ -66,6 +66,7 @@
               ref="upload"
               :action=uploadUrl
               :on-success="uploadSuccess"
+              :show-file-list="againUpload"
               list-type="picture">
               <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
             </el-upload>
@@ -90,6 +91,7 @@
         alertTitle: '上传照片',
         deleteFileAlert: false,
         addFileAlert: false,
+        againUpload: false,
         photoWallList: null,
         uploadUrl: 'http://123.56.220.72:8080/cyg/api/file/upload?token=' + global.getToken(),
         photoWallArgs: {
@@ -131,7 +133,8 @@
       },
       // 上传资料
       uploadSuccess (response, file) {
-        console.log(response, file.raw)
+        this.againUpload = true
+        // console.log(response, file.raw)
         this.photoWallMsg.file = file.raw
       },
       // 添加资料
@@ -139,10 +142,13 @@
         var self = this
         axios.post(global.baseUrl + 'photoWall/add', global.postHttpDataWithToken(this.photoWallMsg))
         .then((res) => {
-          console.log(res)
+          // console.log(res)
           if (res.data.callStatus === 'SUCCEED') {
             self.addFileAlert = false
             global.success(self, '照片添加成功', '')
+            self.photoWallMsg.content = null
+            self.photoWallMsg.file = null
+            self.againUpload = false
             self.getphotoWallList(this.photoWallArgs)
           }
         })

@@ -15,14 +15,15 @@
             <button type="button" name="button" v-for="(loginKind, index) in selectLogin" :class="{'active':stateLoginName == loginKind.data,'unactive':stateLoginName != loginKind.data}" v-on:click="selectLoginKind(loginKind, index)">{{loginKind.data}}</button>
           </div>
           <div class="xn" v-show="loginInfo.type == 1">
-            <form method="post" action="http://tjis.tongji.edu.cn:58080/amserver/UI/Login?goto=http://localhost:8080/personal&action=tj_login&gotoOnFail=http://localhost:8080/login?type=2&action=tj_login">
+            <form method="post" action="http://tjis.tongji.edu.cn:58080/amserver/UI/Login?goto=http://139.224.59.3:85/test&action=tj_login&gotoOnFail=http://139.224.59.3:85/login?type=2&action=tj_login" id="formUserMsg">
               <div class="loginInput">
-                <input type="text" name="Login.Token1" id="login_name" placeholder="账号">
+                <input type="text"  v-model="loginInfo.loginName" name="Login.Token1" id="login_name" placeholder="账号" @change="setName">
                 <br>
-                <input type="password" name="Login.Token2" id="login_password" placeholder="密码">
+                <input type="password"  v-model="loginInfo.password" name="Login.Token2" id="login_password" placeholder="密码">
               </div>
               <div class="sub">
-                <button v-on:click="loginUser">登录</button>
+                <!-- <input type="submit" name="sub_login" value="登录"> -->
+                <button type="submit">登录</button>
               </div>
             </form>
           </div>
@@ -91,6 +92,8 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
+      successUrl: global.successUrl,
+      errorUrl: global.errorUrl,
       selectLogin: [
         { data: '校内登录', val: '1' },
         { data: '校外登录', val: '2' }
@@ -138,17 +141,19 @@ export default {
       this.stateLoginName = item.data
       this.loginInfo.type = item.val
     },
+    setName () {
+      localStorage.loginName = this.loginInfo.loginName
+    },
     // 校内登录
     loginUser () {
       var self = this
       axios.post(global.baseUrl + 'user/login', global.postHttpData(this.loginInfo))
       .then((res) => {
-        console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
-          global.userMsg = res.data.data
-          global.success(self, '登陆成功', '/personal')
+          global.userMsg.intentionArray = res.data.data.intention.split(',')
           global.setToken(res.data.token)
           global.setUser(res.data.data)
+          global.success(self, '登录成功', '/personal')
           localStorage.time = Date.parse(new Date()) / 1000 + 1800
         } else {
           alert('用户名不存在或者密码错误')

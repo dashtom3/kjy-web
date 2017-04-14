@@ -65,7 +65,8 @@
               class="upload-demo"
               ref="upload"
               :action=uploadUrl
-              :on-success="uploadSuccess">
+              :on-success="uploadSuccess"
+              :show-file-list="againUpload">
               <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
             </el-upload>
           </el-form-item>
@@ -89,6 +90,7 @@
         alertTitle: '上传资料',
         deleteFileAlert: false,
         addFileAlert: false,
+        againUpload: false,
         fileList: null,
         uploadUrl: 'http://123.56.220.72:8080/cyg/api/file/upload?token=' + global.getToken(),
         fileArgs: {
@@ -97,6 +99,7 @@
           totalPage: -1
         },
         fileMsg: {
+          name: null,
           materialId: null
         }
       }
@@ -127,6 +130,7 @@
       },
       // 上传资料
       uploadSuccess (response, file) {
+        this.againUpload = true
         this.fileMsg.material = file.raw
       },
       // 添加资料
@@ -138,6 +142,8 @@
             self.addFileAlert = false
             global.success(self, '资料添加成功', '')
             self.getfileList(this.fileArgs)
+            self.againUpload = false
+            self.fileMsg.name = null
           }
         })
       },

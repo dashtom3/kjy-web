@@ -13,8 +13,8 @@
       <div class="projectUser projectMsg">
         <p class="projectMsgTitle">立项人信息</p>
         <p>
-          <span>姓名: {{projectDetailMsg.project.applyName}}</span><span>学院: {{projectDetailMsg.project.applyCollege}}</span><span>专业: {{projectDetailMsg.project.applyMajor}}</span><span>学号: {{projectDetailMsg.project.studentId}}</span><br>
-          <span>联系电话: {{projectDetailMsg.project.applyPhone}}</span><span>Email: {{projectDetailMsg.project.email}}</span>
+          <span>姓名: {{projectDetailMsg.project.applyName}}</span><span>学院: {{projectDetailMsg.project.applyCollege}}</span><span>专业: {{projectDetailMsg.project.applyMajor}}</span>
+          <span>Email: {{projectDetailMsg.project.email}}</span>
         </p>
       </div>
       <div class="projectMsg">

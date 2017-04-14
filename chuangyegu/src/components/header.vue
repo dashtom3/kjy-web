@@ -1,8 +1,12 @@
 <template>
     <div class="header">
       <div class="logo">
-        <a v-bind:href="'/index'" > &nbsp;&nbsp;<img src="../images/logo.jpg" alt=""></a>
+        <a href="http://www.tongji.edu.cn/" target="_blank"> &nbsp;&nbsp;<img src="../images/tjlogo.png" alt=""></a>
+        <a href="/"><img src="../images/cyglogo.png" alt=""></a>
       </div>
+      <!-- <div class="logoTitle">
+        <span>同济创业谷</span>
+      </div> -->
       <div class="nav">
         <span>本站导航<i class="icon"></i></span>
         <ul tab>
@@ -16,7 +20,7 @@
 export default {
   data () {
     return {
-      data: [['/index', '首页'], ['/news', '新闻中心'], ['/notices', '通知公告'], ['/videos', '慕课(MOOC)'], ['/active', '活动预约'], ['/area', '场地预约'], ['/project', '项目对接'], ['/applyProject', '项目申请'], ['/photowall', '照片墙'], ['/download', '资料下载'], ['/personal', '个人中心']]
+      data: [['/index', '首页'], ['/news', '新闻中心'], ['/notices', '通知公告'], ['/videos', '慕课(MOOC)'], ['/', '同创谷'], ['/active', '活动预约'], ['/area', '场地预约'], ['/project', '项目对接'], ['/applyProject', '项目申请'], ['/photowall', '照片墙'], ['/download', '资料下载'], ['/personal', '个人中心']]
     }
   },
   methods: {
@@ -51,11 +55,10 @@ export default {
 .header .logo{
   position: absolute;
   left:35px;
-  top: 10px;
+  /*top: 10px;*/
 }
-.header .logo a img{
-  height: 80px;
-  width: 60px;
+.header .logo a{
+  line-height: 100px;
 }
 .header .nav{
   position: absolute;
