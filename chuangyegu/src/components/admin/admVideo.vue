@@ -3,7 +3,7 @@
     <div class="function">
       <el-row>
         <el-col :span="24">
-          <el-button type="primary" @click.native="addNewsAlert">发布视频</el-button>
+          <el-button type="primary" @click.native="addVideoAlert = true">发布视频</el-button>
         </el-col>
       </el-row>
     </div>
@@ -53,6 +53,27 @@
           <el-button type="primary" @click="deleteVideo">确 定</el-button>
         </span>
       </el-dialog>
+
+      <!-- 上传视频 -->
+      <el-dialog title="上传视频" v-model="addVideoAlert" size="tiny">
+        <el-form :model="addvideoMsg" label-width="80px">
+          <el-form-item label="视频标题">
+            <el-input v-model="addvideoMsg.title"></el-input>
+          </el-form-item>
+          <el-form-item label="上传视频">
+            <form class="" :action="uploadUrl" method="get">
+              <input type="file" name="" value="选取视频" id="videoFile">
+              <!-- <input type="text" name="token" :value="qiNiuToken" style="display:none"> -->
+              <!-- <input type="submit" name="" @click="uploadVideo" value="上传视频"> -->
+              <el-button size="small" type="primary" @click="uploadVideo">上传视频</el-button>
+            </form>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" v-on:click="addVideo">确定</el-button>
+            <el-button @click="addVideoAlert = false">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
     </div>
 
   </div>
@@ -66,6 +87,7 @@
       return {
         alertTitle: '添加视频',
         deleteVideoAlert: false,
+        addVideoAlert: false,
         videoList: null,
         videoArgs: {
           numPerPage: 10,
@@ -74,11 +96,24 @@
         },
         videoMsg: {
           moocId: null
-        }
+        },
+        uploadUrl: global.baseUrl + 'mooc/getQiNiuToken?token=' + global.getToken(),
+        addvideoMsg: {
+          title: null,
+          src: null
+        },
+        qiNiuToken: null
       }
     },
     created () {
       this.getVideoList(this.videoArgs)
+      var self = this
+      // 获取七牛视频
+      axios.get(global.baseUrl + 'mooc/getQiNiuToken?token=' + global.getToken())
+      .then((res) => {
+        console.log(res)
+        self.qiNiuToken = res.data.data
+      })
     },
     methods: {
       getVideoList (args) {
@@ -93,6 +128,29 @@
       changePage (val) {
         this.videoArgs.pageNum = val
         this.getVideoList(this.videoArgs)
+      },
+      uploadVideo () {
+        var uploadQiNiu = {
+          file: document.getElementById('videoFile').files[0],
+          token: this.qiNiuToken
+        }
+        var self = this
+        axios.post('http://up-z2.qiniu.com/', global.postHttpData(uploadQiNiu))
+        .then((res) => {
+          console.log(res)
+          self.addvideoMsg.src = 'http://onktd2a1f.bkt.clouddn.com/' + res.data.key
+        })
+      },
+      addVideo () {
+        var self = this
+        axios.post(global.baseUrl + 'mooc/add', global.postHttpDataWithToken(this.addvideoMsg))
+        .then((res) => {
+          if (res.data.callStatus === 'SUCCEED') {
+            self.addVideoAlert = false
+            global.success(self, '添加成功', '')
+            self.getVideoList(this.videoArgs)
+          }
+        })
       },
 
       // 删除视频

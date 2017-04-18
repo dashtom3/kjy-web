@@ -14,6 +14,9 @@ export default {
 .app{
   margin-top: -20px;
 }
+.el-table th>.cell{
+  text-align: center;
+}
 *{
   margin: 0;
   padding: 0;

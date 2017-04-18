@@ -38,9 +38,10 @@
             <label for="">注册时间：</label><span>{{userinfo.registTime | time}}</span>
           </div>
           <div class="w160">
-            <el-button type="primary" v-on:click="editUserPersonal = true">修改个人资料</el-button>
+            <el-button type="primary" v-on:click="editUser">修改个人资料</el-button>
           </div>
         </div>
+        <!-- 我对接的项目 -->
         <div class="activeDetailContent againtable" v-if="isActive === 1">
           <el-table
             :data="buttProjectlist"
@@ -65,6 +66,7 @@
           </el-table>
           <a href="/project" class="goUrl">对接项目</a>
         </div>
+        <!-- 我申请的项目 -->
         <div class="activeDetailContent againtable" v-if="isActive === 2">
           <el-table
             :data="applyProjectlist"
@@ -75,34 +77,36 @@
               label="项目名称">
             </el-table-column>
             <el-table-column
-              prop="name"
+              prop="applyTime"
               label="审核对接日期">
             </el-table-column>
             <el-table-column
-              prop="status"
+              prop="statusInfo"
               label="状态">
             </el-table-column>
             <el-table-column label="操作">
               <template scope="scope">
                 <el-button
                   size="small"
-                  @click="edit(scope.row)">编辑</el-button>
+                  :disabled="scope.row.status !== 2"
+                  @click="editApplyProject(scope.row.if)">完善资料</el-button>
                 <el-button
                   size="small"
                   type="danger"
-                  @click="delete(scope.row)">删除</el-button>
+                  @click="deleteApplyProject(scope.row.id)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
           <a href="/applyProject" class="goUrl">申请项目</a>
         </div>
+        <!-- 活动报名 -->
         <div class="activeDetailContent againtable" v-if="isActive === 3">
           <el-table
             :data="event"
             border
             style="width: 100%">
             <el-table-column
-              prop="applyUnit"
+              prop="eventName"
               label="活动名称">
             </el-table-column>
             <el-table-column
@@ -116,6 +120,8 @@
           </el-table>
           <a href="/active" class="goUrl">报名活动</a>
         </div>
+
+        <!-- 场地预定 -->
         <div class="activeDetailContent againtable" v-if="isActive === 4">
           <el-table
             :data="areaList"
@@ -141,7 +147,7 @@
               <template scope="scope">
                 <el-button
                   size="small"
-                  @click="edit(scope.row)">编辑</el-button>
+                  @click="edit(scope.row)">修改</el-button>
                 <el-button
                   size="small"
                   type="danger"
@@ -152,36 +158,38 @@
           <a href="/area" class="goUrl">场地预约</a>
         </div>
       </div>
-      <el-dialog title="修改个人信息" v-model="editUserPersonal">
+
+      <!-- 修改个人信息 -->
+      <el-dialog title="修改个人信息" v-model="editUserPersonal" class="editUserMsg">
         <el-form ref="form" :model="userinfo" label-width="80px">
           <el-form-item label="姓名">
-            <el-input v-model="userinfo.name"></el-input>
+            <el-input v-model="userinfo.name" class="w200"></el-input>
           </el-form-item>
           <el-form-item label="学院">
-            <el-input v-model="userinfo.college"></el-input>
+            <el-input v-model="userinfo.college" class="w200"></el-input>
           </el-form-item>
           <el-form-item label="专业">
-            <el-input v-model="userinfo.major"></el-input>
+            <el-input v-model="userinfo.major" class="w200"></el-input>
           </el-form-item>
           <el-form-item label="联系电话">
-            <el-input v-model="userinfo.phone"></el-input>
+            <el-input v-model="userinfo.phone" class="w200"></el-input>
           </el-form-item>
           <el-form-item label="电子邮箱">
-            <el-input v-model="userinfo.email"></el-input>
+            <el-input v-model="userinfo.email" class="w200"></el-input>
           </el-form-item>
           <el-form-item label="你的意向">
-            <el-checkbox-group v-model="intentionArray">
-              <el-checkbox label="投资项目" name="intentionArray"></el-checkbox>
-              <el-checkbox label="了解现状" name="intentionArray"></el-checkbox>
-              <el-checkbox label="收集创意" name="intentionArray"></el-checkbox>
-              <el-checkbox label="寻找对接项目" name="intentionArray"></el-checkbox>
-              <el-checkbox label="发布课题" name="intentionArray"></el-checkbox>
-              <el-checkbox label="入住创业谷" name="intentionArray"></el-checkbox>
-              <el-checkbox label="其他合作" name="intentionArray"></el-checkbox>
+            <el-checkbox-group v-model="userinfo.intention">
+              <el-checkbox label="投资项目" ></el-checkbox>
+              <el-checkbox label="了解现状" ></el-checkbox>
+              <el-checkbox label="收集创意" ></el-checkbox>
+              <el-checkbox label="寻找对接项目" ></el-checkbox>
+              <el-checkbox label="发布课题" ></el-checkbox>
+              <el-checkbox label="入住创业谷" ></el-checkbox>
+              <el-checkbox label="其他合作" ></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary">确 定</el-button>
+            <el-button type="primary" v-on:click="updateUserInfo">确 定</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -217,33 +225,92 @@ export default {
       this.$router.push('/login')
       alert(global.content.alert)
     }
-    this.getMsg('eventApply/getAppliedEventList?token=', this.event)
-    this.getMsg('project/getUserProjectList?token=', this.applyProjectlist)
-    this.getMsg('event/getEventList?token=', this.areaList)
-    this.getMsg('project/getButtProjectList?token=', this.buttProjectlist)
+    var self = this
+    // 我对接的项目
+    axios.get(global.baseUrl + 'eventApply/getAppliedEventList?token=' + global.getToken())
+    .then((res) => {
+      self.event = res.data.data
+    })
+    // 我申请的项目
+    this.getApplyProjectLists()
+    // 活动报名
+    this.getJoinEventLists()
+    // 场地预定
+    this.getApplyEventLists()
   },
   mounted () {
     this.userinfo = global.getUser()
+    // 判断是否是数组
+    if (global.getUser().intention instanceof Array) {
+      console.log(123)
+    }
   },
   methods: {
-    edit (row) {
-      console.log(row)
-    },
-    delete (row) {
-      console.log(row)
-    },
-    getMsg (url, obj) {
+    getJoinProjectLists () {
       var self = this
-      axios.get(global.baseUrl + url + global.getToken())
+      axios.get(global.baseUrl + 'eventApply/getAppliedEventList?token=' + global.getToken())
+      .then((res) => {
+        self.event = res.data.data
+      })
+    },
+    getApplyProjectLists () {
+      var self = this
+      axios.get(global.baseUrl + 'project/getUserProjectList?token=' + global.getToken())
       .then((res) => {
         for (let i in res.data.data) {
-          res.data.data[i].status = self.filterStatus(res.data.data[i].status)
-          if (res.data.data[i].demandType) {
-            res.data.data[i].demandType = self.filterDemandType(res.data.data[i].demandType)
-          }
+          res.data.data[i].applyTime = self.timeFilter(res.data.data[i].applyTime * 1000)
+          res.data.data[i].statusInfo = self.filterStatus(res.data.data[i].status)
         }
-        obj = res.data.data
+        self.applyProjectlist = res.data.data
       })
+    },
+    editApplyProject (applyProjectId) {
+      console.log(applyProjectId)
+    },
+    // 删除申请的项目
+    deleteApplyProject (applyProjectId) {
+      var applyProjectMsg = {
+        projectIdToDelete: applyProjectId
+      }
+      var self = this
+      axios.post(global.baseUrl + 'project/delete', global.postHttpDataWithToken(applyProjectMsg))
+      .then((res) => {
+        if (res.data.callStatus === 'SUCCEED') {
+          global.success(self, '删除成功', '')
+          self.getApplyProjectLists()
+        }
+      })
+    },
+    getJoinEventLists () {
+      var self = this
+      axios.get(global.baseUrl + 'eventApply/getAppliedEventList?token=' + global.getToken())
+      .then((res) => {
+        for (let i in res.data.data) {
+          res.data.data[i].status = self.filterEventStatus(res.data.data[i].status)
+        }
+        self.event = res.data.data
+      })
+    },
+    getApplyEventLists () {
+      var self = this
+      axios.get(global.baseUrl + 'event/getEventList?token=' + global.getToken())
+      .then((res) => {
+        for (let i in res.data.data) {
+          res.data.data[i].status = self.filterEventStatus(res.data.data[i].status)
+        }
+        self.areaList = res.data.data
+      })
+    },
+    timeFilter (value) {
+      var month = new Date(parseInt(value)).getMonth() + 1
+      var date = new Date(parseInt(value)).getDate()
+      if (month < 10) {
+        month = '0' + month
+      }
+      if (date < 10) {
+        date = '0' + date
+      }
+      return new Date(parseInt(value)).getFullYear() + '-' + month + '-' + date
     },
     filterStatus (value) {
       var status = ''
@@ -253,6 +320,29 @@ export default {
           break
         case 2:
           status = '通过审核'
+          break
+        case 21:
+          status = '结题审核中'
+          break
+        case 22:
+          status = '结题通过审核'
+          break
+        default:
+          status = '审核不通过'
+      }
+      return status
+    },
+    filterEventStatus (value) {
+      var status = ''
+      switch (value) {
+        case 1:
+          status = '审核中'
+          break
+        case 2:
+          status = '通过审核'
+          break
+        case 3:
+          status = '不通过'
           break
       }
       return status
@@ -271,6 +361,30 @@ export default {
           break
       }
       return type
+    },
+    // 修改个人信息
+    editUser () {
+      this.editUserPersonal = true
+      if (this.userinfo.intention != null) {
+        this.userinfo.intention = this.userinfo.intention.split(',')
+      } else {
+        this.userinfo.intention = []
+      }
+    },
+    updateUserInfo () {
+      if (this.userinfo.intention != null) {
+        this.userinfo.intention = this.userinfo.intention.join('、')
+      }
+      this.userinfo.registTime = null
+      var self = this
+      axios.post(global.baseUrl + 'user/update', global.postHttpDataWithToken(this.userinfo))
+      .then((res) => {
+        console.log(res)
+        if (res.data.callStatus === 'SUCCEED') {
+          global.success(self, '信息修改成功', '')
+          self.editUserPersonal = false
+        }
+      })
     }
   },
   components: {
@@ -282,6 +396,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.editUserMsg{
+  text-align: left;
+}
+.w200{
+  width: 200px;
+  text-align: left;
+}
 .activeDetailContent div label,.activeDetailContent div span{
   font-size: 14px;
   font-family: "Microsoft YaHei";
@@ -344,6 +465,7 @@ export default {
   color: rgb( 254, 108, 0 );
   border-bottom: 2px solid;
   margin-bottom: 30px;
+  text-align: left;
 }
 h3{
   margin: 20px 0 20px;

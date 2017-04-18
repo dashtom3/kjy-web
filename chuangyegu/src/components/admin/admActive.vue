@@ -40,34 +40,42 @@
       <el-table
         :data="tableData"
         stripe
-        border>
+        border
+        style="width:100%">
         <el-table-column
           prop="eventName"
-          label="活动名称">
+          label="活动名称"
+          width="200">
         </el-table-column>
         <el-table-column
           prop="rentalPlace"
-          label="活动场地">
+          label="活动场地"
+          width="180">
         </el-table-column>
         <el-table-column
           prop="useDate"
-          label="活动日期">
+          label="活动日期"
+          width="180">
         </el-table-column>
         <el-table-column
           prop="useTime"
-          label="活动时间">
+          label="活动时间"
+          width="180">
         </el-table-column>
         <el-table-column
           prop="contactName"
-          label="申请人姓名">
+          label="申请人姓名"
+          width="180">
         </el-table-column>
         <el-table-column
           prop="applyCount"
-          label="报名人数">
+          label="报名人数"
+          width="180">
         </el-table-column>
         <el-table-column
           prop="status"
-          label="状态">
+          label="状态"
+          width="180">
         </el-table-column>
         <el-table-column label="操作">
           <template scope="scope">
@@ -78,9 +86,29 @@
               size="small"
               type="danger"
               @click="nopass(scope.row.id)">不通过</el-button>
+              <el-button
+                size="small"
+                type="success"
+                @click.native="verifypass(scope.row.id)">审核报名</el-button>
           </template>
         </el-table-column>
       </el-table>
+
+      <!-- 审核报名 -->
+      <el-dialog title="" v-model="verifyAlert" size="tiny">
+        <el-table :data="joinEventNumber" border>
+          <el-table-column property="userId" label="用户ID"></el-table-column>
+          <el-table-column property="userName" label="用户名"></el-table-column>
+          <el-table-column label="操作">
+            <template scope="scope">
+              <el-button
+                size="small"
+                @click="adoptEvent(scope.row.id)">通过</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-dialog>
+
       <div class="admimBlock">
         <el-pagination
           @current-change="handleCurrentChange"
@@ -132,6 +160,17 @@ export default {
         status: null,
         useTimeId: null,
         rentalPlace: null
+      },
+      eventApplyMsg: {
+        state: 0,
+        eventId: null,
+        token: global.getToken()
+      },
+      joinEventNumber: [],
+      verifyAlert: false,
+      eventJoinMsg: {
+        eventApplyId: null,
+        state: null
       }
     }
   },
@@ -232,6 +271,32 @@ export default {
           break
       }
       return state
+    },
+    verifypass (eventId) {
+      this.verifyAlert = true
+      this.eventApplyMsg.eventId = eventId
+      this.getEventApplyList()
+    },
+    getEventApplyList () {
+      var self = this
+      axios.get(global.baseUrl + 'eventApply/getEventApplyList?' + global.getHttpData(this.eventApplyMsg))
+      .then((res) => {
+        console.log(res)
+        self.joinEventNumber = res.data.data
+      })
+    },
+    // 通过用户报名
+    adoptEvent (id) {
+      this.eventJoinMsg.eventApplyId = id
+      this.eventJoinMsg.state = 1
+      var self = this
+      axios.post(global.baseUrl + 'eventApply/verify', global.postHttpDataWithToken(this.eventJoinMsg))
+      .then((res) => {
+        if (res.data.callStatus === 'SUCCEED') {
+          global.success(self, '通过成功', '')
+          self.getEventApplyList()
+        }
+      })
     }
   }
 }
