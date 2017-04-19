@@ -21,8 +21,10 @@
           label="照片内容">
         </el-table-column>
         <el-table-column
-          prop="src"
           label="照片地址">
+          <template scope="scope">
+            <img :src=scope.row.src alt="" style="max-width:100px;max-height:100px;">
+          </template>
         </el-table-column>
         <el-table-column
           prop="date"
@@ -114,7 +116,6 @@
         var self = this
         axios.get(global.baseUrl + 'photoWall/getPhotoList?' + global.getHttpData(args))
         .then((res) => {
-          console.log(res)
           for (let i in res.data.data) {
             res.data.data[i].createTime = self.timeFilter(res.data.data[i].createTime * 1000)
             res.data.data[i].src = 'http://123.56.220.72:8080/cyg/' + res.data.data[i].src

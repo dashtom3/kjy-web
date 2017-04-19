@@ -14,9 +14,11 @@ import personal from '../components/personal'
 import contact from '../components/contact'
 import company from '../components/company'
 import about from '../components/about'
+import valley from '../components/valley'
 import project from '../components/project/project'
 import projectDetail from '../components/project/projectDetail'
 import applyProject from '../components/project/applyProject'
+import perfectInformation from '../components/project/perfectInformation'
 import notices from '../components/notices/notices'
 import noticesDetail from '../components/notices/noticesDetail'
 import active from '../components/active'
@@ -88,6 +90,9 @@ export default new Router({
     name: 'services',
     component: services
   }, {
+    path: '/valley',
+    component: valley
+  }, {
     path: '/personal',
     name: 'personal',
     component: personal
@@ -115,6 +120,10 @@ export default new Router({
     path: '/applyProject',
     name: 'applyProject',
     component: applyProject
+  }, {
+    path: '/perfectInformation/:id',
+    name: 'perfectInformation',
+    component: perfectInformation
   }, {
     path: '/notices',
     name: 'notices',

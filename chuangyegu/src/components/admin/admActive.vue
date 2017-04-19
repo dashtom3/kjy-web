@@ -73,7 +73,7 @@
           width="180">
         </el-table-column>
         <el-table-column
-          prop="status"
+          prop="statusNumber"
           label="状态"
           width="180">
         </el-table-column>
@@ -81,14 +81,18 @@
           <template scope="scope">
             <el-button
               size="small"
-              @click="adopt(scope.row.id)">通过</el-button>
+              @click="adopt(scope.row.id)"
+              :disabled="scope.row.status === 2"
+              >通过</el-button>
             <el-button
               size="small"
               type="danger"
+              :disabled="scope.row.status === 3"
               @click="nopass(scope.row.id)">不通过</el-button>
               <el-button
                 size="small"
                 type="success"
+                :disabled="scope.row.status === 3"
                 @click.native="verifypass(scope.row.id)">审核报名</el-button>
           </template>
         </el-table-column>
@@ -182,8 +186,9 @@ export default {
       var self = this
       axios.get(global.baseUrl + 'event/getEventList?token=' + global.getToken() + '&' + global.getHttpData(args))
       .then((res) => {
+        // console.log(res)
         for (let i in res.data.data) {
-          res.data.data[i].status = self.selectStatus(res.data.data[i].status)
+          res.data.data[i].statusNumber = self.selectStatus(res.data.data[i].status)
         }
         self.tableData = res.data.data
         self.activeArgs.pageNum = res.data.currentPage

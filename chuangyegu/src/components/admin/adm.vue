@@ -45,7 +45,9 @@ export default {
 </script>
 
 <style>
-
+.el-table .cell{
+  text-align: center;
+}
   #app{
     height: 100%;
     margin: 0;

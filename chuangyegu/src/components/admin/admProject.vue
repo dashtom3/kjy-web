@@ -5,7 +5,7 @@
         <span>审核：</span>
         <el-radio-group v-model="verify" @change="select">
           <el-radio :label="0">全部</el-radio>
-          <el-radio label="2">项目申请通过</el-radio>
+          <el-radio label="12">项目申请通过</el-radio>
           <el-radio label="11">项目申请未通过</el-radio>
           <el-radio label="22">结题申请通过</el-radio>
           <el-radio label="21">结题申请未通过</el-radio>
@@ -81,7 +81,7 @@
               type="success" :disabled="scope.row.status !== 11" @click="verifyProjectApply(scope.row.id)">审核通过</el-button>
             <el-button
               size="small"
-              type="danger" :disabled="scope.row.status !== 2" @click="noVerifyProjectApply(scope.row.id)">审核不通过</el-button>
+              type="danger" :disabled="scope.row.status !== 12" @click="noVerifyProjectApply(scope.row.id)">审核不通过</el-button>
             <el-button
               size="small" :disabled="scope.row.status !== 21"
               type="success"
@@ -149,9 +149,8 @@ export default {
       })
     },
     verifyProjectApply (id) {
-      console.log(id)
       this.projectDetails.projectId = id
-      this.projectDetails.status = 2
+      this.projectDetails.status = 12
       this.verifyProject(this.projectDetails)
     },
     noVerifyProjectApply (id) {
@@ -193,6 +192,7 @@ export default {
       var self = this
       axios.get(global.baseUrl + 'project/getProjectList?' + global.getHttpData(args))
       .then((res) => {
+        console.log(res)
         for (let i in res.data.data) {
           res.data.data[i].applyTime = self.timeFilter(res.data.data[i].applyTime * 1000)
           res.data.data[i].statusAgain = self.statusFilter(res.data.data[i].status)
@@ -212,10 +212,13 @@ export default {
     statusFilter (value) {
       var status = ''
       switch (value) {
+        case 2:
+          status = '对接项目'
+          break
         case 11:
           status = '申请的项目审核中'
           break
-        case 2:
+        case 12:
           status = '申请的项目通过审核'
           break
         case 21:

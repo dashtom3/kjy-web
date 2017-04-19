@@ -88,12 +88,18 @@
               <template scope="scope">
                 <el-button
                   size="small"
-                  :disabled="scope.row.status !== 2"
-                  @click="editApplyProject(scope.row.if)">完善资料</el-button>
+                  :disabled="scope.row.status !== 12"
+                ><a :href="'/perfectInformation/'+scope.row.id"></a>完善资料</el-button>
                 <el-button
                   size="small"
                   type="danger"
                   @click="deleteApplyProject(scope.row.id)">删除</el-button>
+                  <el-button
+                    size="small"
+                    type="success"
+                    :disabled="scope.row.status !== 12"
+                    v-on:click="knotApply(scope.row.id)"
+                    >申请结题</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -143,17 +149,6 @@
               prop="status"
               label="状态">
             </el-table-column>
-            <el-table-column label="操作">
-              <template scope="scope">
-                <el-button
-                  size="small"
-                  @click="edit(scope.row)">修改</el-button>
-                <el-button
-                  size="small"
-                  type="danger"
-                  @click="delete(scope.row)">删除</el-button>
-              </template>
-            </el-table-column>
           </el-table>
           <a href="/area" class="goUrl">场地预约</a>
         </div>
@@ -193,6 +188,24 @@
           </el-form-item>
         </el-form>
       </el-dialog>
+      <!-- 结题申请 -->
+      <el-dialog title="申请结题" v-model="knotAlert" size="tiny" style="text-align:left;">
+        <el-form :model="knotMsg">
+          <el-form-item label="上传结题文件">
+            <input type="file"  value="上传文件" id="jietiFile" v-on:change="uploadJietiFile">
+          </el-form-item>
+          <el-form-item label="文件是否为图片">
+            <el-select v-model="knotMsg.isImg" placeholder="文件是否为图片">
+              <el-option label="否" value="0"></el-option>
+              <el-option label="是" value="1"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="knotAlert = false">取 消</el-button>
+          <el-button type="primary" @click="kontProjectApply">确 定</el-button>
+        </div>
+      </el-dialog>
     </div>
     <v-footer></v-footer>
   </div>
@@ -217,7 +230,13 @@ export default {
       applyProjectlist: null,
       areaList: null,
       buttProjectlist: null,
-      type: ['企业', '个人', '老师', '学生']
+      type: ['企业', '个人', '老师', '学生'],
+      knotMsg: {
+        projectId: null,
+        jieti: null,
+        isImg: null
+      },
+      knotAlert: false
     }
   },
   created: function () {
@@ -264,9 +283,6 @@ export default {
         self.applyProjectlist = res.data.data
       })
     },
-    editApplyProject (applyProjectId) {
-      console.log(applyProjectId)
-    },
     // 删除申请的项目
     deleteApplyProject (applyProjectId) {
       var applyProjectMsg = {
@@ -295,6 +311,7 @@ export default {
       var self = this
       axios.get(global.baseUrl + 'event/getEventList?token=' + global.getToken())
       .then((res) => {
+        // console.log(res)
         for (let i in res.data.data) {
           res.data.data[i].status = self.filterEventStatus(res.data.data[i].status)
         }
@@ -318,7 +335,7 @@ export default {
         case 11:
           status = '审核中'
           break
-        case 2:
+        case 12:
           status = '通过审核'
           break
         case 21:
@@ -364,18 +381,10 @@ export default {
     },
     // 修改个人信息
     editUser () {
+      // console.log(this.userinfo)
       this.editUserPersonal = true
-      if (this.userinfo.intention != null) {
-        this.userinfo.intention = this.userinfo.intention.split(',')
-      } else {
-        this.userinfo.intention = []
-      }
     },
     updateUserInfo () {
-      if (this.userinfo.intention != null) {
-        this.userinfo.intention = this.userinfo.intention.join('、')
-      }
-      this.userinfo.registTime = null
       var self = this
       axios.post(global.baseUrl + 'user/update', global.postHttpDataWithToken(this.userinfo))
       .then((res) => {
@@ -385,6 +394,43 @@ export default {
           self.editUserPersonal = false
         }
       })
+    },
+    uploadJietiFile () {
+      this.knotMsg.jieti = document.getElementById('jietiFile').files[0]
+    },
+    knotApply (projectId) {
+      this.knotAlert = true
+      this.knotMsg.projectId = projectId
+    },
+    kontProjectApply () {
+      var self = this
+      axios.post(global.baseUrl + 'project/jieti', global.postHttpDataWithToken(this.knotMsg))
+      .then((res) => {
+        // console.log(res)
+        if (res.data.callStatus === 'SUCCEED') {
+          global.success(self, '结题提交成功', '')
+          self.knotAlert = false
+        }
+      })
+    }
+  },
+  watch: {
+    editUserPersonal (val, oldVal) {
+      // this.userinfo.intention = '"' + this.userinfo.intention + '"'
+      if (val) {
+        if (this.userinfo.intention != null) {
+          this.userinfo.intention = this.userinfo.intention.split('、')
+        } else {
+          this.userinfo.intention = []
+        }
+        localStorage.registTime = this.userinfo.registTime
+        this.userinfo.registTime = null
+      } else {
+        if (this.userinfo.intention != null) {
+          this.userinfo.intention = this.userinfo.intention.join('、')
+        }
+        this.userinfo.registTime = localStorage.registTime
+      }
     }
   },
   components: {

@@ -3,7 +3,7 @@
     <div class="function">
       <el-row>
         <el-col :span="24">
-          <el-button type="primary" @click.native="addVideoAlert = true">发布视频</el-button>
+          <el-button type="primary" @click.native="addVideoAlertShow">发布视频</el-button>
         </el-col>
       </el-row>
     </div>
@@ -69,7 +69,7 @@
             </form>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" v-on:click="addVideo">确定</el-button>
+            <el-button type="primary" v-on:click="addVideo" :disabled="uploadVideoSuccess">确定</el-button>
             <el-button @click="addVideoAlert = false">取消</el-button>
           </el-form-item>
         </el-form>
@@ -88,6 +88,7 @@
         alertTitle: '添加视频',
         deleteVideoAlert: false,
         addVideoAlert: false,
+        uploadVideoSuccess: true,
         videoList: null,
         videoArgs: {
           numPerPage: 10,
@@ -108,10 +109,10 @@
     created () {
       this.getVideoList(this.videoArgs)
       var self = this
-      // 获取七牛视频
+      // 获取七牛视频的token
       axios.get(global.baseUrl + 'mooc/getQiNiuToken?token=' + global.getToken())
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         self.qiNiuToken = res.data.data
       })
     },
@@ -129,6 +130,13 @@
         this.videoArgs.pageNum = val
         this.getVideoList(this.videoArgs)
       },
+      // 上传视频
+      addVideoAlertShow () {
+        this.addVideoAlert = true
+        this.addvideoMsg.title = null
+        this.addvideoMsg.src = null
+        this.uploadVideoSuccess = true
+      },
       uploadVideo () {
         var uploadQiNiu = {
           file: document.getElementById('videoFile').files[0],
@@ -137,8 +145,10 @@
         var self = this
         axios.post('http://up-z2.qiniu.com/', global.postHttpData(uploadQiNiu))
         .then((res) => {
-          console.log(res)
-          self.addvideoMsg.src = 'http://onktd2a1f.bkt.clouddn.com/' + res.data.key
+          if (res.status === 200) {
+            self.uploadVideoSuccess = false
+            self.addvideoMsg.src = 'http://onktd2a1f.bkt.clouddn.com/' + res.data.key
+          }
         })
       },
       addVideo () {
