@@ -150,7 +150,9 @@ export default {
       axios.post(global.baseUrl + 'user/login', global.postHttpData(this.loginInfo))
       .then((res) => {
         if (res.data.callStatus === 'SUCCEED') {
-          global.userMsg.intentionArray = res.data.data.intention.split(',')
+          if (res.data.data.intention != null) {
+            global.userMsg.intentionArray = res.data.data.intention.split(',')
+          }
           global.setToken(res.data.token)
           global.setUser(res.data.data)
           global.success(self, '登录成功', '/personal')

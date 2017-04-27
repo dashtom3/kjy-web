@@ -13,9 +13,20 @@
           <!-- <bm-info-window :position="{lat: 30.6611640680, lng: 104.0839942718}" title="Info Window Title" :show="true">
             <p>123123</p>
           </bm-info-window> -->
-          <bm-marker :position="{lng: 121.6273150409, lat: 38.9197117560}" :label="{content: content, opts: {offset: {width: 0, height: -180}}}">
+          <bm-marker :position="{lng: 121.6273150409, lat: 38.9197117560}" @mouseover="move(0)" @mouseout="out(0)">
           </bm-marker>
-          <bm-marker :position="{lat: 30.6611640680, lng: 104.0839942718}" :label="{content: '', opts: {offset: {width: 20, height: 10}}}" @mouseover="move" @mouseout="out"></bm-marker>
+          <bm-marker :position="{lng: 104.0839942718, lat: 30.6611640680}" @mouseover="move(1)" @mouseout="out(1)">
+          </bm-marker>
+          <bm-info-window :position="{lng: infoData.lng, lat: infoData.lat}" :width="300" :title="infoData.title" :show="infoWindow" >
+            <img src="../images/valley1.jpeg" style="float:left !important; margin-right:5px !important;">
+            <p v-text="infoData.text" style="font-size:12px; "></p>
+          </bm-info-window>
+          <!-- <bm-marker :position="{lat: 30.6611640680, lng: 104.0839942718}" :label="{content: data[1], opts: {offset: {width: 20, height: 10}}}" @mouseover="move(1)" @mouseout="out(1)"></bm-marker> -->
+          <!-- <bm-marker :position="{lat: 30.6611640680, lng: 104.0839942718}" @mouseover="move(1)" @mouseout="out(1)"></bm-marker> -->
+          <!-- <bm-info-window :position="{lng: 104.0839942718, lat: 30.6611640680}" :width="300" title="成都同创谷" :show="infoWindow">
+            <img src="../images/valley1.jpeg" style="float:left !important;">
+            <p v-text="content[0].data" style="font-size:12px;"></p>
+          </bm-info-window> -->
         </baidu-map>
       </div>
     </div>
@@ -36,15 +47,32 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      content: ''
+      content: [
+        {title: '大连同创谷', lng: 121.6273150409, lat: 38.9197117560, data: '位于高新区任贤街16号，立足同济大学相关优势资源与创新能力和东北地区产业发展需要，集创业孵化、企业成长扶持、产业全程服务、产业发展成长的全产业链平台。'},
+        {title: '成都同创谷', lng: 104.0839942718, lat: 30.6611640680, data: '全名“同济大学·成都龙泉国际青年创业谷”，坐落于四川成都国家级新区--天府新区龙泉驿片区，总面积6000平米，由成都经开区（龙泉驿区）和同济大学联手打造，同济大学四川校友会成立的平台公司（成都同创谷企业孵化器有限公司）管理运营。'}
+      ],
+      infoWindow: true,
+      infoData: {
+        lng: '',
+        lat: '',
+        title: '',
+        text: ''
+      }
     }
   },
   methods: {
-    move () {
-      this.content = '<div style="width:300px;height:173px;background-color:rgba(0,0,0,.5)"><img src="static/img/mapImg.4fc7aa6.png" style="display:inline-block;"><p style="font-size:14px;color:#fff;width:160px;display:inline-block;vertical-align:top;word-wrap:break-word;word-break:break-all;line-height:30px;position:relative;left:15px;">成都创业谷创建于2010年<br>9月30号，至今已经举办<br>300多场活动</p></div>'
+    move (index) {
+      this.setData(index)
+      this.infoWindow = true
     },
-    out () {
-      this.content = ''
+    out (index) {
+      this.infoWindow = false
+    },
+    setData: function (index) {
+      this.infoData.lng = this.content[index].lng
+      this.infoData.lat = this.content[index].lat
+      this.infoData.title = this.content[index].title
+      this.infoData.text = this.content[index].data
     }
   },
   components: {
@@ -56,6 +84,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#allmap label{max-width:none;}
 .BMapLabel{
   display: none!important;
 }

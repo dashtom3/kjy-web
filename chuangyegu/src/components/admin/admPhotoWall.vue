@@ -69,6 +69,8 @@
               :action=uploadUrl
               :on-success="uploadSuccess"
               :show-file-list="againUpload"
+              :auto-upload="false"
+              :data="photoWallMsg"
               list-type="picture">
               <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
             </el-upload>
@@ -93,18 +95,20 @@
         alertTitle: '上传照片',
         deleteFileAlert: false,
         addFileAlert: false,
-        againUpload: false,
+        againUpload: true,
         photoWallList: null,
-        uploadUrl: 'http://123.56.220.72:8080/cyg/api/file/upload?token=' + global.getToken(),
+        uploadUrl: global.baseUrl + 'photoWall/add',
         photoWallArgs: {
           numPerPage: 10,
           pageNum: 1,
           totalPage: -1
         },
+        photoWallPost: null,
         photoWallMsg: {
           content: null,
-          photoWallId: null,
-          file: null
+          // photoWallId: null,
+          // file: null
+          token: global.getToken()
         }
       }
     },
@@ -134,25 +138,32 @@
       },
       // 上传资料
       uploadSuccess (response, file) {
-        this.againUpload = true
-        // console.log(response, file.raw)
-        this.photoWallMsg.file = file.raw
+        if (response.callStatus === 'SUCCEED') {
+          this.addFileAlert = false
+          global.success(self, '照片添加成功', '')
+          this.photoWallMsg.content = null
+          this.photoWallMsg.file = null
+          this.againUpload = false
+          this.getphotoWallList(this.photoWallArgs)
+        }
       },
       // 添加资料
       addFile () {
-        var self = this
-        axios.post(global.baseUrl + 'photoWall/add', global.postHttpDataWithToken(this.photoWallMsg))
-        .then((res) => {
-          // console.log(res)
-          if (res.data.callStatus === 'SUCCEED') {
-            self.addFileAlert = false
-            global.success(self, '照片添加成功', '')
-            self.photoWallMsg.content = null
-            self.photoWallMsg.file = null
-            self.againUpload = false
-            self.getphotoWallList(this.photoWallArgs)
-          }
-        })
+        // var self = this
+        // axios.post(global.baseUrl + 'photoWall/add', global.postHttpDataWithToken(this.photoWallMsg))
+        // .then((res) => {
+        //   // console.log(res)
+        //   if (res.data.callStatus === 'SUCCEED') {
+        //     self.addFileAlert = false
+        //     global.success(self, '照片添加成功', '')
+        //     self.photoWallMsg.content = null
+        //     self.photoWallMsg.file = null
+        //     self.againUpload = false
+        //     self.getphotoWallList(this.photoWallArgs)
+        //   }
+        // })
+        this.photoWallPost = global.postHttpDataWithToken(this.photoWallMsg)
+        this.$refs.upload.submit()
       },
 
       // 删除资料
@@ -163,7 +174,7 @@
       deleteFile () {
         this.deleteFileAlert = false
         var self = this
-        axios.post(global.baseUrl + 'photoWall/delete', global.postHttpDataWithToken(this.photoWallMsg))
+        axios.post(global.baseUrl + 'photoWall/delete', global.postHttpData(this.photoWallMsg))
         .then((res) => {
           if (res.data.callStatus === 'SUCCEED') {
             global.success(self, '删除成功', '')

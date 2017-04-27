@@ -242,7 +242,6 @@ export default {
   created: function () {
     if (global.getToken() == null) {
       this.$router.push('/login')
-      alert(global.content.alert)
     }
     var self = this
     // 我对接的项目

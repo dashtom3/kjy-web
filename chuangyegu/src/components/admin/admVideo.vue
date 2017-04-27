@@ -61,15 +61,26 @@
             <el-input v-model="addvideoMsg.title"></el-input>
           </el-form-item>
           <el-form-item label="上传视频">
-            <form class="" :action="uploadUrl" method="get">
-              <input type="file" name="" value="选取视频" id="videoFile">
+            <!-- <form class="" :action="uploadUrl" method="get"> -->
+              <!-- <input type="file" name="" value="选取视频" id="videoFile"> -->
               <!-- <input type="text" name="token" :value="qiNiuToken" style="display:none"> -->
               <!-- <input type="submit" name="" @click="uploadVideo" value="上传视频"> -->
-              <el-button size="small" type="primary" @click="uploadVideo">上传视频</el-button>
-            </form>
+              <!-- <el-button size="small" type="primary" @click="uploadVideo">上传视频</el-button> -->
+            <!-- </form> -->
+            <el-upload
+              class="upload-demo"
+              ref="upload"
+              action="http://up-z2.qiniu.com/"
+              :auto-upload="false"
+              :multiple="false"
+              :on-success="uploadSuccess"
+              :data="qiNiuToken">
+              <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+              <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+            </el-upload>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" v-on:click="addVideo" :disabled="uploadVideoSuccess">确定</el-button>
+            <el-button type="primary" v-on:click="addVideo" :disabled="addvideoMsg.title==null || addvideoMsg.src==null">确定</el-button>
             <el-button @click="addVideoAlert = false">取消</el-button>
           </el-form-item>
         </el-form>
@@ -95,6 +106,7 @@
           pageNum: 1,
           totalPage: -1
         },
+        fileList: null,
         videoMsg: {
           moocId: null
         },
@@ -113,10 +125,15 @@
       axios.get(global.baseUrl + 'mooc/getQiNiuToken?token=' + global.getToken())
       .then((res) => {
         // console.log(res)
-        self.qiNiuToken = res.data.data
+        self.qiNiuToken = {token: res.data.data}
       })
     },
     methods: {
+      setInit () {
+        this.addVideoAlert = false
+        this.addvideoMsg = {title: null, src: null}
+        this.$refs.upload.clearFiles()
+      },
       getVideoList (args) {
         var self = this
         axios.get(global.baseUrl + 'mooc/getMoocList?' + global.getHttpData(args))
@@ -133,36 +150,26 @@
       // 上传视频
       addVideoAlertShow () {
         this.addVideoAlert = true
-        this.addvideoMsg.title = null
-        this.addvideoMsg.src = null
-        this.uploadVideoSuccess = true
       },
-      uploadVideo () {
-        var uploadQiNiu = {
-          file: document.getElementById('videoFile').files[0],
-          token: this.qiNiuToken
+      uploadSuccess (file, response) {
+        if (response.status === 'success') {
+          this.addvideoMsg.src = 'http://onktd2a1f.bkt.clouddn.com/' + response.response.key
         }
-        var self = this
-        axios.post('http://up-z2.qiniu.com/', global.postHttpData(uploadQiNiu))
-        .then((res) => {
-          if (res.status === 200) {
-            self.uploadVideoSuccess = false
-            self.addvideoMsg.src = 'http://onktd2a1f.bkt.clouddn.com/' + res.data.key
-          }
-        })
+      },
+      submitUpload () {
+        this.$refs.upload.submit()
       },
       addVideo () {
         var self = this
         axios.post(global.baseUrl + 'mooc/add', global.postHttpDataWithToken(this.addvideoMsg))
         .then((res) => {
           if (res.data.callStatus === 'SUCCEED') {
-            self.addVideoAlert = false
+            self.setInit()
             global.success(self, '添加成功', '')
             self.getVideoList(this.videoArgs)
           }
         })
       },
-
       // 删除视频
       onDelClick: function (moocId) {
         this.deleteVideoAlert = true

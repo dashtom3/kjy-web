@@ -297,6 +297,8 @@
   background: #fff;
   border-radius: 6px;
   padding: 20px;
+  height: 80%;
+  overflow: scroll;
 }
 .alertBgContent .el-upload__input{
   display: none

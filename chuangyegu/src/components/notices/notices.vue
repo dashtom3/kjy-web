@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="newsright">
-        <h3>精粹要闻</h3>
+        <h3>最新公告</h3>
         <ul>
           <li v-for="item in 3">
             <a :href="'/noticesDetail/' + topNoticesList[item-1].id">
