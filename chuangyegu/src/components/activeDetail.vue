@@ -33,7 +33,7 @@
           <label for="">活动所需内容：</label><span>{{activeDetailMsg.eventContent}}</span>
         </div>
         <div class="w160">
-          <el-button type="primary"><a href="/active" style="color:#fff;">返回</a></el-button>
+          <!-- <el-button type="primary"><a href="/active" style="color:#fff;">返回</a></el-button> -->
           <el-button type="primary" v-on:click="join">报名参加</el-button>
         </div>
       </div>
@@ -67,16 +67,20 @@ export default {
   },
   methods: {
     join () {
-      var eventMsg = {
-        eventId: this.activeId
-      }
-      var self = this
-      axios.post(global.baseUrl + 'eventApply/add', global.postHttpDataWithToken(eventMsg))
-      .then((res) => {
-        if (res.data.callStatus === 'SUCCEED') {
-          global.success(self, '报名成功', '/active')
+      if (global.getToken() == null) {
+        global.error(this, '请先登录', null)
+      } else {
+        var eventMsg = {
+          eventId: this.activeId
         }
-      })
+        var self = this
+        axios.post(global.baseUrl + 'eventApply/add', global.postHttpDataWithToken(eventMsg))
+        .then((res) => {
+          if (res.data.callStatus === 'SUCCEED') {
+            global.success(self, '报名成功', '/active')
+          }
+        })
+      }
     }
   },
   components: {

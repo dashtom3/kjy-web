@@ -36,7 +36,7 @@
           <button v-on:click="closeActive">X</button>
         </div>
         <div v-for="active in activeData" class="alertcontent">
-          <a :href="'/activeDetail/'+active.id">&gt;&nbsp;{{active.eventName}}</a>
+          <a :href="'/activeDetail/'+active.id" target=_blank>&gt;&nbsp;{{active.eventName}}</a>
         </div>
         </div>
       </div>
