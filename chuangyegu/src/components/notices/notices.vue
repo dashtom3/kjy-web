@@ -18,12 +18,12 @@
       </div>
       <div class="newsright">
         <h3>最新公告</h3>
-        <ul>
-          <li v-for="item in 3">
-            <a :href="'/noticesDetail/' + topNoticesList[item-1].id">
+        <ul v-if="topNoticesList.length > 3">
+          <li v-for="item in 3" v-if="topNoticesList[item-1].pic != ''">
+            <a :href="'/noticesDetail/' + topNoticesList[item-1].id" target="_blank">
               <div class="ywcontent">
                 <img src="../../images/Layer-12.png" alt="" class="goyw">
-                <img :src="'http://123.56.220.72:8080/cyg/'+topNoticesList[item-1].pic" alt="" class=ywbg><br>
+                <img :src="newsUrl+topNoticesList[item-1].pic" alt="" class=ywbg><br>
               </div>
               <div class="ywtime">
                 <span>{{topNoticesList[item-1].date}}</span><br>
@@ -55,7 +55,8 @@ export default {
         numPerPage: 6,
         pageNum: 1,
         totalPage: -1
-      }
+      },
+      newsUrl: global.url
     }
   },
   created () {
@@ -211,7 +212,7 @@ h3{
 .ywcontent{
   display: inline-block;
   width: 197px;
-  height: 95px;
+  /*height: 95px;*/
   overflow: hidden;
 }
 .newsright ul li:hover a img.goyw{
@@ -226,7 +227,6 @@ h3{
   position: relative;
   left: 10px;
   width: 95px;
-  height: 85px;
   vertical-align: top;
   overflow: hidden;
 }
@@ -240,12 +240,12 @@ h3{
     font-size: 12px;
     display: -webkit-box;
     width: 98px;
-    max-height: 70px;
+    max-height: 100px;
     overflow: hidden;
     word-break: break-all;
     text-overflow: ellipsis;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 5;
     overflow: hidden;
 }
 .newsright ul li:hover .ywtime{

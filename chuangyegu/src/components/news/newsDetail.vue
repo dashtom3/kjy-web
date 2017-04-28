@@ -14,12 +14,12 @@
 
       <div class="newsDetialConRight">
         <h2>精粹要闻</h2>
-        <ul>
-          <li v-for="item in 3">
+        <ul v-if="newslists.length >= 3">
+          <li v-for="item in 3" v-if="newslists[item-1].pic != ''">
             <a :href="'/newsDetail/' + newslists[item-1].id" target="_blank">
               <div class="ywcontent">
                 <img src="../../images/Layer-12.png" alt="" class="goyw">
-                <img :src="'http://123.56.220.72:8080/cyg/'+newslists[item-1].pic" alt="" class=ywbg><br>
+                <img :src="newsUrl+newslists[item-1].pic" alt="" class=ywbg><br>
               </div>
               <div class="ywtime">
                 <span>{{newslists[item-1].date}}</span><br>
@@ -45,7 +45,8 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       newsid: this.$route.params.id,
       newsDetialContent: '',
-      newslists: []
+      newslists: [],
+      newsUrl: global.url
     }
   },
   created () {
@@ -54,7 +55,7 @@ export default {
     .then((res) => {
       console.log(res)
       self.newsDetialContent = res.data.data
-      self.newsDetialContent.content = self.newsDetialContent.content.replace(/src="/gi, 'src="http://123.56.220.72:8080/cyg/')
+      self.newsDetialContent.content = self.newsDetialContent.content.replace(/src="/gi, 'src="' + global.url + '')
     })
     axios.get(global.baseUrl + 'news/getNewsList?ifImage=1&numPerPage=3')
     .then((res) => {
@@ -143,8 +144,7 @@ h2{
 }
 .ywcontent{
   display: inline-block;
-  width: 197px;
-  height: 95px;
+  width: 198px;
   overflow: hidden;
 }
 .newsDetialConRight ul li:hover a img.goyw{
@@ -162,8 +162,7 @@ h2{
   display: none;
   position: relative;
   left: 10px;
-  width: 95px;
-  height: 85px;
+  width: 98px;
   overflow: hidden;
   vertical-align: top;
   font-size: 9.73px;
@@ -174,12 +173,12 @@ h2{
     font-size: 12px;
     display: -webkit-box;
     width: 98px;
-    max-height: 70px;
+    max-height: 120px;
     overflow: hidden;
     word-break: break-all;
     text-overflow: ellipsis;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 5;
     overflow: hidden;
 }
 .newsDetialConRight ul li:hover .ywtime{

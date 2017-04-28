@@ -30,12 +30,12 @@
       </div>
       <div class="newsright">
         <h3>最新要闻</h3>
-        <ul>
-          <li v-for="item in 3">
+        <ul v-if="newslists.length > 3">
+          <li v-for="item in 3" v-if="newslists[item-1].pic != ''">
             <a :href="'/newsDetail/' + newslists[item-1].id" target="_blank">
               <div class="ywcontent">
                 <img src="../../images/Layer-12.png" alt="" class="goyw">
-                <img :src="'http://123.56.220.72:8080/cyg/'+newslists[item-1].pic" alt="" class=ywbg><br>
+                <img :src="newsUrl+newslists[item-1].pic" alt="" class=ywbg><br>
               </div>
               <div class="ywtime">
                 <span>{{newslists[item-1].date}}</span><br>
@@ -70,6 +70,7 @@ export default {
         pageNum: 1,
         totalPage: -1
       },
+      newsUrl: global.url,
       newslists: []
     }
   },
@@ -212,7 +213,7 @@ h3{
 .ywcontent{
   display: inline-block;
   width: 198px;
-  height: 95px;
+  /*height: 95px;*/
   overflow: hidden;
 }
 .goyw{
@@ -248,12 +249,12 @@ h3{
   font-size: 12px;
   display: -webkit-box;
   width: 98px;
-  max-height: 70px;
+  max-height: 100px;
   overflow: hidden;
   word-break: break-all;
     text-overflow: ellipsis;
     -webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
-    -webkit-line-clamp: 3; /** 显示的行数 **/
+    -webkit-line-clamp: 5; /** 显示的行数 **/
     overflow: hidden;  /** 隐藏超出的内容 **/
 }
 .newsright ul li:hover .ywtime{
