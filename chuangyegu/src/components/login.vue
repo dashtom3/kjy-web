@@ -15,7 +15,7 @@
             <button type="button" name="button" v-for="(loginKind, index) in selectLogin" :class="{'active':stateLoginName == loginKind.data,'unactive':stateLoginName != loginKind.data}" v-on:click="selectLoginKind(loginKind, index)">{{loginKind.data}}</button>
           </div>
           <div class="xn" v-show="loginInfo.type == 1">
-            <form method="post" action="http://tjis.tongji.edu.cn:58080/amserver/UI/Login?goto=http://127.0.0.1:8080/login?type=3&action=tj_login&gotoOnFail=http://127.0.0.1:8080/login?type=2&action=tj_login" id="formUserMsg">
+            <form method="post" action="http://tjis.tongji.edu.cn:58080/amserver/UI/Login?goto=http://chuangyegu.tongji.edu.cn//login?type=3&action=tj_login&gotoOnFail=http://chuangyegu.tongji.edu.cn/login?type=2&action=tj_login" id="formUserMsg">
               <div class="loginInput">
                 <input type="text"  v-model="loginInfo.loginName" name="Login.Token1" id="login_name" placeholder="账号" @change="setName">
                 <br>
