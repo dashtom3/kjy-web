@@ -57,7 +57,6 @@ export default{
   },
   getToken: function () {
     var date = localStorage.getItem('cygtokentime')
-    console.log(new Date(parseInt(date)).getTime())
     if (new Date().getTime() - date > 3600000) {
       return null
     }
