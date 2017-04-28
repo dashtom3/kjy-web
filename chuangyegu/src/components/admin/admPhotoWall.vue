@@ -23,7 +23,7 @@
         <el-table-column
           label="照片地址">
           <template scope="scope">
-            <img :src=scope.row.src alt="" style="max-width:100px;max-height:100px;">
+            <img :src=scope.row.smallSrc alt="" style="max-width:100px;max-height:100px;">
           </template>
         </el-table-column>
         <el-table-column
@@ -66,17 +66,15 @@
             <el-upload
               class="upload-demo"
               ref="upload"
-              :action=uploadUrl
+              :action="uploadUrl"
               :on-success="uploadSuccess"
-              :show-file-list="againUpload"
-              :auto-upload="false"
-              :data="photoWallMsg"
+              :data="qiNiuToken"
               list-type="picture">
               <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
             </el-upload>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" v-on:click="addFile">添加照片</el-button>
+            <el-button type="primary" v-on:click="addFile" :disabled="photoWallMsg.content==null || photoWallMsg.src==null">添加照片</el-button>
             <el-button @click="addFileAlert = false">取消</el-button>
           </el-form-item>
         </el-form>
@@ -95,25 +93,30 @@
         alertTitle: '上传照片',
         deleteFileAlert: false,
         addFileAlert: false,
-        againUpload: true,
         photoWallList: null,
-        uploadUrl: global.baseUrl + 'photoWall/add',
+        uploadUrl: global.qiniuUrl,
         photoWallArgs: {
           numPerPage: 10,
           pageNum: 1,
           totalPage: -1
         },
-        photoWallPost: null,
         photoWallMsg: {
           content: null,
-          // photoWallId: null,
-          // file: null
-          token: global.getToken()
-        }
+          src: null,
+          width: null,
+          height: null
+        },
+        qiNiuToken: null
       }
     },
     created () {
       this.getphotoWallList(this.photoWallArgs)
+      var self = this
+      axios.get(global.baseUrl + 'mooc/getQiNiuToken?token=' + global.getToken())
+      .then((res) => {
+        // console.log(res)
+        self.qiNiuToken = {token: res.data.data}
+      })
     },
     methods: {
       getphotoWallList (args) {
@@ -122,7 +125,6 @@
         .then((res) => {
           for (let i in res.data.data) {
             res.data.data[i].createTime = self.timeFilter(res.data.data[i].createTime * 1000)
-            res.data.data[i].src = 'http://123.56.220.72:8080/cyg/' + res.data.data[i].src
           }
           self.photoWallList = res.data.data
           self.photoWallArgs.pageNum = res.data.currentPage
@@ -137,33 +139,44 @@
         return new Date(parseInt(value)).getFullYear() + '-' + (new Date(parseInt(value)).getMonth() + 1) + '-' + new Date(parseInt(value)).getDate()
       },
       // 上传资料
-      uploadSuccess (response, file) {
-        if (response.callStatus === 'SUCCEED') {
-          this.addFileAlert = false
-          global.success(self, '照片添加成功', '')
-          this.photoWallMsg.content = null
-          this.photoWallMsg.file = null
-          this.againUpload = false
-          this.getphotoWallList(this.photoWallArgs)
+      uploadSuccess (file, response) {
+        if (response.status === 'success') {
+          this.getPicInfo(file.key)
         }
       },
       // 添加资料
+      getPicInfo (key) {
+        var self = this
+        axios.get(global.qiniuShUrl + key + '?imageInfo').then((res) => {
+          if (res.status === 200) {
+            self.photoWallMsg.src = global.qiniuShUrl + key
+            self.photoWallMsg.width = res.data.width
+            self.photoWallMsg.height = res.data.height
+          }
+        })
+      },
+      setInit () {
+        this.photoWallMsg.content = null
+        this.photoWallMsg.src = null
+        this.photoWallMsg.width = null
+        this.photoWallMsg.height = null
+        this.$refs.upload.clearFiles()
+      },
+      addPhotoWall () {
+        var self = this
+        axios.post(global.baseUrl + 'photoWall/add', global.postHttpDataWithToken(this.photoWallMsg))
+        .then((res) => {
+          // console.log(res)
+          if (res.data.callStatus === 'SUCCEED') {
+            self.addFileAlert = false
+            global.success(self, '照片添加成功', '')
+            self.setInit()
+            self.getphotoWallList(this.photoWallArgs)
+          }
+        })
+      },
       addFile () {
-        // var self = this
-        // axios.post(global.baseUrl + 'photoWall/add', global.postHttpDataWithToken(this.photoWallMsg))
-        // .then((res) => {
-        //   // console.log(res)
-        //   if (res.data.callStatus === 'SUCCEED') {
-        //     self.addFileAlert = false
-        //     global.success(self, '照片添加成功', '')
-        //     self.photoWallMsg.content = null
-        //     self.photoWallMsg.file = null
-        //     self.againUpload = false
-        //     self.getphotoWallList(this.photoWallArgs)
-        //   }
-        // })
-        this.photoWallPost = global.postHttpDataWithToken(this.photoWallMsg)
-        this.$refs.upload.submit()
+        this.addPhotoWall()
       },
 
       // 删除资料
@@ -174,7 +187,7 @@
       deleteFile () {
         this.deleteFileAlert = false
         var self = this
-        axios.post(global.baseUrl + 'photoWall/delete', global.postHttpData(this.photoWallMsg))
+        axios.post(global.baseUrl + 'photoWall/delete', global.postHttpDataWithToken(this.photoWallMsg))
         .then((res) => {
           if (res.data.callStatus === 'SUCCEED') {
             global.success(self, '删除成功', '')

@@ -58,12 +58,9 @@
             </div>
             <div>
               <div class="">
-                <input type="checkbox" v-model="applyProjectMsg.projectStatus" name="time" id="time1" value="已上线"><label for="time1">已上线</label>
-                <input type="checkbox" v-model="applyProjectMsg.projectStatus" name="time" id="time2" value="有公众微信号"><label for="time2">有公众微信号</label>
-                <input type="checkbox" v-model="applyProjectMsg.projectStatus" name="time" id="time3" value="即将上线"><label for="time3">即将上线</label>
-                <input type="checkbox" v-model="applyProjectMsg.projectStatus" name="time" id="time4" value="开发中"><label for="time4">开发中</label>
-                <input type="checkbox" v-model="applyProjectMsg.projectStatus" name="time" id="time5" value="换方向"><label for="time5">换方向</label>
-                <input type="checkbox" v-model="applyProjectMsg.projectStatus" name="time" id="time6" value="初始阶段"><label for="time6">初始阶段</label>
+                <el-checkbox-group v-model="applyProjectMsg.projectStatus">
+                  <el-checkbox :label="checkInfo" v-for="checkInfo in checkList"></el-checkbox>
+                </el-checkbox-group>
               </div>
             </div>
           </div>
@@ -85,7 +82,8 @@
 会第一时间和你取得联系。</h5>
           </div>
           <div class="tj">
-            <a href="javascript:;" v-on:click="subApplyProject">提交</a>
+            <!-- <a href="javascript:;" v-on:click="subApplyProject" :disabled="applyProjectMsg.content == null">提交</a> -->
+            <el-button type="primary" v-on:click="subApplyProject" :disabled="applyProjectMsg.content==null">提交</el-button>
           </div>
         </div>
       </div>
@@ -104,9 +102,9 @@ export default {
   name: 'area',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
       campus: ['四平校区', '嘉定校区'],
       projectKinds: ['电商', '游戏', '社交', '教育', '金融', '大数据', '硬件', '技术', '新材料', '新能源', '医疗', '通讯', '其他'],
+      checkList: ['已上线', '有公众微信号', '即将上线', '开发中', '换方向', '初始阶段'],
       collages: ['本科生', '研究生', '博士生', '毕业三年内', '毕业三年以上', '教师'],
       places1: ['活动大厅', '会议室1', '会议室2', '会议室3', '会议室4', '移动木制舞台'],
       places2: ['暴风影音会议室', '乐视TV会议室(可与暴风影音会议室合借)', '秋千会议区', '沙发会议区', '大师椅会议区', '户外舞台'],
@@ -145,6 +143,7 @@ export default {
       var self = this
       axios.post(global.baseUrl + 'project/apply', global.postHttpDataWithToken(this.applyProjectMsg))
       .then((res) => {
+        self.applyProjectMsg.projectStatus = []
         if (res.data.callStatus === 'SUCCEED') {
           global.success(self, '项目申请成功', '/personal')
         } else {
@@ -395,16 +394,21 @@ h5{
   background-color: rgb(245,97,1)
 }
 .tj button:hover{
-  cursor: pointer;
+}
+.el-button--primary {
+  background-color: rgb( 254, 108, 0 );
+  border: none;
+}
+.el-button--primary.is-disabled{
+  background-color: #eef1f6;
+  border: none;
 }
 .tj button{
   /*padding: 10px;*/
   border-radius: 30px;
   outline: none;
-  background-color: rgb( 254, 108, 0 );
   width: 223px;
   height: 39px;
-  color: #fff;
   font-size: 18px;
 }
 </style>

@@ -15,7 +15,7 @@
             <button type="button" name="button" v-for="(loginKind, index) in selectLogin" :class="{'active':stateLoginName == loginKind.data,'unactive':stateLoginName != loginKind.data}" v-on:click="selectLoginKind(loginKind, index)">{{loginKind.data}}</button>
           </div>
           <div class="xn" v-show="loginInfo.type == 1">
-            <form method="post" action="http://tjis.tongji.edu.cn:58080/amserver/UI/Login?goto=http://139.224.59.3:85/test&action=tj_login&gotoOnFail=http://139.224.59.3:85/login?type=2&action=tj_login" id="formUserMsg">
+            <form method="post" action="http://tjis.tongji.edu.cn:58080/amserver/UI/Login?goto=http://127.0.0.1:8080/login?type=3&action=tj_login&gotoOnFail=http://127.0.0.1:8080/login?type=2&action=tj_login" id="formUserMsg">
               <div class="loginInput">
                 <input type="text"  v-model="loginInfo.loginName" name="Login.Token1" id="login_name" placeholder="账号" @change="setName">
                 <br>
@@ -125,13 +125,26 @@ export default {
   },
   created () {
     if (this.$route.query.type === '2') {
-      alert('校内登录账号或密码错误')
-      this.toRegisterUser()
+      global.error(this, '校内登录失败', '/login')
+    }
+    if (this.$route.query.type === '3') {
+      console.log(this.loginInfo.loginName)
+      this.loginIntern()
     }
   },
   methods: {
     toRegisterUser: function () {
       this.loginState = !this.loginState
+    },
+    loginIntern () {
+      var self = this
+      axios.post(global.baseUrl + 'user/school/login', global.postHttpData({identity: '3', loginName: this.loginInfo.loginName})).then((res) => {
+        if (res.data.callStatus === 'SUCCEED') {
+          global.setToken(res.data.token)
+          global.setUser(res.data.data)
+          global.success(self, '登录成功', '/personal')
+        }
+      })
     },
     selectRegKind: function (item, index) {
       this.stateRegName = item.data
@@ -150,15 +163,16 @@ export default {
       axios.post(global.baseUrl + 'user/login', global.postHttpData(this.loginInfo))
       .then((res) => {
         if (res.data.callStatus === 'SUCCEED') {
+          // console.log(res.data)
           if (res.data.data.intention != null) {
             global.userMsg.intentionArray = res.data.data.intention.split(',')
           }
           global.setToken(res.data.token)
           global.setUser(res.data.data)
           global.success(self, '登录成功', '/personal')
-          localStorage.time = Date.parse(new Date()) / 1000 + 1800
+          // localStorage.time = Date.parse(new Date()) / 1000 + 1800
         } else {
-          alert('用户名不存在或者密码错误')
+          global.error(self, '用户名不存在或密码错误', '/login')
         }
       })
     },

@@ -42,6 +42,8 @@ export default {
             // localStorage.username = res.data.data.username
             global.userMsg = res.data.data
             global.success(this, '登录成功', '/admUser')
+          } else {
+            global.error(this, '账户或密码不正确', '/admin')
           }
         })
       } else {

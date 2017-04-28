@@ -3,9 +3,12 @@ export default{
     intentionArray: []
   },
   content: {alert: '请先登录'},
-  baseUrl: 'http://123.56.220.72:8080/cyg/api/',
-  successUrl: 'http://123.56.220.72:8080/personal',
-  errorUrl: 'http://123.56.220.72:8080/login?type=2',
+  qiniuUrl: 'http://up-z2.qiniu.com/',
+  qiniuShUrl: 'http://onktd2a1f.bkt.clouddn.com/',
+  url: 'http://202.120.163.63:8080/cyg/',
+  baseUrl: 'http://202.120.163.63:8080/cyg/api/',
+  successUrl: 'http://202.120.163.63:8080/personal',
+  errorUrl: 'http://202.120.163.63:8080/login?type=2',
   goPath: function (obj, url) {
     document.body.scrollTop = 0 + 'px'
     obj.$router.push({ name: url })
@@ -53,16 +56,27 @@ export default{
     return temp
   },
   getToken: function () {
+    var date = localStorage.getItem('cygtokentime')
+    console.log(new Date(parseInt(date)).getTime())
+    if (new Date().getTime() - date > 3600000) {
+      return null
+    }
     return localStorage.getItem('cygtoken')
   },
   setToken: function (token) {
     localStorage.setItem('cygtoken', token)
+    localStorage.setItem('cygtokentime', new Date().getTime())
   },
   getUser: function () {
     return JSON.parse(localStorage.getItem('cyguser'))
   },
   setUser: function (caruser) {
     localStorage.setItem('cyguser', JSON.stringify(caruser))
+  },
+  logout: function () {
+    localStorage.setItem('cyguser', null)
+    localStorage.setItem('cygtokentime', null)
+    localStorage.setItem('cygtoken', null)
   },
   getToday: function () {
     var today = new Date()

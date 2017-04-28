@@ -6,7 +6,7 @@
         <h2>照片墙</h2>
         <ul>
           <li v-for="photoInfo in photoData" v-on:click="showImgAlert(photoInfo.src)">
-            <a href="javascript:;"><img :src="'http://123.56.220.72:8080/cyg/'+photoInfo.smallSrc" alt=""></a>
+            <a href="javascript:;"><img :src="photoInfo.smallSrc" alt=""></a>
             <a href="javascript:;" class="big">
               <p class="photoDate">{{photoInfo.date}}</p>
               <p class="photoIntr">{{photoInfo.content}}</p>
@@ -24,7 +24,7 @@
     </div>
     <v-footer></v-footer>
     <el-dialog title="" v-model="imgAlert" style="text-align:center;">
-      <img :src="'http://123.56.220.72:8080/cyg/'+alertImgSrc" alt="" class="alertImg">
+      <img :src="alertImgSrc" alt="" class="alertImg">
       <span slot="footer" class="dialog-footer">
         <el-button @click="imgAlert = false">关 闭</el-button>
       </span>

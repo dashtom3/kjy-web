@@ -3,6 +3,7 @@
     <v-header></v-header>
     <div class="personalCon">
       <h2>个人中心 User Center</h2>
+      <el-button type="primary" class="sebtn" v-on:click="cancelUser">注销</el-button>
       <div class="personalMsg">
         <div class="kindlists">
           <a href="javascript:;" v-for="(kindlist, index) in kindlists" :class="{active: isActive === index}" v-on:click="isActive = index">{{kindlist.val}}</a>
@@ -241,6 +242,7 @@ export default {
   },
   created: function () {
     if (global.getToken() == null) {
+      console.log(global.getToken())
       this.$router.push('/login')
     }
     var self = this
@@ -270,6 +272,10 @@ export default {
       .then((res) => {
         self.event = res.data.data
       })
+    },
+    cancelUser () {
+      global.logout()
+      global.success(this, '注销成功', '/login')
     },
     getApplyProjectLists () {
       var self = this
@@ -474,6 +480,12 @@ export default {
   border:none;
   height: 40px;
 }
+.sebtn {
+  background-color: rgb( 254, 108, 0 );
+  float: right;
+  margin-top: -80px;
+  border: none;
+}
 .activeDetailContent div span{
   font-weight: normal;
 }
@@ -505,12 +517,12 @@ export default {
   text-align: center;
 }
 .personalCon>h2{
-  font-size: 25px;
-  font-family: "Adobe Heiti Std";
+  font-size: 18px;
   color: rgb( 254, 108, 0 );
-  border-bottom: 2px solid;
+  border-bottom: 1px solid;
   margin-bottom: 30px;
   text-align: left;
+  font-weight: normal;
 }
 h3{
   margin: 20px 0 20px;

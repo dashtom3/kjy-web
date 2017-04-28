@@ -70,7 +70,7 @@
             <el-upload
               class="upload-demo"
               ref="upload"
-              action="http://up-z2.qiniu.com/"
+              :action="uploadUrl"
               :auto-upload="false"
               :multiple="false"
               :on-success="uploadSuccess"
@@ -110,7 +110,7 @@
         videoMsg: {
           moocId: null
         },
-        uploadUrl: global.baseUrl + 'mooc/getQiNiuToken?token=' + global.getToken(),
+        uploadUrl: global.qiniuUrl,
         addvideoMsg: {
           title: null,
           src: null
@@ -153,7 +153,7 @@
       },
       uploadSuccess (file, response) {
         if (response.status === 'success') {
-          this.addvideoMsg.src = 'http://onktd2a1f.bkt.clouddn.com/' + response.response.key
+          this.addvideoMsg.src = global.qiniuShUrl + response.response.key
         }
       },
       submitUpload () {
