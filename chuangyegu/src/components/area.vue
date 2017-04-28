@@ -230,8 +230,7 @@ export default {
   },
   created () {
     if (global.getToken() == null) {
-      alert(global.content.alert)
-      this.$router.push('/login')
+      global.error(this, global.content.alert, '/login')
     }
     this.selectCampus()
     this.selectRentalPlace()

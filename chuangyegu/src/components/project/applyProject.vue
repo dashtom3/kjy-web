@@ -128,8 +128,7 @@ export default {
   },
   created: function () {
     if (global.getToken() == null) {
-      this.$router.push('/login')
-      alert(global.content.alert)
+      global.error(this, global.content.alert, '/login')
     }
   },
   methods: {
