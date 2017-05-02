@@ -7,7 +7,7 @@
     <div class="downloads">
       <ul>
         <li v-for="datalist in fileLists">
-          <a :href="'http://chuangyegu.tongji.edu.cn/'+datalist.url" :download=datalist.name>
+          <a :href="dataUrl+datalist.url" :download=datalist.name>
             <span class="downloadLeft">{{datalist.name}}</span>
             <span class="downloadright">{{datalist.createTime*1000 | time}}</span>
           </a>
@@ -38,7 +38,8 @@ export default {
         numPerPage: 10,
         pageNum: 1,
         totalPage: -1
-      }
+      },
+      dataUrl: global.url
     }
   },
   created () {
