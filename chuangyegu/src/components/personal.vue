@@ -225,7 +225,7 @@ export default {
       editUserPersonal: false,
       kindlists: [{ val: '个人资料' }, { val: '我对接的项目' }, { val: '我申请的项目' }, { val: '活动报名' }, { val: '场地预约' }],
       isActive: 0,
-      userinfo: '',
+      userinfo: global.getUser(),
       intentionArray: global.userMsg.intentionArray,
       event: null,
       applyProjectlist: null,
@@ -242,7 +242,6 @@ export default {
   },
   created: function () {
     if (global.getToken() == null) {
-      console.log(global.getToken())
       global.error(this, global.content.alert, '/login')
     } else {
       var self = this

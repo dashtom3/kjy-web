@@ -16,7 +16,8 @@
           </div>
           <div class="xn" v-show="loginInfo.type == 1">
             <form method="post" action="http://tjis.tongji.edu.cn:58080/amserver/UI/Login?goto=http://chuangyegu.tongji.edu.cn/login?type=3&action=tj_login&gotoOnFail=http://chuangyegu.tongji.edu.cn/login?type=2&action=tj_login" id="formUserMsg">
-              <div class="loginInput">
+            <!-- <form method="post" action="http://tjis.tongji.edu.cn:58080/amserver/UI/Login?goto=http://127.0.0.1:8080/login?type=3&action=tj_login&gotoOnFail=http://127.0.0.1:8080/login?type=2&action=tj_login" id="formUserMsg"> -->
+                <div class="loginInput">
                 <input type="text"  v-model="loginInfo.loginName" name="Login.Token1" id="login_name" placeholder="账号" @change="setName">
                 <br>
                 <input type="password"  v-model="loginInfo.password" name="Login.Token2" id="login_password" placeholder="密码">
@@ -128,7 +129,6 @@ export default {
       global.error(this, '校内登录失败', '/login')
     }
     if (this.$route.query.type === '3') {
-      console.log(this.loginInfo.loginName)
       this.loginIntern()
     }
   },

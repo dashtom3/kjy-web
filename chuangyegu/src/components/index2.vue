@@ -276,7 +276,7 @@ export default {
 }
 .projectContents{
   background: url('../images/projectbg.jpg') no-repeat center;
-  height: 580px;
+  min-height: 580px;
 }
 .newsDetialConLeft .newsintr img{
   max-width: 600px;
@@ -493,12 +493,14 @@ export default {
   margin: 0 auto;
   background-color: #fff;
   text-align: center;
-  position: relative;
+  /*position: relative;*/
 }
 .goAll{
-  position: absolute;
+  /*position: absolute;
   top: 35px;
-  right: 30px;
+  right: 30px;*/
+  float: right;
+  margin-top: -80px;
 }
 img.hoverimg{
   display: none;
@@ -507,14 +509,16 @@ img.hoverimg{
   display: none;
 }
 .goAll:hover a img.hoverimg{
-  display: block;
+  display: inline-block;
 }
 .goAll a span{
-  position: absolute;
+  /*position: absolute;
   top: 8px;
-  left:25px;
+  left:25px;*/
   color: #fff;
-  font-size: 15px;
+  position: absolute;
+  margin-left: 10px;
+  margin-top: 8px;
 }
 .goAll a img{
   width: 141px;
