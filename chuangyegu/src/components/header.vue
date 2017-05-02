@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import global from '../global/global'
 export default {
   data () {
     return {
@@ -26,12 +27,14 @@ export default {
   methods: {
   },
   mounted () {
-    var data = Date.parse(new Date()) / 1000
-    if (data > localStorage.time) {
-      localStorage.token
-    }
-    if (localStorage.token) {
+    // var data = Date.parse(new Date()) / 1000
+    // if (data > localStorage.time) {
+    //   localStorage.token
+    // }
+    if (global.getToken() != null) {
       this.isLogin = '/personal'
+    } else {
+      this.isLogin = '/login'
     }
   }
 }

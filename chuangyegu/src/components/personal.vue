@@ -242,27 +242,29 @@ export default {
   },
   created: function () {
     if (global.getToken() == null) {
+      console.log(global.getToken())
       global.error(this, global.content.alert, '/login')
+    } else {
+      var self = this
+      // 我对接的项目
+      axios.get(global.baseUrl + 'eventApply/getAppliedEventList?token=' + global.getToken())
+      .then((res) => {
+        self.event = res.data.data
+      })
+      // 我申请的项目
+      this.getApplyProjectLists()
+      // 活动报名
+      this.getJoinEventLists()
+      // 场地预定
+      this.getApplyEventLists()
     }
-    var self = this
-    // 我对接的项目
-    axios.get(global.baseUrl + 'eventApply/getAppliedEventList?token=' + global.getToken())
-    .then((res) => {
-      self.event = res.data.data
-    })
-    // 我申请的项目
-    this.getApplyProjectLists()
-    // 活动报名
-    this.getJoinEventLists()
-    // 场地预定
-    this.getApplyEventLists()
   },
   mounted () {
-    this.userinfo = global.getUser()
-    // 判断是否是数组
-    if (global.getUser().intention instanceof Array) {
-      console.log(123)
-    }
+    // this.userinfo = global.getUser()
+    // // 判断是否是数组
+    // if (global.getUser().intention instanceof Array) {
+    //   console.log(123)
+    // }
   },
   methods: {
     getJoinProjectLists () {
