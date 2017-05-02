@@ -92,7 +92,7 @@
         addFileAlert: false,
         againUpload: false,
         fileList: null,
-        uploadUrl: 'http://123.56.220.72:8080/cyg/api/file/upload?token=' + global.getToken(),
+        uploadUrl: global.baseUrl + 'file/upload?token=' + global.getToken(),
         fileArgs: {
           numPerPage: 10,
           pageNum: 1,
@@ -114,7 +114,7 @@
         .then((res) => {
           for (let i in res.data.data) {
             res.data.data[i].createTime = self.timeFilter(res.data.data[i].createTime * 1000)
-            res.data.data[i].url = 'http://chuangyegu.tongji.edu.cn/' + res.data.data[i].url
+            res.data.data[i].url = global.url + res.data.data[i].url
           }
           self.fileList = res.data.data
           self.fileArgs.pageNum = res.data.currentPage

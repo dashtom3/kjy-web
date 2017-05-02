@@ -164,10 +164,10 @@
         axios.get(global.baseUrl + 'news/getById?newsId=' + newsId)
         .then((res) => {
           // console.log(res)
-          res.data.data.content = res.data.data.content.replace(/src="/gi, 'src="http://123.56.220.72:8080/cyg/')
+          res.data.data.content = res.data.data.content.replace(/src="/gi, 'src="' + global.url + '')
           self.addNewsMsg = res.data.data
           if (res.data.data.pic !== '') {
-            self.imageUrl = 'http://123.56.220.72:8080/cyg/' + res.data.data.pic
+            self.imageUrl = global.url + res.data.data.pic
           }
           editer.run('code', self.addNewsMsg.content)
         })
@@ -224,7 +224,7 @@
       addNews () {
         this.editNewShow = false
         this.addNewShow = true
-        this.addNewsMsg.content = this.addNewsMsg.content.replace(/http:\/\/123.56.220.72:8080\/cyg/g, '')
+        this.addNewsMsg.content = this.addNewsMsg.content.replace(/http:\/\/202.120.163.63:8080\/cyg/g, '')
         var self = this
         axios.post(global.baseUrl + 'news/addNews', global.postHttpDataWithToken(this.addNewsMsg))
         .then((res) => {
@@ -254,7 +254,7 @@
         .then((res) => {
           // 这里做上传图片的操作，上传成功之后便可以用到下面这句将图片插入到编辑框中
           if (res.data.callStatus === 'SUCCEED') {
-            editer.run('insertImage', 'http://123.56.220.72:8080/cyg/' + res.data.data)
+            editer.run('insertImage', global.url + res.data.data)
           }
         })
       })

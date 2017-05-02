@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     adminLogin () {
-      if (this.adminName === 'cygadmin' && this.adminPassword === '2920256') {
+      if (this.adminName !== '' && this.adminPassword !== '') {
         var adminMsg = new FormData()
         adminMsg.append('loginName', this.adminName)
         adminMsg.append('password', this.adminPassword)

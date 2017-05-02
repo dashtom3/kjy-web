@@ -156,7 +156,7 @@ export default {
         // console.log(res)
         // 这里做上传图片的操作，上传成功之后便可以用到下面这句将图片插入到编辑框中
         if (res.data.callStatus === 'SUCCEED') {
-          editer.run('insertImage', 'http://123.56.220.72:8080/cyg/' + res.data.data)
+          editer.run('insertImage', global.url + res.data.data)
         }
       })
     })
@@ -213,7 +213,7 @@ export default {
       editer.run('code', this.addNoticeMsg.content)
     },
     addNotice () {
-      this.addNoticeMsg.content = this.addNoticeMsg.content.replace(/http:\/\/123.56.220.72:8080\/cyg/g, '')
+      this.addNoticeMsg.content = this.addNoticeMsg.content.replace(/http:\/\/202.120.163.63:8080\/cyg/g, '')
       var self = this
       axios.post(global.baseUrl + 'notice/addNotice', global.postHttpDataWithToken(this.addNoticeMsg))
       .then((res) => {
@@ -245,9 +245,9 @@ export default {
       axios.get(global.baseUrl + 'notice/getById?noticeId=' + noticeId)
       .then((res) => {
         // console.log(res)
-        res.data.data.content = res.data.data.content.replace(/src="/gi, 'src="http://123.56.220.72:8080/cyg/')
+        res.data.data.content = res.data.data.content.replace(/src="/gi, 'src="' + global.url + '')
         self.addNoticeMsg = res.data.data
-        self.imageUrl = 'http://123.56.220.72:8080/cyg/' + res.data.data.pic
+        self.imageUrl = global.url + res.data.data.pic
         editer.run('code', self.addNoticeMsg.content)
       })
     },
