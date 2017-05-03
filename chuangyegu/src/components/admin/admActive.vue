@@ -68,6 +68,14 @@
           width="180">
         </el-table-column>
         <el-table-column
+          label="联系方式"
+          width="180">
+          <template scope="scope">
+            <p>{{scope.row.contactPhone}}</p>
+            <p>{{scope.row.mobilePhone}}</p>
+          </template>
+        </el-table-column>
+        <el-table-column
           prop="applyCount"
           label="报名人数"
           width="180">
