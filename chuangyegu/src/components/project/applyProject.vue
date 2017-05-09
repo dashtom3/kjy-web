@@ -16,7 +16,7 @@
           </select> -->
           <el-select v-model="applyProjectMsg.xiaoqu" placeholder="请选择" >
             <el-option
-              :key="campus"
+              :key="campu"
               v-for="(campu, index) in campus"
               :value=campu
               :label=campu>
@@ -59,7 +59,7 @@
             <div>
               <div class="">
                 <el-checkbox-group v-model="applyProjectMsg.projectStatus">
-                  <el-checkbox :label="checkInfo" v-for="checkInfo in checkList"></el-checkbox>
+                  <el-checkbox :key="checkInfo" :label="checkInfo" v-for="checkInfo in checkList"></el-checkbox>
                 </el-checkbox-group>
               </div>
             </div>
@@ -142,7 +142,8 @@ export default {
       var self = this
       axios.post(global.baseUrl + 'project/apply', global.postHttpDataWithToken(this.applyProjectMsg))
       .then((res) => {
-        self.applyProjectMsg.projectStatus = []
+        // console.log(res)
+        // self.applyProjectMsg.projectStatus = []
         if (res.data.callStatus === 'SUCCEED') {
           global.success(self, '项目申请成功', '/personal')
         } else {

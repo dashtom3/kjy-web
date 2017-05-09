@@ -48,6 +48,14 @@ export default {
 .el-table .cell{
   text-align: center;
 }
+.hdjj table.el-table__body tr td:nth-child(8) .cell{
+  max-height: 120px!important;
+  overflow-y: auto!important;
+}
+.hdjj table.el-table__body tr td:nth-child(9) .cell img{
+  max-height: 150px!important;
+  max-width: 150px!important;
+}
   #app{
     height: 100%;
     margin: 0;

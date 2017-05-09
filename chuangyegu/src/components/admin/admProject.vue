@@ -180,19 +180,20 @@ export default {
       if (this.demand) {
         this.projectMsg.demand = this.demand
       }
-      if (this.projectType) {
+      if (this.kinds) {
         this.projectMsg.projectType = this.kinds
       }
       if (this.sources) {
         this.projectMsg.source = this.sources
       }
+      // console.log(this.projectMsg)
       this.getProjectLists(this.projectMsg)
     },
     getProjectLists (args) {
       var self = this
       axios.get(global.baseUrl + 'project/getProjectList?' + global.getHttpData(args))
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         for (let i in res.data.data) {
           res.data.data[i].applyTime = self.timeFilter(res.data.data[i].applyTime * 1000)
           res.data.data[i].statusAgain = self.statusFilter(res.data.data[i].status)

@@ -41,35 +41,49 @@
         :data="tableData"
         stripe
         border
-        style="width:100%">
+        style="width:100%"
+        class="hdjj">
         <el-table-column
           prop="eventName"
-          label="活动名称"
-          width="200">
+          label="活动名称">
         </el-table-column>
         <el-table-column
           prop="rentalPlace"
-          label="活动场地"
-          width="180">
+          label="活动场地">
         </el-table-column>
         <el-table-column
           prop="useDate"
-          label="活动日期"
-          width="180">
+          label="活动日期">
         </el-table-column>
         <el-table-column
           prop="useTime"
-          label="活动时间"
-          width="180">
+          label="活动时间">
         </el-table-column>
         <el-table-column
           prop="contactName"
-          label="申请人姓名"
-          width="180">
+          label="申请人姓名">
+        </el-table-column>
+        <el-table-column
+          prop="applyUnit"
+          label="申请单位">
+        </el-table-column>
+        <el-table-column
+          prop="eventEquipment"
+          label="活动所需器材">
+        </el-table-column>
+        <el-table-column
+          prop="eventContent"
+          label="活动简介">
+        </el-table-column>
+        <el-table-column
+          label="活动海报">
+          <template scope="scope">
+            <img :src="scope.row.photo" alt="">
+          </template>
         </el-table-column>
         <el-table-column
           label="联系方式"
-          width="180">
+          width="125">
           <template scope="scope">
             <p>{{scope.row.contactPhone}}</p>
             <p>{{scope.row.mobilePhone}}</p>
@@ -77,13 +91,11 @@
         </el-table-column>
         <el-table-column
           prop="applyCount"
-          label="报名人数"
-          width="180">
+          label="报名人数">
         </el-table-column>
         <el-table-column
           prop="statusNumber"
-          label="状态"
-          width="180">
+          label="状态">
         </el-table-column>
         <el-table-column label="操作">
           <template scope="scope">
@@ -197,6 +209,8 @@ export default {
         // console.log(res)
         for (let i in res.data.data) {
           res.data.data[i].statusNumber = self.selectStatus(res.data.data[i].status)
+          res.data.data[i].photo = global.url + res.data.data[i].photo
+          // console.log(self.url)
         }
         self.tableData = res.data.data
         self.activeArgs.pageNum = res.data.currentPage
@@ -316,5 +330,4 @@ export default {
 </script>
 
 <style media="screen">
-
 </style>

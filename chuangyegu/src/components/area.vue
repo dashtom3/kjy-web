@@ -57,8 +57,14 @@
             <div class="" style="width:200px;vertical-align:top;">
               <span class="date">活动时间段</span>
             </div>
-            <div class="selecttime">
-              <div class="">
+            <div class="selecttime" style="width:657px;">
+              <el-checkbox-group v-model="areaMsg.useTimeId">
+                <el-checkbox
+                :key="useTimeId"
+                v-for="(useTimeId, index) in useTimeIds"
+                :label="index+1">{{useTimeId}}</el-checkbox>
+              </el-checkbox-group>
+              <!-- <div class="">
                 <input type="checkbox" v-model="areaMsg.useTimeId" name="time" id="time1" value="1"><label for="time1" style="margin-right:78px">8:00-10:00</label>
                 <input type="checkbox" v-model="areaMsg.useTimeId" name="time" id="time2" value="2"><label for="time2">10:00-12:00</label>
                 <input type="checkbox" v-model="areaMsg.useTimeId" name="time" id="time3" value="3"><label for="time3">12:00-13:30</label>
@@ -69,15 +75,21 @@
                 <input type="checkbox" v-model="areaMsg.useTimeId" name="time" id="time6" value="6"><label for="time6">17:00-18:30</label>
                 <input type="checkbox" v-model="areaMsg.useTimeId" name="time" id="time7" value="7"><label for="time7">18:30-20:00</label>
                 <input type="checkbox" v-model="areaMsg.useTimeId" name="time" id="time8" value="8"><label for="time8">20:00-22:00</label>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="equipment time">
             <div class="" style="width:200px;vertical-align:top;">
               <span class="date">活动所需器材</span>
             </div>
-            <div class="selectequipment">
-              <div class="">
+            <div class="selectequipment" style="width:657px;">
+              <el-checkbox-group v-model="areaMsg.eventEquipment">
+                <el-checkbox
+                :key="eventEquipment"
+                v-for="(eventEquipment, index) in eventEquipments"
+                :label="eventEquipment" :value="index"></el-checkbox>
+              </el-checkbox-group>
+              <!-- <div class="">
                 <input type="checkbox" v-model="areaMsg.eventEquipment" id="equipment1" value="会议室"><label for="equipment1" style="margin-right:104px">会议室</label>
                 <input type="checkbox" v-model="areaMsg.eventEquipment" id="equipment2" value="茶几"><label for="equipment2" style="margin-right:116px;">茶几</label>
                 <input type="checkbox" v-model="areaMsg.eventEquipment" id="equipment3" value="多媒体投影仪"><label for="equipment3" style="margin-right:62px;">多媒体投影仪</label>
@@ -87,7 +99,7 @@
                 <input type="checkbox" v-model="areaMsg.eventEquipment" id="equipment5" value="茶点(付费或自带)"><label for="equipment5" style="margin-right:39px;">茶点(付费或自带)</label>
                 <input type="checkbox" v-model="areaMsg.eventEquipment" id="equipment6" value="CD DVD卡带(请自带)"><label for="equipment6" style="margin-right:15px;">CD DVD卡带(请自带)</label>
                 <input type="checkbox" v-model="areaMsg.eventEquipment" id="equipment7" value="其他"><label for="equipment7">其他</label>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="upload">
@@ -108,7 +120,7 @@
             <h5>①请提前3日预约14日内的场地 ②必须上传活动海报后才能审核通过</h5>
           </div>
           <div class="tj">
-            <a href="javascript:;" v-on:click="submitAreaMsg">提交</a>
+            <a v-on:click="submitAreaMsg">提交</a>
           </div>
         </div>
       </div>
@@ -147,6 +159,8 @@ export default {
       placesOneimg: [hddt, hys1, hys2, hys3, hys4, ydmzwt],
       places2: ['暴风影音会议室', '乐视TV会议室(可与暴风影音会议室合借)', '秋千会议区', '沙发会议区', '大师椅会议区', '户外舞台'],
       placestwoimg: [bfyyhys, lstvhys, qqhys, sfhys, dsyhys, hwwt],
+      useTimeIds: ['8:00-10:00', '10:00-12:00', '12:00-13:30', '13:30-15:00', '15:00-17:00', '17:00-18:30', '18:30-20:00', '20:00-22:00'],
+      eventEquipments: ['会议室', '茶几', '多媒体投影仪', '触摸演示屏', '茶点(付费或自带)', 'CD DVD卡带(请自带)', '其他'],
       showImgSrc: null,
       posterImgSrc: null,
       areaMsg: {
@@ -217,11 +231,15 @@ export default {
       this.areaMsg.eventEquipment = this.areaMsg.eventEquipment.join('、')
       this.areaMsg.useTimeId = this.areaMsg.useTimeId.join(',')
       this.areaMsg.useDateStr = this.format(this.areaMsg.useDateStr)
-      console.log(this.areaMsg)
       var self = this
+      // console.log(this.areaMsg)
       axios.post(global.baseUrl + 'event/add', global.postHttpDataWithToken(this.areaMsg))
       .then((res) => {
+        // console.log(123)
         console.log(res)
+        // self.areaMsg.eventEquipment = []
+        // self.areaMsg.useTimeId = []
+        // console.log(self.areaMsg)
         if (res.data.callStatus === 'SUCCEED') {
           global.success(self, '申请成功请等待审核', '/')
         }
@@ -364,7 +382,8 @@ h2{
   font-size: 14px;
   color: rgb( 83, 83, 83 );
   line-height: 0.001;
-  margin-right: 70px;
+  margin-right: 15px;
+  margin-left: 0!important;
 }
 .upload{
   width: 300px;

@@ -114,7 +114,7 @@
           <span class="cw">资料下载&nbsp;&nbsp;&nbsp;&nbsp;&gt;</span>
         </a>
       </div>
-      <div class="service s14" style="clear:both;position:absolute;top:527px;">
+      <div class="service s14" style="clear:both;top:-512px;">
         <a href="notices" target="_blank">
           <span class="icon5 iconimg"></span>
           <span class="cw">通知公告&nbsp;&nbsp;&nbsp;&nbsp;&gt;</span>
