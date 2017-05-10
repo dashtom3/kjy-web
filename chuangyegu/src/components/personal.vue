@@ -15,7 +15,9 @@
             <label for="">用户性质：</label><span>{{type[userinfo.identity-1]}}</span>
           </div>
           <div class="w210">
-            <label for="">学号：</label><span>{{userinfo.idNumber}}</span>
+            <label for="">ID：</label>
+            <span v-if="userinfo.idNumber != null">{{userinfo.idNumber}}</span>
+            <span v-if="userinfo.idNumber == null">{{userinfo.loginName}}</span>
           </div>
           <div class="w210">
             <label for="">姓名：</label><span>{{userinfo.name}}</span>

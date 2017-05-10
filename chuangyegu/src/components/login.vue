@@ -138,13 +138,15 @@ export default {
     },
     loginIntern () {
       var self = this
-      axios.post(global.baseUrl + 'user/school/login', global.postHttpData({identity: '3', loginName: this.loginInfo.loginName})).then((res) => {
-        if (res.data.callStatus === 'SUCCEED') {
-          global.setToken(res.data.token)
-          global.setUser(res.data.data)
-          global.success(self, '登录成功', '/personal')
-        }
-      })
+      if (localStorage.loginName != null) {
+        axios.post(global.baseUrl + 'user/school/login', global.postHttpData({identity: '3', loginName: localStorage.loginName})).then((res) => {
+          if (res.data.callStatus === 'SUCCEED') {
+            global.setToken(res.data.token)
+            global.setUser(res.data.data)
+            global.success(self, '登录成功', '/personal')
+          }
+        })
+      }
     },
     selectRegKind: function (item, index) {
       this.stateRegName = item.data

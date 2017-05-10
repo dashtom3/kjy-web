@@ -83,7 +83,7 @@
           </div>
           <div class="tj">
             <!-- <a href="javascript:;" v-on:click="subApplyProject" :disabled="applyProjectMsg.content == null">提交</a> -->
-            <el-button type="primary" v-on:click="subApplyProject" :disabled="applyProjectMsg.content==null">提交</el-button>
+            <el-button type="primary" v-on:click="subApplyProject" :disabled="applyProjectMsg.content==null || applyProjectMsg.jhs == null">提交</el-button>
           </div>
         </div>
       </div>
@@ -142,14 +142,13 @@ export default {
       var self = this
       axios.post(global.baseUrl + 'project/apply', global.postHttpDataWithToken(this.applyProjectMsg))
       .then((res) => {
-        // console.log(res)
-        // self.applyProjectMsg.projectStatus = []
         if (res.data.callStatus === 'SUCCEED') {
           global.success(self, '项目申请成功', '/personal')
         } else {
           global.error(self, '部分信息未填写', '')
         }
       })
+      self.applyProjectMsg.projectStatus = []
     }
   },
   components: {

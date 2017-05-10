@@ -19,7 +19,9 @@ export default{
       type: 'success',
       duration: '1000',
       onClose: function () {
-        obj.$router.push(url)
+        if (url !== '') {
+          obj.$router.push(url)
+        }
       }
     })
   },
@@ -28,7 +30,9 @@ export default{
       message: msg,
       duration: '1000',
       onClose: function () {
-        obj.$router.push(url)
+        if (url !== '') {
+          obj.$router.push(url)
+        }
       }
     })
   },
