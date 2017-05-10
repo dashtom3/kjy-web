@@ -442,7 +442,8 @@ h5{
   display: inline-block;
   width: 223px;
   height: 39px;
-  background-color: rgb(245,97,1)
+  background-color: rgb(245,97,1);
+  cursor: pointer;
 }
 .tj button:hover{
   cursor: pointer;
