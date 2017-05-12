@@ -105,7 +105,7 @@ export default {
   created () {
     // var self = this
     // var start = Date.parse(new Date())
-    var start = Date.parse(new Date('2017-03-16'))
+    var start = Date.parse(new Date())
     this.startDate = start
     this.args.startDate = global.getDateStr(start)
     this.args.endDate = global.getDateStr(start + 15 * 86400000)
