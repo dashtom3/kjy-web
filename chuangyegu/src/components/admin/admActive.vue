@@ -67,53 +67,61 @@
           prop="applyUnit"
           label="申请单位">
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           prop="eventEquipment"
           label="活动所需器材">
-        </el-table-column>
-        <el-table-column
+        </el-table-column> -->
+        <!-- <el-table-column
           prop="eventContent"
           label="活动简介">
-        </el-table-column>
-        <el-table-column
+        </el-table-column> -->
+        <!-- <el-table-column
           label="活动海报">
           <template scope="scope">
             <img :src="scope.row.photo" alt="">
           </template>
-        </el-table-column>
-        <el-table-column
+        </el-table-column> -->
+        <!-- <el-table-column
           label="联系方式"
           width="125">
           <template scope="scope">
             <p>{{scope.row.contactPhone}}</p>
             <p>{{scope.row.mobilePhone}}</p>
           </template>
-        </el-table-column>
-        <el-table-column
+        </el-table-column> -->
+        <!-- <el-table-column
           prop="applyCount"
           label="报名人数">
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           prop="statusNumber"
           label="状态">
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作"
+        width="300">
           <template scope="scope">
             <el-button
-              size="small"
+              size="mini"
               @click="adopt(scope.row.id)"
               :disabled="scope.row.status === 2"
               >通过</el-button>
             <el-button
-              size="small"
+              size="mini"
               type="danger"
               :disabled="scope.row.status === 3"
               @click="nopass(scope.row.id)">不通过</el-button>
               <el-button
-                size="small"
+                size="mini"
                 type="success"
                 :disabled="scope.row.status === 3"
                 @click.native="verifypass(scope.row.id)">审核报名</el-button>
+                <el-button
+                  size="mini"
+                  type="warning"
+                  @click.native="deleteActive(scope.row.id)">删除</el-button>
+                  <el-button
+                    size="mini"
+                    @click.native="eventDetails(scope.row)">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -150,6 +158,46 @@
           <el-button type="primary" @click="noPassEvent" v-if="noPassShow">确 定</el-button>
         </span>
       </el-dialog>
+      <!-- 详情 -->
+      <el-dialog
+        title="活动详情"
+        v-model="eventDetailAlert">
+        <div id="table" class="imgMax">
+          <el-table
+            :data="eventDetailInfo"
+            stripe
+            border
+            style="width:100%"
+            class="hdjj">
+            <el-table-column
+              prop="eventEquipment"
+              label="活动所需器材">
+            </el-table-column>
+            <el-table-column
+              prop="eventContent"
+              label="活动简介" class="info">
+            </el-table-column>
+            <el-table-column
+              label="活动海报">
+              <template scope="scope">
+                <img :src="scope.row.photo" alt="">
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="联系方式"
+              width="125">
+              <template scope="scope">
+                <p>{{scope.row.contactPhone}}</p>
+                <p>{{scope.row.mobilePhone}}</p>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="applyCount"
+              label="报名人数">
+            </el-table-column>
+          </el-table>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -173,6 +221,8 @@ export default {
       noPassShow: false,
       delShow: false,
       eventAlertTitle: '',
+      eventDetailAlert: false,
+      eventDetailInfo: [],
       activeMsg: {
         eventId: null,
         status: null
@@ -221,9 +271,6 @@ export default {
     handleCurrentChange (val) {
       this.activeArgs.pageNum = val
       this.getActivelist(this.activeArgs)
-    },
-    handleClick: function () {
-      alert('click')
     },
     // 设置活动状态
     eventOption (msg) {
@@ -308,7 +355,6 @@ export default {
       var self = this
       axios.get(global.baseUrl + 'eventApply/getEventApplyList?' + global.getHttpData(this.eventApplyMsg))
       .then((res) => {
-        console.log(res)
         self.joinEventNumber = res.data.data
       })
     },
@@ -324,10 +370,38 @@ export default {
           self.getEventApplyList()
         }
       })
+    },
+    // 删除活动
+    deleteActive (eventId) {
+      var activeInfo = {
+        eventId: eventId
+      }
+      var self = this
+      axios.post(global.baseUrl + 'event/delete', global.postHttpDataWithToken(activeInfo))
+      .then((res) => {
+        if (res.data.callStatus === 'SUCCEED') {
+          global.success(self, '删除成功', '')
+          self.getActivelist(self.activeArgs)
+        }
+      })
+    },
+    // 活动详情
+    eventDetails (event) {
+      this.eventDetailInfo = []
+      this.eventDetailAlert = true
+      this.eventDetailInfo.push(event)
     }
   }
 }
 </script>
 
 <style media="screen">
+.imgMax img{
+  max-width: 200px;
+  max-height: 200px;
+}
+.imgMax tbody tr td:nth-child(2) div{
+  max-height: 200px;
+  overflow-y: auto;
+}
 </style>
