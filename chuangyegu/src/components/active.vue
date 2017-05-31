@@ -125,6 +125,7 @@ export default {
     getActiveDetial: function (time) {
       console.log(time)
       var temp = this.format(time)
+      console.log(temp)
       if (this.actives[temp] != null) {
         this.activeAlert = time
         this.activeData = this.actives[temp]

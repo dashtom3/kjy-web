@@ -127,7 +127,7 @@
           pageNum: 1,
           totalPage: -1
         },
-        uploadUrl: global.baseUrl + 'file/upload?token=' + localStorage.token,
+        uploadUrl: global.baseUrl + 'file/upload?token=' + global.getToken(),
         formLabelWidth: '120px'
       }
     },
@@ -163,8 +163,11 @@
         const editer = self.$refs.editer
         axios.get(global.baseUrl + 'news/getById?newsId=' + newsId)
         .then((res) => {
-          // console.log(res)
-          res.data.data.content = res.data.data.content.replace(/src="/gi, 'src="' + global.url + '')
+          // console.log(global.url)
+          var regUrl = new RegExp(global.url)
+          if (!regUrl.test(res.data.data.content)) {
+            res.data.data.content = res.data.data.content.replace(/src="/gi, 'src="' + global.url + '')
+          }
           self.addNewsMsg = res.data.data
           if (res.data.data.pic !== '') {
             self.imageUrl = global.url + res.data.data.pic
@@ -218,12 +221,12 @@
         this.addNewsMsg.title = null
         this.addNewsMsg.content = null
         this.addNewsMsg.pic = null
+        this.editNewShow = false
+        this.addNewShow = true
         const editer = this.$refs.editer
         editer.run('code', this.addNewsMsg.content)
       },
       addNews () {
-        this.editNewShow = false
-        this.addNewShow = true
         this.addNewsMsg.content = this.addNewsMsg.content.replace(/http:\/\/202.120.163.63:8080\/cyg/g, '')
         var self = this
         axios.post(global.baseUrl + 'news/addNews', global.postHttpDataWithToken(this.addNewsMsg))
@@ -259,6 +262,7 @@
         })
       })
       editer.$on('onChange', function (contents) {
+        console.log(contents)
         self.addNewsMsg.content = contents
       })
     }
