@@ -53,9 +53,13 @@ export default {
     var self = this
     axios.get(global.baseUrl + 'news/getById?newsId=' + this.newsid)
     .then((res) => {
-      console.log(res)
+      // console.log(res)
       self.newsDetialContent = res.data.data
-      self.newsDetialContent.content = self.newsDetialContent.content.replace(/src="/gi, 'src="' + global.url + '')
+      var regUrl = new RegExp(global.url)
+      if (!regUrl.test(res.data.data.content)) {
+        res.data.data.content = res.data.data.content.replace(/src="/gi, 'src="' + global.url + '')
+      }
+      // self.newsDetialContent.content = self.newsDetialContent.content.replace(/src="/gi, 'src="' + global.url + '')
     })
     axios.get(global.baseUrl + 'news/getNewsList?ifImage=1&numPerPage=3')
     .then((res) => {

@@ -245,7 +245,12 @@ export default {
       axios.get(global.baseUrl + 'notice/getById?noticeId=' + noticeId)
       .then((res) => {
         // console.log(res)
-        res.data.data.content = res.data.data.content.replace(/src="/gi, 'src="' + global.url + '')
+        var regUrl = new RegExp(global.url)
+        if (!regUrl.test(res.data.data.content)) {
+          res.data.data.content = res.data.data.content.replace(/src="/gi, 'src="' + global.url + '')
+        }
+        // console.log(res)
+        // res.data.data.content = res.data.data.content.replace(/src="/gi, 'src="' + global.url + '')
         self.addNoticeMsg = res.data.data
         self.imageUrl = global.url + res.data.data.pic
         editer.run('code', self.addNoticeMsg.content)

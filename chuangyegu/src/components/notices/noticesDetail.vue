@@ -53,7 +53,10 @@ export default {
     .then((res) => {
       // console.log(res)
       res.data.data.date = self.timeFilter(res.data.data.date * 1000)
-      res.data.data.content = res.data.data.content.replace(/src="/gi, 'src="' + global.url + '')
+      var regUrl = new RegExp(global.url)
+      if (!regUrl.test(res.data.data.content)) {
+        res.data.data.content = res.data.data.content.replace(/src="/gi, 'src="' + global.url + '')
+      }
       self.noticeContent = res.data.data
     })
     axios.get(global.baseUrl + 'notice/getNoticeList?numPerPage=20')
