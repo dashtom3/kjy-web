@@ -31,15 +31,15 @@
       <div class="newsright">
         <h3>最新要闻</h3>
         <ul v-if="newslists.length > 3">
-          <li v-for="item in 3" v-if="newslists[item-1].pic != ''">
-            <a :href="'/newsDetail/' + newslists[item-1].id" target="_blank">
+          <li v-for="item in 3">
+            <a :href="'/newsDetail/' + newesNewsLists[item-1].id" target="_blank">
               <div class="ywcontent">
                 <img src="../../images/Layer-12.png" alt="" class="goyw">
-                <img :src="newsUrl+newslists[item-1].pic" alt="" class=ywbg><br>
+                <img :src="newsUrl+newesNewsLists[item-1].pic" alt="" class=ywbg><br>
               </div>
               <div class="ywtime">
-                <span>{{newslists[item-1].date}}</span><br>
-                <span class="cb">{{newslists[item-1].title}}</span>
+                <span>{{newesNewsLists[item-1].date}}</span><br>
+                <span class="cb">{{newesNewsLists[item-1].title}}</span>
               </div>
             </a>
           </li>
@@ -71,7 +71,8 @@ export default {
         totalPage: -1
       },
       newsUrl: global.url,
-      newslists: []
+      newslists: [],
+      newesNewsLists: []
     }
   },
   created () {
@@ -98,6 +99,12 @@ export default {
           self.newslists[i].content = self.newslists[i].content.replace(/<[^>]+>/g, '')
           self.newslists[i].content = self.newslists[i].content.replace(/&nbsp;/g, '')
         }
+      })
+    },
+    getNewestnewslists () {
+      axios.get(global.baseUrl + 'news/getNewsList?numPerPage=3&ifImage=1')
+      .then((res) => {
+        this.newesNewsLists = res.data.data
       })
     }
   },
