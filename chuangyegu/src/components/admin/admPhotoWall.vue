@@ -150,8 +150,9 @@
         axios.get(global.qiniuShUrl + key + '?imageInfo').then((res) => {
           if (res.status === 200) {
             self.photoWallMsg.src = global.qiniuShUrl + key
-            self.photoWallMsg.width = res.data.width
-            self.photoWallMsg.height = res.data.height
+            self.photoWallMsg.width = res.data.width < 250 ? 250 : res.data.width
+            self.photoWallMsg.height = res.data.height < 250 ? 250 : res.data.height
+            // console.log(self.photoWallMsg)
           }
         })
       },

@@ -5,10 +5,10 @@ export default{
   content: {alert: '请先登录'},
   qiniuUrl: 'http://up-z2.qiniu.com/',
   qiniuShUrl: 'http://onktd2a1f.bkt.clouddn.com/',
-  url: 'http://202.120.163.63:8080/cyg/',
-  baseUrl: 'http://202.120.163.63:8080/cyg/api/',
-  successUrl: 'http://202.120.163.63:8080/personal',
-  errorUrl: 'http://202.120.163.63:8080/login?type=2',
+  url: 'http://chuangyegu.tongji.edu.cn/cyg/',
+  baseUrl: 'http://chuangyegu.tongji.edu.cn/cyg/api/',
+  successUrl: 'http://chuangyegu.tongji.edu.cn/personal',
+  errorUrl: 'http://chuangyegu.tongji.edu.cn/login?type=2',
   goPath: function (obj, url) {
     document.body.scrollTop = 0 + 'px'
     obj.$router.push({ name: url })
@@ -77,9 +77,9 @@ export default{
     localStorage.setItem('cyguser', JSON.stringify(caruser))
   },
   logout: function () {
-    localStorage.setItem('cyguser', null)
-    localStorage.setItem('cygtokentime', null)
-    localStorage.setItem('cygtoken', null)
+    localStorage.removeItem('cyguser')
+    localStorage.removeItem('cygtokentime')
+    localStorage.removeItem('cygtoken')
   },
   getToday: function () {
     var today = new Date()

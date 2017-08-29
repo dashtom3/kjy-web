@@ -53,12 +53,21 @@ export default {
     var self = this
     axios.get(global.baseUrl + 'news/getById?newsId=' + this.newsid)
     .then((res) => {
-      // console.log(res)
-      self.newsDetialContent = res.data.data
-      var regUrl = new RegExp(global.url)
-      if (!regUrl.test(res.data.data.content)) {
+      // console.log(res.data.data.content)
+      // var regUrl = new RegExp(global.url)
+      var regHttp = new RegExp('src="http://')
+      // console.log()
+      if (!regHttp.test(res.data.data.content)) {
+        // console.log(`没有http`)
         res.data.data.content = res.data.data.content.replace(/src="/gi, 'src="' + global.url + '')
+      } else {
+        // console.log(`有http`)
+        res.data.data.content = res.data.data.content.replace(/src="http:\/\/202.120.163.63:8080\/cyg/gi, 'src="' + global.url + '')
       }
+      self.newsDetialContent = res.data.data
+      // if (!regUrl.test(res.data.data.content)) {
+      //   res.data.data.content = res.data.data.content.replace(/src="http:\/\/202.120.163.63:8080\/cyg/gi, 'src="' + global.url + '')
+      // }
       // self.newsDetialContent.content = self.newsDetialContent.content.replace(/src="/gi, 'src="' + global.url + '')
     })
     axios.get(global.baseUrl + 'news/getNewsList?ifImage=1&numPerPage=3')

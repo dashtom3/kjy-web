@@ -77,6 +77,7 @@ export default {
   },
   created () {
     this.getNewsList(this.newsArgs)
+    this.getNewestnewslists()
   },
   methods: {
     changePage: function (value) {

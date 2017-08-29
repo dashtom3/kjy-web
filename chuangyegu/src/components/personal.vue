@@ -227,7 +227,7 @@ export default {
       editUserPersonal: false,
       kindlists: [{ val: '个人资料' }, { val: '我对接的项目' }, { val: '我申请的项目' }, { val: '活动报名' }, { val: '场地预约' }],
       isActive: 0,
-      userinfo: global.getUser(),
+      userinfo: global.getUser() || {},
       intentionArray: global.userMsg.intentionArray,
       event: null,
       applyProjectlist: null,
@@ -243,6 +243,7 @@ export default {
     }
   },
   created: function () {
+    // console.log(this.userinfo)
     var self = this
     // 我对接的项目
     axios.get(global.baseUrl + 'eventApply/getAppliedEventList?token=' + global.getToken())
@@ -412,7 +413,8 @@ export default {
   },
   mounted () {
     if (!global.getToken() || global.getToken() === 'null') {
-      global.error(this, '请先登录', '/login')
+      this.$router.push('/login')
+      // global.error(this, '请先登录', '/login')
     }
   },
   watch: {
