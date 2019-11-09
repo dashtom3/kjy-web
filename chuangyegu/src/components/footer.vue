@@ -2,16 +2,15 @@
   <div class="footer">
     <div class="footerone">
       <dl class="footerlogo">
-        <img src="../images/logo.jpg" alt="">
+        <img src="../images/cyg.jpg" alt="">
       </dl>
       <dl class="">
         <dt>链接LINK</dt>
         <dd><a href="http://www.tongji.edu.cn/" target="_blank">同济大学</a></dd>
         <dd><a href="http://youth.tongji.edu.cn/index.php?classid=4807" target="_blank">共青团同济大学委员会</a></dd>
-        <dd><a href="javascript:;" target="_blank">成都同创谷</a></dd>
-        <dd><a href="javascript:;" target="_blank">大连同创谷</a></dd>
-        <dd><a href="javascript:;">同济创业谷·加佳国际</a></dd>
-        <dd><a href="javascript:;">青年众创空间</a></dd>
+        <dd><a href="http://www.tcgspace.com/index.php?m=content&c=index&a=lists&c atid=1" target="_blank">成都同创谷</a></dd>
+        <dd><a href="https://www.dlhitech.gov.cn/yqgk/gk/content.html" target="_blank">大连同创谷</a></dd>
+        <dd><a href="https://www.wework.cn/?utm_source=ads-baidu&utm_medium=cpc& utm_term=%E4%BC%97%E5%88%9B%E7%A9%BA%E9%97%B4&utm_camp aign=l-sha-%E9%80%9A%E7%94%A8%E8%AF%8DSH-PC&utm_content=% E5%88%9B%E6%84%8F%E5%9B%AD%E5%87%BA%E7%A7%9F&bd_vid=109 23104526377676425">青年众创空间</a></dd>
       </dl>
       <dl class="">
         <dt>合作单位</dt>
@@ -23,7 +22,7 @@
       <dl class="">
         <dt>合作联盟</dt>
         <dd><a href="http://www.bauhiniavalley.com/" target="_blank">紫荆谷</a></dd>
-        <dd><a href="http://www.naiseducation.com/" target="_blank">国际创业者暑期学校</a></dd>
+        <dd><a href="https://globalsummerschool.org/" target="_blank">国际创业者暑期学校</a></dd>
       </dl>
     </div>
     <div class="footertwo">
@@ -33,23 +32,21 @@
       <dl class="">
         <dt>联系</dt>
         <dd>邮箱：venturevalley@163.com</dd>
-        <dd>电话：+8602165982728</dd>
+        <dd>电话：+86021-65983697</dd>
         <dd>邮编：200092</dd>
-        <dd>地址：中国上海杨浦区彰武路100号</dd>
-        <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 创业大楼（四平创业谷）</dd>
-        <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 中国上海市嘉定区曹安公路</dd>
-        <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4800号朋园3号楼（嘉定创业谷）</dd>
+        <dd>地址：中国上海杨浦区四平路1239号</dd>
+        <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 同济大学原测量馆（四平创业谷）</dd>
+        <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 中国上海市嘉定区曹安公路</dd>
+        <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4800号朋园3号楼（嘉定创业谷）</dd>
       </dl>
       <dl class="link">
         <dt class="goDownload"><a href="download" target="_blank">资料下载</a></dt><br>
         <dt class="goNotices"><a href="notices" target="_blank">通告公知</a></dt>
       </dl>
       <dl class="">
-        <dt>关注</dt>
-        <dd><a href="http://weibo.com/u/3431109114" target="_blank">微博</a></dd>
-        <dd><a href="http://page.renren.com/601840580?checked=true" target="_blank">人人</a></dd>
-      </dl>
-      <dl class="">
+        <dt>关注</dt><br>
+      <!-- </dl> -->
+      <!-- <dl class=""> -->
         <img src="../images/coder.png" alt="">
       </dl>
     </div>

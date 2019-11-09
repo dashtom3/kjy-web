@@ -34,7 +34,7 @@
           label="更新时间">
         </el-table-column>
         <el-table-column label="操作">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button
               size="small"
               @click="onEditClick(scope.row.id)">编辑</el-button>

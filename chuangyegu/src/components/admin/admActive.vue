@@ -99,7 +99,7 @@
         </el-table-column>
         <el-table-column label="操作"
         width="300">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button
               size="mini"
               @click="adopt(scope.row.id)"
@@ -132,7 +132,7 @@
           <el-table-column property="userId" label="用户ID"></el-table-column>
           <el-table-column property="userName" label="用户名"></el-table-column>
           <el-table-column label="操作">
-            <template scope="scope">
+            <template slot-scope="scope">
               <el-button
                 size="small"
                 @click="adoptEvent(scope.row.id)">通过</el-button>
@@ -179,14 +179,14 @@
             </el-table-column>
             <el-table-column
               label="活动海报">
-              <template scope="scope">
+              <template slot-scope="scope">
                 <img :src="scope.row.photo" alt="">
               </template>
             </el-table-column>
             <el-table-column
               label="联系方式"
               width="125">
-              <template scope="scope">
+              <template slot-scope="scope">
                 <p>{{scope.row.contactPhone}}</p>
                 <p>{{scope.row.mobilePhone}}</p>
               </template>

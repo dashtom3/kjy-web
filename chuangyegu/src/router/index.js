@@ -37,6 +37,11 @@ import admVideo from '../components/admin/admVideo'
 import admFile from '../components/admin/admFiles'
 import admPhotoWall from '../components/admin/admPhotoWall'
 import test from '../components/test'
+import mdlogin from '../components/photo/mdlogin'
+import mdheader from '../components/photo/mdheader'
+import mdarea from '../components/photo/mdarea'
+import mdindex from '../components/photo/mdindex'
+import mdapplyProject from '../components/photo/mdapplyProject'
 
 Vue.use(Router)
 Vue.use(ElementUI)
@@ -192,5 +197,26 @@ export default new Router({
       name: '照片墙管理',
       component: admPhotoWall
     }]
-  }]
+  }, {
+    path: '/mdlogin',
+    name: 'mdlogin',
+    component: mdlogin
+  }, {
+    path: '/mdarea',
+    name: 'mdarea',
+    component: mdarea
+  }, {
+    path: '/mdindex',
+    name: 'mdindex',
+    component: mdindex
+  }, {
+    path: '/mdapplyProject',
+    name: 'mdapplyProject',
+    component: mdapplyProject
+  }, {
+    path: '/mdheader',
+    name: 'mdheader',
+    component: mdheader
+  }
+  ]
 })

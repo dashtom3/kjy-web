@@ -49,6 +49,7 @@ export default {
       } else {
         global.error(this, '账户或密码不正确', '/admin')
       }
+      // this.$router.push({path:'/admUser'})
     }
   }
 }

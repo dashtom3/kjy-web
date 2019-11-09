@@ -42,6 +42,9 @@
             <div>
               <img :src="showImgSrc" alt="">
             </div>
+            <div class="yulan_img">
+              <img :src="ImgSrc" alt="">
+            </div>
           </div>
           <div class="">
             <span class="date">活动日期</span>
@@ -66,7 +69,7 @@
               </el-checkbox-group>
             </div>
           </div>
-          <div class="equipment time">
+<!--          <div class="equipment time">
             <div class="" style="width:200px;vertical-align:top;">
               <span class="date">活动所需器材</span>
             </div>
@@ -78,8 +81,8 @@
                 :label="eventEquipment" :value="index"></el-checkbox>
               </el-checkbox-group>
             </div>
-          </div>
-          <div class="upload">
+          </div> -->
+          <!-- <div class="upload">
             <div class="uploadleft">
               <div class="">
                 <img :src=posterImgSrc alt="">
@@ -95,7 +98,7 @@
           </div>
           <div class="">
             <h5>①请提前3日预约14日内的场地 ②必须上传活动海报后才能审核通过</h5>
-          </div>
+          </div> -->
           <div class="tj">
             <a v-on:click="submitAreaMsg">提交</a>
           </div>
@@ -111,18 +114,20 @@ import header from './header'
 import footer from './footer'
 import axios from 'axios'
 import global from '../global/global'
-import hddt from '../images/hddt.jpg'
-import hys1 from '../images/hys1.jpg'
-import hys2 from '../images/hys2.jpg'
-import hys3 from '../images/hys3.jpg'
-import hys4 from '../images/hys4.jpg'
-import ydmzwt from '../images/ydmzwt.jpg'
-import bfyyhys from '../images/bfyyhys.jpg'
-import lstvhys from '../images/lstvhys.jpg'
-import qqhys from '../images/qqhyq.jpg'
-import sfhys from '../images/sfhyq.jpg'
-import dsyhys from '../images/dsyhyq.jpg'
-import hwwt from '../images/hwwt.jpg'
+import cdyy1 from '../images/cdyy1.fec37a9.jpg'
+import cdyy5 from '../images/cdyy5.e1fd8af.jpg'
+// import cdyy5 from '../images/cdyy5.e1fd8af.jpg'
+import cdyy4 from '../images/cdyy4.4dfa1e7.jpg'
+import cdyy3 from '../images/cdyy3.e3ff288.jpg'
+import cdyy2 from '../images/cdyy2.a8f0e4b.jpg'
+import cdyy6 from '../images/cdyy6.f00758b.jpg'
+import cdyy7 from '../images/cdyy7.2e07daa.jpg'
+import qqhyq from '../images/qqhyq.622be3e.jpg'
+import sfhyq from '../images/sfhyq.7825265.jpg'
+import cdyy9 from '../images/cdyy9.ecc0c95.jpg'
+import cdyy8 from '../images/cdyy8.c6f92c8.jpg'
+import cd1 from '../images/cd1.ec7ea50.jpg'
+import cd2 from '../images/cd2.6b23d98.jpg'
 export default {
   name: 'area',
   data () {
@@ -132,13 +137,16 @@ export default {
         { data: '四平校区', value: 1 },
         { data: '嘉定校区', value: 2 }
       ],
-      places1: ['活动大厅', '会议室1', '会议室2', '会议室3', '会议室4', '移动木制舞台'],
-      placesOneimg: [hddt, hys1, hys2, hys3, hys4, ydmzwt],
-      places2: ['暴风影音会议室', '乐视TV会议室(可与暴风影音会议室合借)', '秋千会议区', '沙发会议区', '大师椅会议区', '户外舞台'],
-      placestwoimg: [bfyyhys, lstvhys, qqhys, sfhys, dsyhys, hwwt],
+      places1: ['201 梦想舞台', '204 启迪工作室', '205 青春工作室', '207 2345.com会议室', '213 太酷会议室', '219 非凡会议室'],
+      placesOneimg: [cdyy1, cdyy5, cdyy5, cdyy4, cdyy3, cdyy2],
+      places2: ['J04 2345.com会议室', 'J02 启迪之星研讨区', 'J10 太酷秋千会议区', 'J10 太酷沙发会议区', 'J09 研讨区', 'J11 研讨区'],
+      placestwoimg: [cdyy6, cdyy7, qqhyq, sfhyq, cdyy9, cdyy8],
       useTimeIds: ['8:00-10:00', '10:00-12:00', '12:00-13:30', '13:30-15:00', '15:00-17:00', '17:00-18:30', '18:30-20:00', '20:00-22:00'],
       eventEquipments: ['会议室', '茶几', '多媒体投影仪', '触摸演示屏', '茶点(付费或自带)', 'CD DVD卡带(请自带)', '其他'],
       showImgSrc: null,
+      ImgSrc:null,
+      cd1:cd1,
+      cd2:cd2,
       posterImgSrc: null,
       areaMsg: {
         applyUnit: null,
@@ -161,10 +169,10 @@ export default {
     selectCampus: function () {
       if (this.areaMsg.campus === 1) {
         this.places = this.places1
-        this.areaMsg.rentalPlace = '活动大厅'
+        this.areaMsg.rentalPlace = '201 梦想舞台'
       } else {
         this.places = this.places2
-        this.areaMsg.rentalPlace = '暴风影音会议室'
+        this.areaMsg.rentalPlace = 'J04 2345.com会议室'
       }
     },
     selectPlace: function (value) {
@@ -199,9 +207,11 @@ export default {
       if (this.areaMsg.campus === 1) {
         index = this.places1.indexOf(this.areaMsg.rentalPlace)
         this.showImgSrc = this.placesOneimg[index]
+        this.ImgSrc = this.cd1
       } else {
         index = this.places2.indexOf(this.areaMsg.rentalPlace)
         this.showImgSrc = this.placestwoimg[index]
+        this.ImgSrc = this.cd2
       }
     },
     submitAreaMsg () {
@@ -291,6 +301,14 @@ select{
 .yulan div:nth-child(2) img{
   max-width: 350px;
   height: 200px;
+}
+.yulan .yulan_img{
+  float: right;
+  width: 40%;
+}
+.yulan .yulan_img img{
+  float: right;
+  width: 90%;
 }
 .card span{
   font-size: 15px;

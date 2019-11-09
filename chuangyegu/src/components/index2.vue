@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="index">
     <v-header></v-header>
     <div class="posterCon">
@@ -7,7 +7,7 @@
           <el-carousel-item
           :key="i"
           v-for="i in 3">
-            <img :src=images[i-1] alt="">
+            <img :src=images[i-1] alt="" class="dimg">
             <img :src=vs[i-1] alt="" class="vImg">
           </el-carousel-item>
         </el-carousel>
@@ -191,7 +191,7 @@
 import header from './header'
 import footer from './footer'
 import Vue from 'vue'
-import img1 from '../images/poster.png'
+import img1 from '../images/poster3.png'
 import img2 from '../images/img2.jpg'
 import img3 from '../images/img3.jpg'
 import v1 from '../images/v1.png'
@@ -285,6 +285,10 @@ export default {
   position:absolute;
   top:50px;
   right:350px;
+}
+.dimg{
+  width: 1200px;
+  height: 679px;
 }
 .newsCenterTitle img{
   width: 156px;

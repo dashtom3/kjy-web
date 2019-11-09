@@ -34,7 +34,7 @@
           label="注册时间">
         </el-table-column>
         <el-table-column label="操作">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button
               size="small"
               @click="userDetail(scope.row.id)">查看</el-button>
@@ -69,7 +69,7 @@
           label="注册时间">
         </el-table-column>
         <el-table-column label="操作">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button
               size="small"
               @click="userDetail(scope.row.id)">查看</el-button>
@@ -100,7 +100,7 @@
           label="注册时间">
         </el-table-column>
         <el-table-column label="操作">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button
               size="small"
               @click="userDetail(scope.row.id)">查看</el-button>
@@ -131,7 +131,7 @@
           label="注册时间">
         </el-table-column>
         <el-table-column label="操作">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button
               size="small"
               @click="userDetail(scope.row.id)">查看</el-button>

@@ -88,7 +88,7 @@
               label="状态">
             </el-table-column>
             <el-table-column label="操作">
-              <template scope="scope">
+              <template slot-scope="scope">
                 <el-button
                   size="small"
                   :disabled="scope.row.status !== 12"
