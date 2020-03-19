@@ -43,6 +43,7 @@
               <img :src="showImgSrc" alt="">
             </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
             <div class="yulan_img">
               <img :src="ImgSrc" alt="">
@@ -54,6 +55,8 @@
               <img src="../images/cd2.jpeg" alt="">
 >>>>>>> Stashed changes
             </div>
+=======
+>>>>>>> parent of d345289... dd
 =======
 >>>>>>> parent of d345289... dd
           </div>
@@ -126,6 +129,7 @@ import footer from './footer'
 import axios from 'axios'
 import global from '../global/global'
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 import cdyy1 from '../images/cdyy1.fec37a9.jpg'
 import cdyy5 from '../images/cdyy5.e1fd8af.jpg'
@@ -160,6 +164,8 @@ import sfhys from '../images/sfhyq.jpg'
 // import hwwt from '../images/hwwt.jpg'
 >>>>>>> Stashed changes
 =======
+=======
+>>>>>>> parent of d345289... dd
 import hddt from '../images/hddt.jpg'
 import hys1 from '../images/hys1.jpg'
 import hys2 from '../images/hys2.jpg'
@@ -172,6 +178,9 @@ import qqhys from '../images/qqhyq.jpg'
 import sfhys from '../images/sfhyq.jpg'
 import dsyhys from '../images/dsyhyq.jpg'
 import hwwt from '../images/hwwt.jpg'
+<<<<<<< HEAD
+>>>>>>> parent of d345289... dd
+=======
 >>>>>>> parent of d345289... dd
 export default {
   name: 'area',
@@ -182,6 +191,7 @@ export default {
         { data: '四平校区', value: 1 },
         { data: '嘉定校区', value: 2 }
       ],
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< Updated upstream
       places1: ['201 梦想舞台', '204 启迪工作室', '205 青春工作室', '207 2345.com会议室', '213 太酷会议室', '219 非凡会议室'],
@@ -196,10 +206,15 @@ export default {
       placestwoimg: [cdyy6, cdyy7, qqhys, sfhys, cdyy9, cdyy8],
 >>>>>>> Stashed changes
 =======
+=======
+>>>>>>> parent of d345289... dd
       places1: ['活动大厅', '会议室1', '会议室2', '会议室3', '会议室4', '移动木制舞台'],
       placesOneimg: [hddt, hys1, hys2, hys3, hys4, ydmzwt],
       places2: ['暴风影音会议室', '乐视TV会议室(可与暴风影音会议室合借)', '秋千会议区', '沙发会议区', '大师椅会议区', '户外舞台'],
       placestwoimg: [bfyyhys, lstvhys, qqhys, sfhys, dsyhys, hwwt],
+<<<<<<< HEAD
+>>>>>>> parent of d345289... dd
+=======
 >>>>>>> parent of d345289... dd
       useTimeIds: ['8:00-10:00', '10:00-12:00', '12:00-13:30', '13:30-15:00', '15:00-17:00', '17:00-18:30', '18:30-20:00', '20:00-22:00'],
       eventEquipments: ['会议室', '茶几', '多媒体投影仪', '触摸演示屏', '茶点(付费或自带)', 'CD DVD卡带(请自带)', '其他'],

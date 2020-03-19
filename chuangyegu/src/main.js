@@ -5,6 +5,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 import global from './global/global.js'
 import axios from 'axios'
@@ -16,6 +17,8 @@ import Vuex from 'vuex'
 =======
 
 >>>>>>> Stashed changes
+=======
+>>>>>>> parent of d345289... dd
 =======
 >>>>>>> parent of d345289... dd
 // import Router from 'vue-router'

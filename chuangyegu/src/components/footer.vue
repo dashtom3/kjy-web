@@ -36,6 +36,7 @@
         <dd>电话：+8602165982728</dd>
         <dd>邮编：200092</dd>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
         <dd>地址：中国上海杨浦区四平路1239号</dd>
         <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 同济大学原测量馆（四平创业谷）</dd>
@@ -48,10 +49,15 @@
         <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4800号朋园3号楼（嘉定创业谷）</dd>
 >>>>>>> Stashed changes
 =======
+=======
+>>>>>>> parent of d345289... dd
         <dd>地址：中国上海杨浦区彰武路100号</dd>
         <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 创业大楼（四平创业谷）</dd>
         <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 中国上海市嘉定区曹安公路</dd>
         <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4800号朋园3号楼（嘉定创业谷）</dd>
+<<<<<<< HEAD
+>>>>>>> parent of d345289... dd
+=======
 >>>>>>> parent of d345289... dd
       </dl>
       <dl class="link">
