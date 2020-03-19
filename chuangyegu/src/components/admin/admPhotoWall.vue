@@ -22,7 +22,7 @@
         </el-table-column>
         <el-table-column
           label="照片地址">
-          <template slot-scope="scope">
+          <template scope="scope">
             <img :src=scope.row.smallSrc alt="" style="max-width:100px;max-height:100px;">
           </template>
         </el-table-column>
@@ -31,7 +31,7 @@
           label="发布时间">
         </el-table-column>
         <el-table-column label="操作">
-          <template slot-scope="scope">
+          <template scope="scope">
             <el-button
               size="small"
               type="danger"

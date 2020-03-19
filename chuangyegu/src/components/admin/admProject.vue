@@ -75,7 +75,7 @@
           width="180">
         </el-table-column>
         <el-table-column label="操作">
-          <template slot-scope="scope">
+          <template scope="scope">
             <el-button
               size="small"
               type="success" :disabled="scope.row.status !== 11" @click="verifyProjectApply(scope.row.id)">审核通过</el-button>

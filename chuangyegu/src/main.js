@@ -4,6 +4,7 @@ import 'babel-polyfill'
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 import global from './global/global.js'
 import axios from 'axios'
@@ -15,11 +16,10 @@ import Vuex from 'vuex'
 =======
 
 >>>>>>> Stashed changes
+=======
+>>>>>>> parent of d345289... dd
 // import Router from 'vue-router'
 // import index from './components/index2'
-Vue.use(Vuex)
-Vue.prototype.$global = global;
-Vue.use(ElementUI);
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
@@ -31,16 +31,6 @@ Vue.config.productionTip = false
 // }).$mount('')
 //
 // router.push({ path: '/index' })
-//门卫拦截login页面
-router.beforeEach((to, from, next) => {
-	if (to.name == 'mdlogin' || store.state.loginFlag) {
-		next();
-	} else if(to.name == 'mdindex' || to.name == 'mdarea' || to.name == 'mdapplyProject'){
-		next('/mdlogin');
-	} else {
-    next();
-  }
-})
 Vue.filter('dateMM', function (time) {
   return new Date(parseInt(time)).getMonth() + 1 + '月'
 })
@@ -54,7 +44,6 @@ Vue.filter('dateAll', function (time) {
 new Vue({
   el: '#app',
   render: h => h(App),
-  store,
   router,
   template: '<App/>',
   components: { App }

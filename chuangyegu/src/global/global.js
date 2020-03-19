@@ -6,7 +6,7 @@ export default{
   qiniuUrl: 'http://up-z2.qiniu.com/',
   qiniuShUrl: 'http://onktd2a1f.bkt.clouddn.com/',
   url: 'http://chuangyegu.tongji.edu.cn/cyg/',
-  baseUrl: 'https://chuangyegu.tongji.edu.cn/cyg/api/',
+  baseUrl: 'http://chuangyegu.tongji.edu.cn/cyg/api/',
   successUrl: 'http://chuangyegu.tongji.edu.cn/personal',
   errorUrl: 'http://chuangyegu.tongji.edu.cn/login?type=2',
   goPath: function (obj, url) {

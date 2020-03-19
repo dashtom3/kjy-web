@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div id="app">
     <div class="app_header">
       <data-header></data-header>
     </div>
@@ -56,7 +56,7 @@ export default {
   max-height: 150px!important;
   max-width: 150px!important;
 }
-  .app{
+  #app{
     height: 100%;
     margin: 0;
     display: flex;
@@ -83,7 +83,7 @@ export default {
     background: #EFF2F7;
   }
   .app_right{
-    flex: 0 0 1000px;
+    flex: 1;
     overflow: auto;
     padding: 20px;
 
