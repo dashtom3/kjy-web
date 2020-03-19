@@ -42,8 +42,16 @@
             <div>
               <img :src="showImgSrc" alt="">
             </div>
+<<<<<<< Updated upstream
             <div class="yulan_img">
               <img :src="ImgSrc" alt="">
+=======
+            <div class="yulancd" v-if="areaMsg.campus == 1">
+              <img src="../images/cd1.jpeg" alt="">
+            </div>
+            <div class="yulancd" v-if="areaMsg.campus == 2">
+              <img src="../images/cd2.jpeg" alt="">
+>>>>>>> Stashed changes
             </div>
           </div>
           <div class="">
@@ -114,6 +122,7 @@ import header from './header'
 import footer from './footer'
 import axios from 'axios'
 import global from '../global/global'
+<<<<<<< Updated upstream
 import cdyy1 from '../images/cdyy1.fec37a9.jpg'
 import cdyy5 from '../images/cdyy5.e1fd8af.jpg'
 // import cdyy5 from '../images/cdyy5.e1fd8af.jpg'
@@ -128,6 +137,24 @@ import cdyy9 from '../images/cdyy9.ecc0c95.jpg'
 import cdyy8 from '../images/cdyy8.c6f92c8.jpg'
 import cd1 from '../images/cd1.ec7ea50.jpg'
 import cd2 from '../images/cd2.6b23d98.jpg'
+=======
+import cdyy1 from '../images/cdyy1.jpeg'
+import cdyy2 from '../images/cdyy2.jpeg'
+import cdyy3 from '../images/cdyy3.jpeg'
+import cdyy4 from '../images/cdyy4.jpeg'
+import cdyy5 from '../images/cdyy5.jpeg'
+import cdyy6 from '../images/cdyy6.jpg'
+import cdyy7 from '../images/cdyy7.jpg'
+import cdyy8 from '../images/cdyy8.jpg'
+import cdyy9 from '../images/cdyy9.jpg'
+// import ydmzwt from '../images/ydmzwt.jpg'
+// import bfyyhys from '../images/bfyyhys.jpg'
+// import lstvhys from '../images/lstvhys.jpg'
+import qqhys from '../images/qqhyq.jpg'
+import sfhys from '../images/sfhyq.jpg'
+// import dsyhys from '../images/dsyhyq.jpg'
+// import hwwt from '../images/hwwt.jpg'
+>>>>>>> Stashed changes
 export default {
   name: 'area',
   data () {
@@ -137,10 +164,18 @@ export default {
         { data: '四平校区', value: 1 },
         { data: '嘉定校区', value: 2 }
       ],
+<<<<<<< Updated upstream
       places1: ['201 梦想舞台', '204 启迪工作室', '205 青春工作室', '207 2345.com会议室', '213 太酷会议室', '219 非凡会议室'],
       placesOneimg: [cdyy1, cdyy5, cdyy5, cdyy4, cdyy3, cdyy2],
       places2: ['J04 2345.com会议室', 'J02 启迪之星研讨区', 'J10 太酷秋千会议区', 'J10 太酷沙发会议区', 'J09 研讨区', 'J11 研讨区'],
       placestwoimg: [cdyy6, cdyy7, qqhyq, sfhyq, cdyy9, cdyy8],
+=======
+      // places1: ['活动大厅', '会议室1', '会议室2', '会议室3', '会议室4', '移动木制舞台'],
+      places1: ['201 梦想舞台', '204 启迪工作室', '205 青春工作室', '207 2345.com会议室', '213 太酷会议室', '219 非凡会议室'],
+      placesOneimg: [cdyy1, cdyy5, cdyy5, cdyy4, cdyy3, cdyy2],
+      places2: ['J04 2345.com会议室', 'J02启迪之星研讨区', 'J10太酷秋千会议区', 'J10太酷沙发会议区', 'J09 研讨区', 'J11 研讨区'],
+      placestwoimg: [cdyy6, cdyy7, qqhys, sfhys, cdyy9, cdyy8],
+>>>>>>> Stashed changes
       useTimeIds: ['8:00-10:00', '10:00-12:00', '12:00-13:30', '13:30-15:00', '15:00-17:00', '17:00-18:30', '18:30-20:00', '20:00-22:00'],
       eventEquipments: ['会议室', '茶几', '多媒体投影仪', '触摸演示屏', '茶点(付费或自带)', 'CD DVD卡带(请自带)', '其他'],
       showImgSrc: null,
@@ -224,7 +259,11 @@ export default {
       .then((res) => {
         if (res.data.callStatus === 'SUCCEED') {
           global.success(self, '申请成功请等待审核', '/personal')
+        } else {
+          global.error(self, '申请失败:填写信息不够完整', '')
         }
+      }).catch((res) => {
+        global.error(self, '申请失败:填写信息不够完整', '')
       })
       self.areaMsg.eventEquipment = []
       self.areaMsg.useTimeId = []
@@ -475,5 +514,15 @@ h5{
   height: 39px;
   color: #fff;
   font-size: 18px;
+}
+.yulancd img{
+  /* width: 300px; */
+  height: 270px;
+  /* text-align: center; */
+  /* margin-left: 50px; */
+}
+.yulancd {
+  float: right;
+
 }
 </style>

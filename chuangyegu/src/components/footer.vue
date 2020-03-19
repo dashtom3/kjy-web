@@ -27,17 +27,24 @@
     </div>
     <div class="footertwo">
       <dl class="footertwologo">
-        <img src="../images/map.png" alt="">
+        <!-- <img src="../images/map.png" alt=""> -->
       </dl>
       <dl class="">
         <dt>联系</dt>
         <dd>邮箱：venturevalley@163.com</dd>
         <dd>电话：+86021-65983697</dd>
         <dd>邮编：200092</dd>
+<<<<<<< Updated upstream
         <dd>地址：中国上海杨浦区四平路1239号</dd>
         <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 同济大学原测量馆（四平创业谷）</dd>
         <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 中国上海市嘉定区曹安公路</dd>
         <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4800号朋园3号楼（嘉定创业谷）</dd>
+=======
+        <dd>地址：上海市杨浦区四平路1239号</dd>
+        <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 同济大学原测量馆（四平创业谷）</dd>
+        <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 中国上海市嘉定区曹安公路</dd>
+        <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4800号朋园3号楼（嘉定创业谷）</dd>
+>>>>>>> Stashed changes
       </dl>
       <dl class="link">
         <dt class="goDownload"><a href="download" target="_blank">资料下载</a></dt><br>

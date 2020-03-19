@@ -14,7 +14,12 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
+<<<<<<< Updated upstream
     "element-ui": "^1.4.13",
+=======
+    "babel-polyfill": "^6.26.0",
+    "element-ui": "^1.2.3",
+>>>>>>> Stashed changes
     "vue": "^2.2.1",
     "vue-amap": "^0.2.3",
     "vue-baidu-map": "^0.1.11",

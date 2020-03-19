@@ -6,7 +6,7 @@
     </div>
     <div class="contactCon">
       <div class="contactConImg">
-        <img src="../images/addr.png" alt="">
+        <!-- <img src="../images/addr.png" alt=""> -->
       </div>
       <div class="contactConAddr">
         <p class="tj">同济大学创业谷</p>

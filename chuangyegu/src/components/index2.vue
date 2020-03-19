@@ -191,7 +191,11 @@
 import header from './header'
 import footer from './footer'
 import Vue from 'vue'
+<<<<<<< Updated upstream
 import img1 from '../images/poster3.png'
+=======
+import img1 from '../images/poster.jpeg'
+>>>>>>> Stashed changes
 import img2 from '../images/img2.jpg'
 import img3 from '../images/img3.jpg'
 import v1 from '../images/v1.png'

@@ -10,18 +10,19 @@
         </el-radio-group><br>
         <el-radio-group v-model="kinds" @change="select">
           <el-radio :label="0">全部</el-radio>
-          <el-radio label="活动大厅">活动大厅</el-radio>
-          <el-radio label="会议室1">会议室1</el-radio>
-          <el-radio label="会议室2">会议室2</el-radio>
-          <el-radio label="会议室3">会议室3</el-radio>
-          <el-radio label="会议室4">会议室4</el-radio>
-          <el-radio label="移动木制舞台">移动木制舞台</el-radio>
-          <el-radio label="暴风影音会议室">暴风影音会议室</el-radio>
-          <el-radio label="乐视TV会议室">乐视TV会议室</el-radio>
-          <el-radio label="秋千会议区">秋千会议区</el-radio>
-          <el-radio label="沙发会议区">沙发会议区</el-radio>
-          <el-radio label="大师椅会议区">大师椅会议区</el-radio>
-          <el-radio label="户外舞台">户外舞台</el-radio>
+          <!-- ['201 梦想舞台', '204 启迪工作室', '205 青春工作室', '207 2345.com会议室', '213 太酷会议室', '219 非凡会议室'] -->
+          <el-radio label="201 梦想舞台">201 梦想舞台</el-radio>
+          <el-radio label="204 启迪工作室">204 启迪工作室</el-radio>
+          <el-radio label="205 青春工作室">205 青春工作室</el-radio>
+          <el-radio label="207 2345.com会议室">207 2345.com会议室</el-radio>
+          <el-radio label="213 太酷会议室">213 太酷会议室</el-radio>
+          <el-radio label="219 非凡会议室">219 非凡会议室</el-radio>
+          <el-radio label="J04 2345.com会议室">J04 2345.com会议室</el-radio>
+          <el-radio label="J02启迪之星研讨区">J02启迪之星研讨区</el-radio>
+          <el-radio label="J10太酷秋千会议区">J10太酷秋千会议区</el-radio>
+          <el-radio label="J10太酷沙发会议区">J10太酷沙发会议区</el-radio>
+          <el-radio label="J09 研讨区">J09 研讨区</el-radio>
+          <el-radio label="J11 研讨区">J11 研讨区</el-radio>
         </el-radio-group><br>
         <el-radio-group v-model="sources" @change="select">
           <el-radio :label="0">全部</el-radio>

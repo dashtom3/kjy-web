@@ -126,7 +126,6 @@ export default {
 }
 .contactConAddr p{
   font-size: 15px;
-  font-family: "Adobe Heiti Std";
   color: rgb( 0, 0, 0 );
 }
 .contactConAddr p.tj{
@@ -140,7 +139,6 @@ export default {
 }
 .contactConTitle{
   font-size: 17.5px;
-  font-family: "Adobe Heiti Std";
   color: rgb( 254, 108, 0 );
   line-height: 25px;
 }
@@ -148,7 +146,6 @@ export default {
   margin: 35px 0 40px 0;
 }
 .companyAbout p{
-  font-family: "Adobe Heiti Std";
   font-size: 15px;
   line-height: 25px;
 }
